@@ -13,5 +13,10 @@ public class testController {
 
     }
 
+    @GetMapping("/test2")
+    public String test2() {
 
+        return "test2 api has been returned!\n";
+
+    }
 }
