@@ -19,10 +19,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Override
-    protected void configure(HttpSecurity http)throws Exception{
+    protected void configure(HttpSecurity http)throws Exception {
         http.csrf().disable().
                 headers().frameOptions().disable()
-                 // .and()
+                // .and()
 //                .authorizeRequests()
 //                .antMatchers("").permitAll()
 //                .antMatchers("~ ").hasRole(Role.USER.name())
@@ -31,5 +31,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .oauth2Login()
                 .userInfoEndpoint()
                 .userService(oAuthService);
+    }
 
 }
