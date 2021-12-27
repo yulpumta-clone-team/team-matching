@@ -1,15 +1,17 @@
 package com.projectmatching.app.test;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+@CrossOrigin(origins="*")
 @RestController
 public class testController {
 
 
 
-    @GetMapping("/")
+    @GetMapping("/api")
     public String test3(@RequestBody testData data) {
 
         System.out.println(data.getTest());
@@ -19,14 +21,14 @@ public class testController {
     }
 
 
-    @GetMapping("/test")
+    @GetMapping("api/test")
     public String test() {
 
         return "test api has been returned!\n";
 
     }
 
-    @GetMapping("/test2")
+    @GetMapping("api/test2")
     public String test2() {
 
         return "test2 api has been returned!\n";
