@@ -21,14 +21,14 @@ public class testController {
     }
 
 
-    @GetMapping("api/test")
+    @GetMapping("/api/test1")
     public String test() {
 
         return "test api has been returned!\n";
 
     }
 
-    @GetMapping("api/test2")
+    @GetMapping("/api/test2")
     public String test2() {
 
         return "test2 api has been returned!\n";
