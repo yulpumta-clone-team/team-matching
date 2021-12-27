@@ -26,13 +26,13 @@ public enum OAuthAttributes {
     });
 
     private final String registrationId;
-    private final Function<Map<String,Object>, UserProfile> of;
+    private final Function<Map<String,Object>, UserProfile> of; //
 
     public static UserProfile extract(String registrationId, Map<String, Object> attributes) {
         return Arrays.stream(values())//enum 에서 values() 는 enum 안의 모든 값을 return 한다
                 .filter(provider -> registrationId.equals(provider.registrationId))
                 .findFirst()
-                .orElseThrow(IllegalArgumentException::new)
+                .orElseThrow(IllegalArgumentException::new) // 구글, 깃허브 가 아니면 예외 던짐
                 .of.apply(attributes);
     }
 

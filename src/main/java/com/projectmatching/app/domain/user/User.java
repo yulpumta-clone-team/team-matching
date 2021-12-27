@@ -1,14 +1,13 @@
 package com.projectmatching.app.domain.user;
 
 import com.projectmatching.app.domain.BaseTimeEntity;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Getter
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
 public class User extends BaseTimeEntity{
 
@@ -27,6 +26,7 @@ public class User extends BaseTimeEntity{
     private String email;
     @Column(nullable = false)
     private String name;
+
     @Column(nullable = false)
     private String pwd;
 
@@ -35,5 +35,11 @@ public class User extends BaseTimeEntity{
         return this.role.getKey();
     }
 
+
+    public User update(String name, String email){
+        this.name = name;
+        this.email = email;
+        return this;
+    }
 
 }
