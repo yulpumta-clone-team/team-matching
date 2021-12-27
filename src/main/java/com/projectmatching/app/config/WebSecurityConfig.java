@@ -9,6 +9,8 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
+    private final OAuthService oAuthService;
+
     @Override
     protected void configure(HttpSecurity http)throws Exception{
         http.csrf().disable();
