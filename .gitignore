@@ -29,3 +29,4 @@ out/
 **/src/main/resources/application-oauth.properties
 
 src/main/resources/static/
+src/main/webapp/matching-front
