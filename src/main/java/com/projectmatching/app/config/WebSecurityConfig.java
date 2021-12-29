@@ -1,5 +1,6 @@
 package com.projectmatching.app.config;
 
+import com.projectmatching.app.domain.user.Role;
 import com.projectmatching.app.domain.user.service.OAuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -22,11 +23,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http)throws Exception {
         http.csrf().disable().
                 headers().frameOptions().disable()
-                // .and()
-//                .authorizeRequests()
-//                .antMatchers("").permitAll()
-//                .antMatchers("~ ").hasRole(Role.USER.name())
-//                .anyRequest().authenticated()
+                .and()
+                .authorizeRequests()
+                .antMatchers("/**").permitAll()
+//                .antMatchers("/").hasRole(Role.USER.name())
+                .anyRequest().authenticated()
+                .and()
+                .logout()
+                .logoutSuccessUrl("/")
                 .and()
                 .oauth2Login()
                 .userInfoEndpoint()

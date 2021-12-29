@@ -19,22 +19,21 @@ public class User extends BaseTimeEntity{
     private String oauthId;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
     private Role role;
 
-    @Column(nullable = false)
     private String email;
-    @Column(nullable = false)
+
     private String name;
 
-    @Column(nullable = false)
+    @Column
     private String pwd;
 
 
-    public User(String oauthId,String name, String email,Role role ){
+    public User(String oauthId,String name, String email, Role role ){
+        this.id = null;
         this.oauthId = oauthId;
-        this.name = name;
         this.email = email;
+        this.name = name;
         this.role = role;
     }
 
