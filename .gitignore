@@ -28,5 +28,5 @@ out/
 
 **/src/main/resources/application-oauth.properties
 
+src/main/webapp/matching-front/
 src/main/resources/static/
-src/main/webapp/matching-front
