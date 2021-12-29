@@ -11,48 +11,10 @@ import org.springframework.web.bind.annotation.RestController;
 public class testController {
 
 
-
-<<<<<<< HEAD
-//    @GetMapping("/")
-//    public String test3(@RequestBody testData data) {
-//
-//        System.out.println(data.getTest());
-//        System.out.println(data.getArr());
-//        return "test api has been returned!\n";
-//
-//    }
-
-
     @GetMapping("/test")
-    public ResponseTemplate<String> MsgTesting(){
-        
-        ResponseTemplate responseTemplate = new ResponseTemplate("안녕");
-=======
-    @GetMapping("/api")
-    public String test3(@RequestBody testData data) {
+    public ResponseTemplate<String> MsgTesting() {
 
-        System.out.println(data.getTest());
-        System.out.println(data.getArr());
-        return "test api has been returned!\n";
-
+        return new ResponseTemplate<>("안녕");
     }
-
-
-    @GetMapping("/api/test1")
-    public String test() {
->>>>>>> fe0262b859eade390d287307298060c7409e8c73
-
-
-        return responseTemplate;
-
-<<<<<<< HEAD
-=======
-    @GetMapping("/api/test2")
-    public String test2() {
->>>>>>> fe0262b859eade390d287307298060c7409e8c73
-
-
-    }
-
-
 }
+

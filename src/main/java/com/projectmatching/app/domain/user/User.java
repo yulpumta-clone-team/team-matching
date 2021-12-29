@@ -31,6 +31,13 @@ public class User extends BaseTimeEntity{
     private String pwd;
 
 
+    public User(String oauthId,String name, String email,Role role ){
+        this.oauthId = oauthId;
+        this.name = name;
+        this.email = email;
+        this.role = role;
+    }
+
     public String getRolekey(){
         return this.role.getKey();
     }
@@ -41,5 +48,7 @@ public class User extends BaseTimeEntity{
         this.email = email;
         return this;
     }
+
+
 
 }
