@@ -26,7 +26,7 @@ public enum OAuthAttributes {
     });
 
     private final String registrationId;
-    private final Function<Map<String,Object>, UserProfile> of; //
+    private final Function<Map<String,Object>, UserProfile> of; //유저 프로필 객체로 전환
 
     public static UserProfile extract(String registrationId, Map<String, Object> attributes) {
         return Arrays.stream(values())//enum 에서 values() 는 enum 안의 모든 값을 return 한다

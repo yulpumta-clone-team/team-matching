@@ -14,7 +14,6 @@ public enum ResponseTemplateStatus {
      */
     SUCCESS(true,"요청 성공", 1000);
 
-
     private final boolean isSuccess;
     private final int code;
     private final String message;
