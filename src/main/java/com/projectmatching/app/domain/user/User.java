@@ -25,14 +25,13 @@ public class User extends BaseTimeEntity implements UserDetails {
 
     @Enumerated(EnumType.STRING)
     private Role role;
+
     private String email;
     private String name;
 
     @Column
     private String pwd;
 
-    @Column
-    private String token; //jwt
 
 
     public User(String oauthId,String name, String email, Role role ){

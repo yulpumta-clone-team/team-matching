@@ -22,13 +22,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final OAuthService oAuthService;
     private final AuthTokenProvider authTokenProvider;
-    private final CorsFilter corsFilter;
-
-
-    @Bean
-    public AuthenticationManager authenticationManagerBean() throws Exception{
-        return super.authenticationManagerBean();
-    }
 
 
     @Override
@@ -37,16 +30,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable().
                 headers().frameOptions().disable()
                 .and()
-                    .addFilter(corsFilter)//항상 해당 필터 통과
                     .formLogin().disable()
                     .authorizeRequests()
                     .antMatchers("/login").permitAll()
                     .anyRequest().permitAll()
                 .and()
+                .addFilterBefore(new JwtAuthFilter(authTokenProvider), UsernamePasswordAuthenticationFilter.class)
 //                .antMatchers("/").hasRole(Role.USER.name())
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) //토큰 사용하므로 세션 사용 x
                 .and()
-                .addFilterBefore(new JwtAuthFilter(authTokenProvider), UsernamePasswordAuthenticationFilter.class)
+
                 .logout()
                 .logoutSuccessUrl("/")
                 .and()
@@ -61,4 +54,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
+    @Bean
+    public AuthenticationManager authenticationManagerBean() throws Exception{
+        return super.authenticationManagerBean();
+    }
 }
