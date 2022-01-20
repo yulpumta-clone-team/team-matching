@@ -1,12 +1,13 @@
-package com.projectmatching.app.config;
+package com.projectmatching.app.config.resTemplate;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.projectmatching.app.config.resTemplate.ResponseTemplateStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
-import static com.projectmatching.app.config.ResponseTemplateStatus.*;
+import static com.projectmatching.app.config.resTemplate.ResponseTemplateStatus.*;
 @Getter
 @AllArgsConstructor
 @JsonPropertyOrder({"status","isSuccess","code","message","data"})

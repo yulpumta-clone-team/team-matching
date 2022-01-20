@@ -1,4 +1,4 @@
-package com.projectmatching.app.config;
+package com.projectmatching.app.config.resTemplate;
 
 import lombok.Getter;
 
@@ -12,7 +12,17 @@ public enum ResponseTemplateStatus {
      *
      * 1000: 요청 성공
      */
-    SUCCESS(true,"요청 성공", 1000);
+    SUCCESS(true,"요청 성공", 1000),
+
+
+
+    /**
+     *
+     * 2000 : Request 오류
+
+     */
+    EMPTY_JWT(false,"JWT를 입력해주세요.",2001),
+    INVALID_JWT(false, "유효하지 않은 JWT입니다.",2002);
 
     private final boolean isSuccess;
     private final int code;
