@@ -39,8 +39,8 @@ public class AuthTokenProvider {
     private final UserDetailsService userDetailsService;
 
     // JWT 토큰 생성
-    public String createToken(String userPk, Role roles) {
-        Claims claims = Jwts.claims().setSubject(userPk); // JWT payload 에 저장되는 정보단위
+    public String createToken(String userName, Role roles) {
+        Claims claims = Jwts.claims().setSubject(userName); // JWT payload 에 저장되는 정보단위
         claims.put("roles", roles.getKey()); // 정보는 key / value 쌍으로 저장된다.
         Date now = new Date();
         return Jwts.builder()
@@ -54,12 +54,12 @@ public class AuthTokenProvider {
 
     // JWT 토큰에서 인증 정보 조회
     public Authentication getAuthentication(String token) {
-        UserDetails userDetails = userDetailsService.loadUserByUsername(this.getUserPk(token));
+        UserDetails userDetails = userDetailsService.loadUserByUsername(this.getUserName(token));
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 
     // 토큰에서 회원 정보 추출
-    public String getUserPk(String token)  {
+    public String getUserName(String token)  {
 
         Jws<Claims> claims = Jwts.parserBuilder()
                     .setSigningKey(Secret.JWT_SECRET_KEY)
@@ -70,9 +70,9 @@ public class AuthTokenProvider {
 
     }
 
-    // Request의 Header에서 token 값을 가져옵니다. "X-AUTH-TOKEN" : "TOKEN값'
+    // Request의 Header에서 token 값을 가져옵니다. "Authorization" : "TOKEN값'
     public String resolveToken(HttpServletRequest request) {
-        return request.getHeader("X-AUTH-TOKEN");
+        return request.getHeader("Authorization");
     }
 
     // 토큰의 유효성 + 만료일자 확인

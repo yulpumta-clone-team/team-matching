@@ -3,6 +3,7 @@ package com.projectmatching.app.domain.user;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.projectmatching.app.domain.BaseTimeEntity;
 import lombok.*;
+import org.springframework.lang.Nullable;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -26,11 +27,27 @@ public class User extends BaseTimeEntity implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    @Column
     private String email;
+    @Column
     private String name;
-
     @Column
     private String pwd;
+    @Column
+    private String img;
+    @Column
+    private String portfolio;
+    @Column
+    private String slogan;
+
+    @Column(columnDefinition = "TEXT")
+    private String content;
+
+    @Column
+    private String hope_session;
+
+    @Column
+    private String job;
 
 
 

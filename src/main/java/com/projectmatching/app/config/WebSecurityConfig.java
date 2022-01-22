@@ -24,7 +24,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final OAuthService oAuthService;
     private final AuthTokenProvider authTokenProvider;
-
+    private final OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
 
     @Override
     protected void configure(HttpSecurity http)throws Exception {
@@ -47,10 +47,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .oauth2Login()
                     .userInfoEndpoint()
-                        .userService(oAuthService);
+                        .userService(oAuthService)
+                        .and()
+                .successHandler(oAuth2AuthenticationSuccessHandler);
+
 
     }
 
+    //패스워드 인코더 설정
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder(){
         return new BCryptPasswordEncoder();

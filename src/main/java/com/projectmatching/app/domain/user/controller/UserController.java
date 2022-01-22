@@ -5,6 +5,7 @@ import com.projectmatching.app.domain.user.User;
 import com.projectmatching.app.domain.user.UserRepository;
 import com.projectmatching.app.util.AuthTokenProvider;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,7 +17,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class UserController {
 
-    private final PasswordEncoder passwordEncoder;
+    private final BCryptPasswordEncoder passwordEncoder;
     private final AuthTokenProvider jwtTokenProvider;
     private final UserRepository userRepository;
 

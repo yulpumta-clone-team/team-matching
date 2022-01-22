@@ -4,6 +4,7 @@ import com.projectmatching.app.domain.user.User;
 import com.projectmatching.app.domain.user.UserProfile;
 import com.projectmatching.app.domain.user.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
@@ -18,6 +19,7 @@ import java.util.Map;
 
 @RequiredArgsConstructor
 @Service
+@Slf4j
 public class OAuthService implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
 
     private final UserRepository userRepository;
@@ -39,6 +41,8 @@ public class OAuthService implements OAuth2UserService<OAuth2UserRequest, OAuth2
         UserProfile userProfile = OAuthAttributes.extract(registrationId, attributes); // registrationId에 따라 유저 정보를 통해 공통된 UserProfile 객체로 만들어 줌
 
         User user = saveOrUpdate(userProfile); // DB에 저장
+
+        log.info("저장된 유저 : {}",user);
 
         //DefaultOAuth2User의 권한을 가진 User를 load합니다.
         return new DefaultOAuth2User(
