@@ -1,11 +1,8 @@
 package com.projectmatching.app.config;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.projectmatching.app.domain.user.Role;
 import com.projectmatching.app.domain.user.UserRepository;
 import com.projectmatching.app.domain.user.dto.UserDto;
-import com.projectmatching.app.util.AuthToken;
 import com.projectmatching.app.util.AuthTokenProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
