@@ -8,7 +8,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.user.OAuth2User;
+import org.springframework.security.web.DefaultRedirectStrategy;
+import org.springframework.security.web.RedirectStrategy;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
+import org.springframework.security.web.savedrequest.RequestCache;
+import org.springframework.security.web.savedrequest.SavedRequest;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.ServletException;
@@ -23,6 +28,8 @@ public class OAuth2AuthenticationSuccessHandler implements AuthenticationSuccess
 
     private final AuthTokenProvider authTokenProvider;
     private final UserRepository userRepository;
+    private RequestCache requestCache = new HttpSessionRequestCache();
+    private RedirectStrategy redirectStratgy = new DefaultRedirectStrategy();
 
 
     @Override
@@ -35,8 +42,29 @@ public class OAuth2AuthenticationSuccessHandler implements AuthenticationSuccess
         log.info("Oatuh 로그인후 토큰 생성  : {}",token);
 
         writeTokenResponse(response,token);
+        resultRedirectStrategy(request, response, authentication);
+
+
+
 
     }
+
+    protected void resultRedirectStrategy(HttpServletRequest request, HttpServletResponse response,
+                                          Authentication authentication) throws IOException, ServletException {
+
+        SavedRequest savedRequest = requestCache.getRequest(request, response);
+
+        if(savedRequest!=null) {
+            String targetUrl = savedRequest.getRedirectUrl();
+            redirectStratgy.sendRedirect(request, response, targetUrl);
+        } else {
+            redirectStratgy.sendRedirect(request, response, "/");
+        }
+
+    }
+
+
+
 
     private void writeTokenResponse(HttpServletResponse response, String token) throws IOException {
 
@@ -44,9 +72,9 @@ public class OAuth2AuthenticationSuccessHandler implements AuthenticationSuccess
         response.addHeader("Authorization",token);
         response.setContentType("application/json;charset=UTF-8");
 
-        var writer = response.getWriter();
-        writer.println(token);
-        writer.flush();
+//        var writer = response.getWriter();
+//        writer.println(token);
+//        writer.flush();
     }
 
     private UserDto toDto(OAuth2User oAuth2User) {
