@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 
 @RestController
@@ -22,22 +23,24 @@ public class UserController {
 
 
 
-//    //회원가입
-//    @PostMapping("/join")
-//    public Long join(@RequestBody Map<String, String>user){
-//
-//    }
+    //일반 회원가입
+    @PostMapping("/join")
+    public Long join(@RequestBody Map<String, String>user){
+
+    }
 
 
     // 로그인
     @PostMapping("/login")
-    public String login(@RequestBody Map<String, String> user) {
+    public void login(@RequestBody Map<String, String> user, HttpServletResponse response) {
         User member = userRepository.findByEmail(user.get("email"))
                 .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 E-MAIL 입니다."));
         if (!passwordEncoder.matches(user.get("password"), member.getPassword())) {
             throw new IllegalArgumentException("잘못된 비밀번호입니다.");
         }
-        return jwtTokenProvider.createToken(member.getUsername(), member.getRole());
+        String token = jwtTokenProvider.createToken(member.getUsername(), member.getRole());
+        jwtTokenProvider.createCookie(response,token); //쿠키 발급
+
     }
 
 }

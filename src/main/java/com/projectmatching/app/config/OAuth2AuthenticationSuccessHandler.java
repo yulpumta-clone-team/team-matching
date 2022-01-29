@@ -58,7 +58,7 @@ public class OAuth2AuthenticationSuccessHandler implements AuthenticationSuccess
             String targetUrl = savedRequest.getRedirectUrl();
             redirectStratgy.sendRedirect(request, response, targetUrl);
         } else {
-            redirectStratgy.sendRedirect(request, response, "/");
+            redirectStratgy.sendRedirect(request, response, "/callback");
         }
 
     }
