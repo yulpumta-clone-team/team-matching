@@ -5,7 +5,13 @@ spring:
       matching-strategy: ant_path_matcher
   profiles:
     include: oauth,key
-#  datasource:
+
+  datasource:
+    url: jdbc:h2:mem:testdb
+    driver-class-name: org.h2.Driver
+    username: sa
+    pawssword:
+  #  datasource:
 #    url: jdbc:h2:tcp://localhost/~/datajpa
 #    username: sa
 #    password:
@@ -20,6 +26,9 @@ spring:
   h2:
     console:
       enabled: true
+      settings:
+        web-allow-others: true
+      path: /h2-console
 
 
 logging.level:
