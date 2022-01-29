@@ -39,7 +39,7 @@ test {
     useJUnitPlatform()
 }
 
-def reactDir = "$projectDir/src/main/webapp/matching-front"
+def reactDir = "$projectDir/webapp"
 
 sourceSets{
     main{
