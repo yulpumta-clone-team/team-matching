@@ -41,7 +41,7 @@ public class OAuth2AuthenticationSuccessHandler implements AuthenticationSuccess
         String token = authTokenProvider.createToken(user.getName(),Role.GUEST);
         log.info("Oatuh 로그인후 토큰 생성  : {}",token);
 
-        writeTokenResponse(response,token);
+        writeTokenCookie(response,token);
         resultRedirectStrategy(request, response, authentication);
 
 
@@ -72,10 +72,16 @@ public class OAuth2AuthenticationSuccessHandler implements AuthenticationSuccess
         response.addHeader("Authorization",token);
         response.setContentType("application/json;charset=UTF-8");
 
-//        var writer = response.getWriter();
-//        writer.println(token);
-//        writer.flush();
+
     }
+
+    private void writeTokenCookie(HttpServletResponse response, String token){
+
+        authTokenProvider.createCookie(response,token);
+
+    }
+
+
 
     private UserDto toDto(OAuth2User oAuth2User) {
         var attributes = oAuth2User.getAttributes();

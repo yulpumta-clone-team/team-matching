@@ -1,7 +1,5 @@
 package com.projectmatching.app.util;
 
-import com.projectmatching.app.config.resTemplate.ResponeException;
-import com.projectmatching.app.config.resTemplate.ResponseTemplateStatus;
 import com.projectmatching.app.config.secret.Secret;
 import com.projectmatching.app.domain.user.Role;
 import io.jsonwebtoken.Claims;
@@ -10,20 +8,17 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.http.ResponseCookie;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 
-import javax.annotation.PostConstruct;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-
-import java.util.*;
+import javax.servlet.http.HttpServletResponse;
+import java.util.Date;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -84,4 +79,39 @@ public class AuthTokenProvider {
             return false;
         }
     }
+
+    /**
+     * 토큰 쿠키에 저장
+     *
+     */
+    public void createCookie(HttpServletResponse response,String token){
+        ResponseCookie cookie = ResponseCookie.from("Authorization",token)
+                .httpOnly(true)
+                .sameSite("lax")
+                .maxAge(60*60)
+                .path("/")
+                .build();
+
+        response.addHeader("Set-Cookie",cookie.toString());
+
+    }
+
+
+    /**
+     * 쿠키에 있는 토큰 분석
+     */
+
+    public String resolveCookie(HttpServletRequest request){
+        final Cookie[] cookies = request.getCookies();
+        if(cookies == null)return  null;
+        for(Cookie cookie : cookies){
+            if(cookie.getName().equals("Authorization")){
+                return cookie.getValue();
+            }
+        }
+        return null;
+
+    }
+
+
 }
