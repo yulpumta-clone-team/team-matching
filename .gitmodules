@@ -1,6 +1,3 @@
-[submodule "team-matching-front"]
-	path = team-matching-front
-	url = https://github.com/yulpumta-clone-team/team-matching-front.git
-[submodule "src/main/webapp/matching-front"]
-	path = src/main/webapp/matching-front
+[submodule "webapp"]
+	path = webapp
 	url = https://github.com/yulpumta-clone-team/team-matching-front.git

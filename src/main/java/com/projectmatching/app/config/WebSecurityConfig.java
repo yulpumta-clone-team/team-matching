@@ -12,6 +12,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -28,14 +29,21 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http)throws Exception {
+        http.csrf().ignoringAntMatchers("/h2-console/**")
+                .disable();
+
         http.httpBasic().disable();
         http.csrf().disable().
                 cors().configurationSource(corsConfigurationSource())
                 .and()
                     .formLogin().disable()
                     .authorizeRequests()
+                    .antMatchers("/h2-console/**").permitAll()
                     .antMatchers("/login").permitAll()
                     .anyRequest().permitAll()
+                .and()
+                .headers()
+                .frameOptions().sameOrigin() // h2 console을 위해
                 .and()
                 .addFilterBefore(new JwtAuthFilter(authTokenProvider), UsernamePasswordAuthenticationFilter.class)
 //                .antMatchers("/").hasRole(Role.USER.name())
@@ -56,7 +64,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     //패스워드 인코더 설정
     @Bean
-    public BCryptPasswordEncoder bCryptPasswordEncoder(){
+    public PasswordEncoder bCryptPasswordEncoder(){
         return new BCryptPasswordEncoder();
     }
 

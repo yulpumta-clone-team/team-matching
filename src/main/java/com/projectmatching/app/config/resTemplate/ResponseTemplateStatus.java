@@ -22,7 +22,9 @@ public enum ResponseTemplateStatus {
 
      */
     EMPTY_JWT(false,"JWT를 입력해주세요.",2001),
-    INVALID_JWT(false, "유효하지 않은 JWT입니다.",2002);
+    INVALID_JWT(false, "유효하지 않은 JWT입니다.",2002),
+    EMAIL_DUPLICATE(false,"중복된 이메일입니다",2003),
+    NAME_DUPLICATE(false,"중복된 이름입니다.",2004);
 
     private final boolean isSuccess;
     private final int code;

@@ -1,9 +1,10 @@
 package com.projectmatching.app.domain.user;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.projectmatching.app.domain.BaseTimeEntity;
-import lombok.*;
-import org.springframework.lang.Nullable;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -14,6 +15,7 @@ import java.util.Collection;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@Builder
 public class User extends BaseTimeEntity implements UserDetails {
 
 
@@ -69,7 +71,6 @@ public class User extends BaseTimeEntity implements UserDetails {
         this.email = email;
         return this;
     }
-
 
 
     //시큐리티에서는 UserDetails를 이용해 유저정보를 관리함
