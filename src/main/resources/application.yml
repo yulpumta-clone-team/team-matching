@@ -5,7 +5,6 @@ spring:
       matching-strategy: ant_path_matcher
   profiles:
     include: oauth,key
-
   datasource:
     url: jdbc:h2:mem:testdb
     driver-class-name: org.h2.Driver
@@ -37,4 +36,8 @@ logging.level:
 
 
 server:
+  port: 8081
+
+
+env:
   port: 8081

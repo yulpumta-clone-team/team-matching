@@ -1,0 +1,10 @@
+spring:
+  config:
+    activate:
+      on-profile: dev
+
+
+
+#포트 변수
+env:
+  port: 3000

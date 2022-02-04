@@ -28,6 +28,8 @@ public class OAuth2AuthenticationSuccessHandler implements AuthenticationSuccess
 
     private final AuthTokenProvider authTokenProvider;
     private final UserRepository userRepository;
+    private final YAMLConfig yamlConfig;
+
     private RequestCache requestCache = new HttpSessionRequestCache();
     private RedirectStrategy redirectStratgy = new DefaultRedirectStrategy();
 
@@ -58,7 +60,9 @@ public class OAuth2AuthenticationSuccessHandler implements AuthenticationSuccess
             String targetUrl = savedRequest.getRedirectUrl();
             redirectStratgy.sendRedirect(request, response, targetUrl);
         } else {
-            redirectStratgy.sendRedirect(request, response, "/callback");
+
+            String redirectUrl = request.getScheme() + "://" + request.getServerName() + ":"+yamlConfig.getPORT()+ "/callback";
+            redirectStratgy.sendRedirect(request, response, redirectUrl);
         }
 
     }
