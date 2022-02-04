@@ -1,6 +1,8 @@
 package com.projectmatching.app.domain.user.service;
 
+import com.projectmatching.app.domain.user.User;
 import com.projectmatching.app.domain.user.UserRepository;
+import com.projectmatching.app.domain.user.service.userdetail.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -16,8 +18,19 @@ public class CustomUserDetailService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 
-        return userRepository.findByEmail(email)
+        User user = userRepository.findByEmail(email)
                 .orElseThrow(( )-> new UsernameNotFoundException("해당 사용자 찾을 수 없습니다."));
+
+
+        UserDetailsImpl userDetails = UserDetailsImpl.builder()
+                .id(user.getId())
+                .name(user.getName())
+                .role(user.getRole())
+                .oauthId(user.getOauthId())
+                .pwd(user.getPwd())
+                .build();
+
+        return userDetails;
 
     }
 
