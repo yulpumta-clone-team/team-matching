@@ -5,7 +5,6 @@ import com.projectmatching.app.domain.user.User;
 import com.projectmatching.app.domain.user.UserRepository;
 import com.projectmatching.app.domain.user.dto.UserDto;
 import com.projectmatching.app.domain.user.dto.UserLoginDto;
-import com.projectmatching.app.domain.user.dto.UserProfileDto;
 import com.projectmatching.app.domain.user.service.UserService;
 import com.projectmatching.app.util.AuthTokenProvider;
 import lombok.RequiredArgsConstructor;
@@ -13,7 +12,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
@@ -92,16 +94,16 @@ public class UserController {
 
 
 
-    /**
-     * 유저 프로필 최초 생성
-     * @param userProfileDto
-     * @return
-     */
-    @PostMapping("/user/myprofile")
-    public ResponseTemplate<> createUserProfile(@RequestBody UserProfileDto userProfileDto){
-
-
-    }
+//    /**
+//     * 유저 프로필 최초 생성
+//     * @param userProfileDto
+//     * @return
+//     */
+//    @PostMapping("/user/myprofile")
+//    public ResponseTemplate<> createUserProfile(@RequestBody UserProfileDto userProfileDto){
+//
+//
+//    }
 
 
 
