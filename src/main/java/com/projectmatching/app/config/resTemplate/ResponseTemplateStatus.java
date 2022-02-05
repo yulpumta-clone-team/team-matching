@@ -24,7 +24,17 @@ public enum ResponseTemplateStatus {
     EMPTY_JWT(false,"JWT를 입력해주세요.",2001),
     INVALID_JWT(false, "유효하지 않은 JWT입니다.",2002),
     EMAIL_DUPLICATE(false,"중복된 이메일입니다",2003),
-    NAME_DUPLICATE(false,"중복된 이름입니다.",2004);
+    NAME_DUPLICATE(false,"중복된 이름입니다.",2004),
+
+
+    /**
+     * 3000: UserController  회원 가입, 로그인, 탈퇴 관련 오류
+     */
+
+    WITHDRAWAL_USER_ERROR(false,"회원탈퇴 실패",3000),
+    LOGIN_USER_ERROR(false,"로그인에 실패하였습니다",3001);
+
+
 
     private final boolean isSuccess;
     private final int code;

@@ -21,7 +21,6 @@ public class CustomUserDetailService implements UserDetailsService {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(( )-> new UsernameNotFoundException("해당 사용자 찾을 수 없습니다."));
 
-
         UserDetailsImpl userDetails = UserDetailsImpl.builder()
                 .id(user.getId())
                 .name(user.getName())

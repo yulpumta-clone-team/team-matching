@@ -1,12 +1,11 @@
 package com.projectmatching.app.domain.user.controller;
-
-
 import com.projectmatching.app.config.resTemplate.ResponeException;
 import com.projectmatching.app.config.resTemplate.ResponseTemplate;
 import com.projectmatching.app.domain.user.User;
 import com.projectmatching.app.domain.user.UserRepository;
 import com.projectmatching.app.domain.user.dto.UserDto;
 import com.projectmatching.app.domain.user.dto.UserLoginDto;
+import com.projectmatching.app.domain.user.dto.UserProfileDto;
 import com.projectmatching.app.domain.user.service.UserService;
 import com.projectmatching.app.util.AuthTokenProvider;
 import lombok.RequiredArgsConstructor;
@@ -14,13 +13,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.util.List;
+
+import static com.projectmatching.app.config.resTemplate.ResponseTemplateStatus.LOGIN_USER_ERROR;
+import static com.projectmatching.app.config.resTemplate.ResponseTemplateStatus.WITHDRAWAL_USER_ERROR;
 
 @RestController
 @RequiredArgsConstructor
@@ -42,8 +42,7 @@ public class UserController {
             for(ObjectError error : list){
                 log.info("{}",error);
             }
-            return new ResponseTemplate<>("회원가입 에러");
-
+            return new ResponseTemplate<>(LOGIN_USER_ERROR);
         }
 
         userService.join(userDto);
@@ -52,7 +51,9 @@ public class UserController {
     }
 
 
-    // 로그인
+    /**
+     * 로그인
+     */
     @PostMapping("/login")
     public void login(@RequestBody @Valid UserLoginDto user, HttpServletResponse response,BindingResult result) {
 
@@ -74,7 +75,34 @@ public class UserController {
             }
         }
 
+    }
+
+    /**
+     * 회원탈퇴
+     */
+    @DeleteMapping("/user/withdrawal")
+    public ResponseTemplate<String> withDrawal(){
+        try {
+            userService.DeleteUser();
+            return new ResponseTemplate<>("회원탈퇴 성공!");
+        }catch (ResponeException e){
+            return new ResponseTemplate<>(WITHDRAWAL_USER_ERROR);
+        }
+    }
+
+
+
+    /**
+     * 유저 프로필 최초 생성
+     * @param userProfileDto
+     * @return
+     */
+    @PostMapping("/user/myprofile")
+    public ResponseTemplate<> createUserProfile(@RequestBody UserProfileDto userProfileDto){
+
 
     }
+
+
 
 }
