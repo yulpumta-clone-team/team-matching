@@ -49,6 +49,9 @@ public class QUser extends EntityPathBase<User> {
     public final StringPath slogan = createString("slogan");
 
     //inherited
+    public final StringPath status = _super.status;
+
+    //inherited
     public final DateTimePath<java.time.LocalDateTime> updatedAt = _super.updatedAt;
 
     public QUser(String variable) {
