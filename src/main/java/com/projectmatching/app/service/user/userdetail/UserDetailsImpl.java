@@ -1,4 +1,4 @@
-package com.projectmatching.app.domain.user.service.userdetail;
+package com.projectmatching.app.service.user.userdetail;
 
 import com.projectmatching.app.domain.user.Role;
 import lombok.Builder;

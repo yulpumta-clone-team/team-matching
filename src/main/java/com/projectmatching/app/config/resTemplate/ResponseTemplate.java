@@ -2,10 +2,12 @@ package com.projectmatching.app.config.resTemplate;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.projectmatching.app.constant.ResponseTemplateStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-import static com.projectmatching.app.config.resTemplate.ResponseTemplateStatus.SUCCESS;
+
+import static com.projectmatching.app.constant.ResponseTemplateStatus.SUCCESS;
 @Getter
 @AllArgsConstructor
 @JsonPropertyOrder({"isSuccess","code","message","data"})
@@ -15,24 +17,21 @@ public class ResponseTemplate<T> {
     private final String message;
     private final int code; //내부 코드
     private T data;
-    
-    //요청 성공시
-    public ResponseTemplate(T data){
-        this.isSuccess = SUCCESS.isSuccess();
-        this.message = SUCCESS.getMessage();
-        this.code = SUCCESS.getCode();
-        this.data = data;
+
+
+    public static <T> ResponseTemplate<T> valueOf(T data){return of(SUCCESS,data);}
+
+    //데이터 없음
+    public static <T> ResponseTemplate<T> of(ResponseTemplateStatus status){return of(status,null);}
+
+    //데이터 전달
+    public static <T> ResponseTemplate<T> of(ResponseTemplateStatus status, T data){
+        return new ResponseTemplate<>(status.isSuccess(),status.getMessage(),status.getCode(),data);
 
     }
 
+    public static ResponseTemplate<Void> error(ResponseTemplateStatus status){ return of(status);}
 
-    //요청 실패시
-    public ResponseTemplate(ResponseTemplateStatus status){
-        this.isSuccess = status.isSuccess();
-        this.message = status.getMessage();
-        this.code = status.getCode();
-
-    }
 
 
 

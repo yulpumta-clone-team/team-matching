@@ -1,5 +1,6 @@
-package com.projectmatching.app.config;
+package com.projectmatching.app.config.handler;
 
+import com.projectmatching.app.config.YAMLConfig;
 import com.projectmatching.app.domain.user.Role;
 import com.projectmatching.app.domain.user.UserRepository;
 import com.projectmatching.app.domain.user.dto.UserDto;

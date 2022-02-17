@@ -2,8 +2,14 @@ spring:
   config:
     activate:
       on-profile: dev
+  datasource:
+    url: jdbc:h2:mem:testdb
+    driver-class-name: org.h2.Driver
+    username: sa
+    pawssword:
   jackson:
     default-property-inclusion: non_null # null 인경우 필드 생성하지않음
+
 
 
 

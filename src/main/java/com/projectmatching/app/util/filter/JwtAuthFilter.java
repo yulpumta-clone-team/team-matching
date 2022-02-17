@@ -1,5 +1,6 @@
-package com.projectmatching.app.util;
+package com.projectmatching.app.util.filter;
 
+import com.projectmatching.app.util.AuthTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
