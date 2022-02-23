@@ -25,8 +25,7 @@ public enum ResponseTemplateStatus {
      */
     EMPTY_JWT(false,"JWT를 입력해주세요.",2001),
     INVALID_JWT(false, "유효하지 않은 JWT입니다.",2002),
-    EMAIL_DUPLICATE(false,"중복된 이메일입니다",2003),
-    NAME_DUPLICATE(false,"중복된 이름입니다.",2004),
+    BAD_REQUEST(false,"잘못된 요청입니다",2003),
 
 
     /**
@@ -37,7 +36,10 @@ public enum ResponseTemplateStatus {
     LOGIN_USER_ERROR(false,"로그인에 실패하였습니다",3001),
     JOIN_USER_ERROR(false,"회원가입 실패",3002),
     EMAIL_FORM_INVALID(false,"이메일 형식 에러",3003),
-    NAME_SIZE_INVALID(false,"닉네임 형식 에러",3004);
+    NAME_SIZE_INVALID(false,"닉네임 형식 에러",3004),
+    EMAIL_DUPLICATE(false,"중복된 이메일입니다",3005),
+    NAME_DUPLICATE(false,"중복된 이름입니다.",3006),
+    ;
 
 
     private final boolean isSuccess;

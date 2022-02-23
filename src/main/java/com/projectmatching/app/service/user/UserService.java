@@ -3,13 +3,21 @@ package com.projectmatching.app.service.user;
 import com.projectmatching.app.config.resTemplate.ResponeException;
 import com.projectmatching.app.domain.user.QUserRepository;
 import com.projectmatching.app.domain.user.UserRepository;
+import com.projectmatching.app.domain.user.dto.UserDto;
+import com.projectmatching.app.domain.user.dto.UserProfileDto;
+import com.projectmatching.app.exception.CoNectRuntimeException;
 import com.projectmatching.app.service.user.userdetail.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -21,14 +29,31 @@ public class UserService {
     private final QUserRepository qUserRepository;
 
 
+    //유저 조회
+    @Transactional(readOnly = true)
+    public UserDto getUserDetail(Long id){
+        return UserDto.of(qUserRepository.find(id)
+                .orElseThrow(CoNectRuntimeException::new)
+        );
+
+    }
+
+
+    //유저 카드 조회
+    @Transactional(readOnly = true)
+    public List<UserProfileDto> getUserList(PageRequest pageRequest){
+        return qUserRepository.find(pageRequest)
+                .stream().map(UserProfileDto::of)
+                .collect(Collectors.toList());
+    }
+
+
 
     public void DeleteUser() throws ResponeException{
         String userEmail = getAuthUserEmail();
         userRepository.deleteUserByEmail(userEmail);
 
     }
-
-
 
 
 
