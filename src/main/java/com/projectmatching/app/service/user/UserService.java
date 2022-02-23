@@ -12,7 +12,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,12 +23,12 @@ import java.util.stream.Collectors;
 @Slf4j
 public class UserService {
 
-    private final PasswordEncoder passwordEncoder;
+
     private final UserRepository userRepository;
     private final QUserRepository qUserRepository;
 
 
-    //유저 조회
+    //유저 상세 조회
     @Transactional(readOnly = true)
     public UserDto getUserDetail(Long id){
         return UserDto.of(qUserRepository.find(id)
@@ -49,15 +48,12 @@ public class UserService {
 
 
 
+    //유저 삭제
     public void DeleteUser() throws ResponeException{
         String userEmail = getAuthUserEmail();
         userRepository.deleteUserByEmail(userEmail);
 
     }
-
-
-
-
 
 
 

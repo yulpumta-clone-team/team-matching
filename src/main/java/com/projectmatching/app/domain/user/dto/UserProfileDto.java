@@ -1,6 +1,6 @@
 package com.projectmatching.app.domain.user.dto;
 
-import com.projectmatching.app.domain.user.User;
+import com.projectmatching.app.domain.user.entity.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -22,14 +22,22 @@ public class UserProfileDto {
     private String job;
     private String status; //현재 상태 (유저가 수동으로 변경, 상태가 Closed 일 경우 인력시장에서 사라짐)
 
+    private Long commentCnt;
+    private Long likeCnt;
+
 
     public static UserProfileDto createEmpty(){return new UserProfileDto();}
 
     //entity를 dto로
     public static UserProfileDto of(User user){
-        UserProfileDto userDto = createEmpty();
-        BeanUtils.copyProperties(user, userDto);
-        return userDto;
+        UserProfileDto userProfileDto = createEmpty();
+        BeanUtils.copyProperties(user, userProfileDto);
+        /**
+         * Todo
+         * Cnt 정보 set
+         */
+
+        return userProfileDto;
     }
 
     //dto를 entity로

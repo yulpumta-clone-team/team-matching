@@ -2,7 +2,7 @@ package com.projectmatching.app.service.user;
 
 import com.projectmatching.app.config.resTemplate.ResponeException;
 import com.projectmatching.app.constant.ResponseTemplateStatus;
-import com.projectmatching.app.domain.user.User;
+import com.projectmatching.app.domain.user.entity.User;
 import com.projectmatching.app.domain.user.UserRepository;
 import com.projectmatching.app.domain.user.dto.UserDto;
 import lombok.RequiredArgsConstructor;

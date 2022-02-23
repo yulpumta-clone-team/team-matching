@@ -1,5 +1,6 @@
 package com.projectmatching.app.domain.user;
 
+import com.projectmatching.app.domain.user.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

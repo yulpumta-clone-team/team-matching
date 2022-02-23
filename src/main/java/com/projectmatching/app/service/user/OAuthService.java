@@ -1,6 +1,6 @@
 package com.projectmatching.app.service.user;
 
-import com.projectmatching.app.domain.user.User;
+import com.projectmatching.app.domain.user.entity.User;
 import com.projectmatching.app.domain.user.UserProfile;
 import com.projectmatching.app.domain.user.UserRepository;
 import lombok.RequiredArgsConstructor;

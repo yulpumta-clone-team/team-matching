@@ -1,15 +1,21 @@
 package com.projectmatching.app.domain.team.entity;
 
 import com.projectmatching.app.domain.BaseTimeEntity;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.projectmatching.app.domain.comment.entity.TeamComment;
+import com.projectmatching.app.domain.user.entity.UserTeam;
+import lombok.*;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter @Setter
+@ToString
 @Entity
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor
+@Builder
+@Table(name="team")
 public class Team extends BaseTimeEntity {
 
     @Id
@@ -30,6 +36,20 @@ public class Team extends BaseTimeEntity {
 
     @Column(columnDefinition = "TEXT")
     private String content;
+
+
+    @OneToMany
+    @JoinColumn(name = "user_team")
+    private Set<UserTeam> userTeams = new HashSet<>();
+
+    @OneToMany
+    @JoinColumn(name="team_comment")
+    private Set<TeamComment> teamComments = new HashSet<>();
+
+
+    @OneToMany
+    @JoinColumn(name="team_tech")
+    private Set<TeamTech> teamTeches = new HashSet<>();
 
 
 

@@ -2,6 +2,7 @@ package com.projectmatching.app.domain.user;
 
 import static com.querydsl.core.types.PathMetadataFactory.*;
 
+import com.projectmatching.app.domain.user.entity.User;
 import com.querydsl.core.types.dsl.*;
 
 import com.querydsl.core.types.PathMetadata;
