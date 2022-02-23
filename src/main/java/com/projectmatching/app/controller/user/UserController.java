@@ -4,6 +4,7 @@ import com.projectmatching.app.config.resTemplate.ResponseTemplate;
 import com.projectmatching.app.domain.user.UserRepository;
 import com.projectmatching.app.domain.user.dto.UserDto;
 import com.projectmatching.app.service.user.UserService;
+import com.projectmatching.app.service.user.UserSignUpService;
 import com.projectmatching.app.util.AuthTokenProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 
-import static com.projectmatching.app.constant.ResponseTemplateStatus.SUCCESS;
+import static com.projectmatching.app.constant.ResponseTemplateStatus.JOIN_USER_ERROR;
 
 @RestController
 @RequiredArgsConstructor
@@ -28,6 +29,8 @@ public class UserController {
     private final AuthTokenProvider jwtTokenProvider;
     private final UserRepository userRepository;
     private final UserService userService;
+    private final UserSignUpService userSignUpService;
+
 
     /**
      * 일반 회원가입
@@ -40,8 +43,8 @@ public class UserController {
     @PostMapping("/join")
     public ResponseTemplate<Long> join(@RequestBody @Valid UserDto userDto, BindingResult result) throws ResponeException {
 
-        if(result.hasErrors()) return ResponseTemplate.valueOf(userService.join(userDto));
-        return ResponseTemplate.of(SUCCESS);
+        if(result.hasErrors()) return ResponseTemplate.valueOf(userSignUpService.join(userDto));
+        return ResponseTemplate.of(JOIN_USER_ERROR);
 
     }
 

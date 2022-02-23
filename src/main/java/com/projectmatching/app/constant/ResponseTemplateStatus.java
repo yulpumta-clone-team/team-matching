@@ -34,8 +34,10 @@ public enum ResponseTemplateStatus {
      */
 
     WITHDRAWAL_USER_ERROR(false,"회원탈퇴 실패",3000),
-    LOGIN_USER_ERROR(false,"로그인에 실패하였습니다",3001);
-
+    LOGIN_USER_ERROR(false,"로그인에 실패하였습니다",3001),
+    JOIN_USER_ERROR(false,"회원가입 실패",3002),
+    EMAIL_FORM_INVALID(false,"이메일 형식 에러",3003),
+    NAME_SIZE_INVALID(false,"닉네임 형식 에러",3004);
 
 
     private final boolean isSuccess;
