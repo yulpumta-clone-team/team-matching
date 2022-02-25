@@ -1,6 +1,5 @@
 package com.projectmatching.app.service.user;
 
-import com.projectmatching.app.config.resTemplate.ResponeException;
 import com.projectmatching.app.domain.user.QUserRepository;
 import com.projectmatching.app.domain.user.UserRepository;
 import com.projectmatching.app.domain.user.dto.UserDto;
@@ -28,6 +27,7 @@ public class UserService {
     private final QUserRepository qUserRepository;
 
 
+
     //유저 상세 조회
     @Transactional(readOnly = true)
     public UserDto getUserDetail(Long id){
@@ -45,16 +45,6 @@ public class UserService {
                 .stream().map(UserProfileDto::of)
                 .collect(Collectors.toList());
     }
-
-
-
-    //유저 삭제
-    public void DeleteUser() throws ResponeException{
-        String userEmail = getAuthUserEmail();
-        userRepository.deleteUserByEmail(userEmail);
-
-    }
-
 
 
 

@@ -22,8 +22,8 @@ public class UserProfileDto {
     private String job;
     private String status; //현재 상태 (유저가 수동으로 변경, 상태가 Closed 일 경우 인력시장에서 사라짐)
 
-    private Long commentCnt;
-    private Long likeCnt;
+    private int commentCnt;
+    private int likeCnt;
 
 
     public static UserProfileDto createEmpty(){return new UserProfileDto();}
@@ -32,10 +32,10 @@ public class UserProfileDto {
     public static UserProfileDto of(User user){
         UserProfileDto userProfileDto = createEmpty();
         BeanUtils.copyProperties(user, userProfileDto);
-        /**
-         * Todo
-         * Cnt 정보 set
-         */
+
+        userProfileDto.commentCnt = user.getUserComments().size();
+        userProfileDto.likeCnt = user.getUserLikings().size();
+
 
         return userProfileDto;
     }

@@ -9,6 +9,7 @@ import org.springframework.beans.BeanUtils;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
+import java.util.List;
 
 
 @Getter
@@ -34,9 +35,8 @@ public class UserDto {
     private String slogan;
     private String img;
     private String content;//자기소개
-    
+    private List<String> skills;
     private String hope_session; //원하는 작업기간
-
     private String job; //직업
 
 

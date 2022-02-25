@@ -1,5 +1,6 @@
 package com.projectmatching.app.service.user;
 
+import com.projectmatching.app.annotation.Validation;
 import com.projectmatching.app.config.resTemplate.ResponeException;
 import com.projectmatching.app.constant.ResponseTemplateStatus;
 import com.projectmatching.app.domain.user.entity.User;
@@ -21,6 +22,7 @@ public class UserSignUpService {
 
 
     @Transactional
+    @Validation
     public Long join(UserDto userDto) throws ResponeException {
         try {
             checkUserValidation(userDto);
@@ -34,7 +36,7 @@ public class UserSignUpService {
     }
 
 
-    
+
 
     private void checkUserValidation(UserDto userDto)throws ResponeException {
 
