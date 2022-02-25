@@ -3,14 +3,14 @@ spring:
     activate:
       on-profile: dev
   datasource:
-    url: jdbc:h2:mem:testdb
+    url: jdbc:h2:tcp://localhost/~/MPTest
     driver-class-name: org.h2.Driver
     username: sa
     pawssword:
 
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     properties:
       hibernate:
         # show_sql: true
@@ -23,8 +23,6 @@ spring:
       path: /h2-console
   jackson:
     default-property-inclusion: non_null # null 인경우 필드 생성하지않음
-
-
 
 
 #포트 변수

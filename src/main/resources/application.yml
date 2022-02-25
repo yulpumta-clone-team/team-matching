@@ -18,12 +18,7 @@ spring:
       hibernate:
         # show_sql: true
         format_sql: true
-  h2:
-    console:
-      enabled: true
-      settings:
-        web-allow-others: true
-      path: /h2-console
+
   jackson:
     default-property-inclusion: non_null # null 인경우 필드 생성하지않음
 
