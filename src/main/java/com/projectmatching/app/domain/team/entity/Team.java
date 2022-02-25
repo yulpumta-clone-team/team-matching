@@ -6,7 +6,9 @@ import com.projectmatching.app.domain.user.entity.UserTeam;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Getter @Setter
@@ -49,7 +51,7 @@ public class Team extends BaseTimeEntity {
 
     @OneToMany
     @JoinColumn(name="team_tech")
-    private Set<TeamTech> teamTeches = new HashSet<>();
+    private List<TeamTech> teamTeches = new ArrayList<>();
 
 
 

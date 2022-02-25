@@ -3,11 +3,17 @@ package com.projectmatching.app.controller.team;
 
 import com.projectmatching.app.config.resTemplate.ResponeException;
 import com.projectmatching.app.config.resTemplate.ResponseTemplate;
+import com.projectmatching.app.constant.ServiceConstant;
 import com.projectmatching.app.domain.team.dto.TeamRequestDto;
+import com.projectmatching.app.domain.team.dto.TeamResponseDto;
 import com.projectmatching.app.service.team.TeamService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -34,6 +40,18 @@ public class TeamController {
             Long result = teamService.save(requestDto);
             return ResponseTemplate.of(SUCCESS, result);
         }catch(ResponeException e){
+            return ResponseTemplate.of(e.getStatus());
+        }
+    }
+
+    /**
+     * team 카드들 조회
+     */
+    @GetMapping("/team")
+    public ResponseTemplate<Page<TeamResponseDto>> getTeams(@PageableDefault(size=ServiceConstant.PAGING_SIZE) Pageable pageable){
+        try{
+            return ResponseTemplate.of(SUCCESS, teamService.getTeams(pageable));
+        }catch (ResponeException e){
             return ResponseTemplate.of(e.getStatus());
         }
     }

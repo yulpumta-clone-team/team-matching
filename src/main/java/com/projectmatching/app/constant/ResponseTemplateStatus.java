@@ -45,6 +45,7 @@ public enum ResponseTemplateStatus {
      */
     SAVE_TEAM_ERROR(false, "팀 등록 실패", 4000),
     EMPTY_TEAM_NAME(false, "팀 이름을 입력해주세요.", 4001),
+    GET_TEAMS_ERROR(false, "팀 카드들 가져오기 실패", 4002),
     ;
 
 
