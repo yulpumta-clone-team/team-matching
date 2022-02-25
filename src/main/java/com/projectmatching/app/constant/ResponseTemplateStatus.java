@@ -39,6 +39,12 @@ public enum ResponseTemplateStatus {
     NAME_SIZE_INVALID(false,"닉네임 형식 에러",3004),
     EMAIL_DUPLICATE(false,"중복된 이메일입니다",3005),
     NAME_DUPLICATE(false,"중복된 이름입니다.",3006),
+
+    /**
+     * 4000: TeamController 팀 관련 오류
+     */
+    SAVE_TEAM_ERROR(false, "팀 등록 실패", 4000),
+    EMPTY_TEAM_NAME(false, "팀 이름을 입력해주세요.", 4001),
     ;
 
 
