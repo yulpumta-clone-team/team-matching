@@ -29,8 +29,6 @@ public class UserService {
 
 
 
-
-
     //유저 상세 조회
     @Transactional(readOnly = true)
     public UserDto getUserDetail(Long id){

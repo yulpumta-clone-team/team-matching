@@ -18,14 +18,11 @@ public class FormValidationAspect {
      */
     @Around("@annotation(com.projectmatching.app.annotation.Validation)")
     public Object proceed(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
-        try {
-            Arrays.stream(proceedingJoinPoint.getArgs())
-                    .filter(arg -> arg instanceof Validatable)
-                    .map(arg -> (Validatable) arg)
-                    .forEach(Validatable::validate);
-            return proceedingJoinPoint.proceed();
-        }catch (Exception e){
-            throw new RuntimeException(e);
-        }
+        Arrays.stream(proceedingJoinPoint.getArgs())
+                .filter(arg -> arg instanceof Validatable)
+                .map(arg -> (Validatable) arg)
+                .forEach(Validatable::validate);
+        return proceedingJoinPoint.proceed();
+
     }
 }
