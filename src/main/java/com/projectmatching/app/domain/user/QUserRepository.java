@@ -23,16 +23,30 @@ public class QUserRepository {
     /**
      * 유저 로그인
      */
-    public Long login(UserLoginDto userLoginDto){
+    public User login(UserLoginDto userLoginDto){
         return jpaQueryFactory.selectFrom(user)
                 .where(
                         user.email.eq(userLoginDto.getEmail()),
                         user.pwd.eq(userLoginDto.getPwd())
-                ).fetchOne().getId();
+                ).fetchOne();
 
     }
-    
-    
+
+
+    /**
+     * 유저 탈퇴
+     * 완전히 삭제하지는 않고 임시로 상태를 바꾸기
+     */
+
+    public long deleteUser(String email){
+
+       return jpaQueryFactory.update(user)
+               .set(user.status, "NA")
+                .where(
+                        user.email.eq(email)
+                ).execute();
+    }
+
     /**
      * 유저 카드 (리스트) 표시
      */

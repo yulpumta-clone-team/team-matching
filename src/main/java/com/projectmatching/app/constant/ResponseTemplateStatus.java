@@ -39,6 +39,7 @@ public enum ResponseTemplateStatus {
     NAME_SIZE_INVALID(false,"닉네임 형식 에러",3004),
     EMAIL_DUPLICATE(false,"중복된 이메일입니다",3005),
     NAME_DUPLICATE(false,"중복된 이름입니다.",3006),
+    PWD_FORM_INVALID(false,"비밀번호 형식 오류",3007)
     ;
 
 
