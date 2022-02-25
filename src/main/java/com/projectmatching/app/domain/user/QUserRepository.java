@@ -1,5 +1,6 @@
 package com.projectmatching.app.domain.user;
 
+import com.projectmatching.app.domain.user.dto.UserLoginDto;
 import com.projectmatching.app.domain.user.entity.User;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +20,19 @@ public class QUserRepository {
     private final UserRepository userRepository;
 
 
+    /**
+     * 유저 로그인
+     */
+    public Long login(UserLoginDto userLoginDto){
+        return jpaQueryFactory.selectFrom(user)
+                .where(
+                        user.email.eq(userLoginDto.getEmail()),
+                        user.pwd.eq(userLoginDto.getPwd())
+                ).fetchOne().getId();
+
+    }
+    
+    
     /**
      * 유저 카드 (리스트) 표시
      */

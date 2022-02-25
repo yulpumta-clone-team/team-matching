@@ -8,6 +8,6 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-public class ResponeException extends Exception{
+public class ResponeException extends RuntimeException{
     private ResponseTemplateStatus status;
 }
