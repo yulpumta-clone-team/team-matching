@@ -10,7 +10,8 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Optional;
 
-import static com.projectmatching.app.domain.user.QUser.user;
+import static com.projectmatching.app.domain.user.entity.QUser.user;
+
 
 @Repository
 @RequiredArgsConstructor

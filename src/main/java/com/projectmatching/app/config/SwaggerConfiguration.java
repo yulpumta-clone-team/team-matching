@@ -18,12 +18,12 @@ public class SwaggerConfiguration {
         return new Docket(DocumentationType.SWAGGER_2)
                 .useDefaultResponseMessages(false)
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("*****"))
+                .apis(RequestHandlerSelectors.basePackage("com.projectmatching.app.controller"))
                 .paths(PathSelectors.ant("/**/**"))
                 .build()
                 .apiInfo(new ApiInfoBuilder()
                         .title("Co-nect API")
-                        .version("v1")
+                        .version("v2")
                         .build());
     }
 }
