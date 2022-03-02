@@ -15,12 +15,9 @@ public class UserProfile {
     private final String name;
     private final String email;
 
-
     public User toUser() {
         return new User(oauthId, name, email, Role.USER);
     }
-
-
 
 
 }

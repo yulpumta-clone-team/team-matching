@@ -3,20 +3,17 @@ package com.projectmatching.app.controller.user;
 import com.projectmatching.app.config.resTemplate.ResponeException;
 import com.projectmatching.app.config.resTemplate.ResponseTemplate;
 import com.projectmatching.app.domain.common.Paging;
-import com.projectmatching.app.domain.user.UserRepository;
 import com.projectmatching.app.domain.user.dto.UserDto;
 import com.projectmatching.app.domain.user.dto.UserLoginDto;
 import com.projectmatching.app.domain.user.dto.UserProfileDto;
 import com.projectmatching.app.service.user.UserService;
 import com.projectmatching.app.service.user.UserSignInService;
 import com.projectmatching.app.service.user.UserSignUpService;
-import com.projectmatching.app.util.AuthTokenProvider;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Sort;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
@@ -31,11 +28,7 @@ import static com.projectmatching.app.constant.ServiceConstant.PAGING_SIZE;
 @Slf4j
 public class UserController {
 
-    @Deprecated
-    private final PasswordEncoder passwordEncoder;
 
-    private final AuthTokenProvider jwtTokenProvider;
-    private final UserRepository userRepository;
     private final UserService userService;
     private final UserSignUpService userSignUpService;
     private final UserSignInService userSignInService;
