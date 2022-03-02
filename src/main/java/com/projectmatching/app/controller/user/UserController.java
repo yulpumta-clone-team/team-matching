@@ -6,9 +6,10 @@ import com.projectmatching.app.domain.common.Paging;
 import com.projectmatching.app.domain.user.dto.UserDto;
 import com.projectmatching.app.domain.user.dto.UserLoginDto;
 import com.projectmatching.app.domain.user.dto.UserProfileDto;
-import com.projectmatching.app.service.user.UserService;
-import com.projectmatching.app.service.user.UserSignInService;
-import com.projectmatching.app.service.user.UserSignUpService;
+import com.projectmatching.app.service.user.UserServiceImpl;
+import com.projectmatching.app.service.user.UserSignInServiceImpl;
+import com.projectmatching.app.service.user.UserSignUpServiceImpl;
+import com.projectmatching.app.service.user.userdetail.UserDetailService;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -29,10 +30,10 @@ import static com.projectmatching.app.constant.ServiceConstant.PAGING_SIZE;
 public class UserController {
 
 
-    private final UserService userService;
-    private final UserSignUpService userSignUpService;
-    private final UserSignInService userSignInService;
-
+    private final UserServiceImpl userService;
+    private final UserSignUpServiceImpl userSignUpService;
+    private final UserSignInServiceImpl userSignInService;
+    private final UserDetailService userDetailService;
 
     /**
      * 일반 회원가입
@@ -63,7 +64,7 @@ public class UserController {
     @ApiOperation(value = "회원 탈퇴, 해당 유저의 Status 칼럼을 NA(Not Avaliable)로 바꿈")
     @DeleteMapping("/withdrawal")
     public ResponseTemplate<String> withDrawal(){
-        userSignInService.userDelete(userService.getAuthUserEmail());
+        userSignInService.userDelete(userDetailService.getAuthUserEmail());
         return ResponseTemplate.of(SUCCESS);
 
     }
