@@ -51,7 +51,7 @@ public class Team extends BaseTimeEntity {
 
     @OneToMany
     @JoinColumn(name="team_tech")
-    private List<TeamTech> teamTeches = new ArrayList<>();
+    private Set<TeamTech> teamTeches = new HashSet<>();
 
 
 

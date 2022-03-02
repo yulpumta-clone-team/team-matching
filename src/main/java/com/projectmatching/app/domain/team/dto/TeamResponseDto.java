@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -17,6 +18,6 @@ public class TeamResponseDto {
     private String session;
     private String img;
     private Long read;
-    private List<TeamTech> techStackId;
+    private Set<TeamTech> techStackId;
 
 }
