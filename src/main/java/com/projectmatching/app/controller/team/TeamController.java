@@ -7,6 +7,7 @@ import com.projectmatching.app.constant.ServiceConstant;
 import com.projectmatching.app.domain.team.dto.TeamRequestDto;
 import com.projectmatching.app.domain.team.dto.TeamResponseDto;
 import com.projectmatching.app.service.team.TeamService;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -32,6 +33,7 @@ public class TeamController {
      *
      * team 생성
      */
+    @ApiOperation(value = "team 생성 API", notes = "team을 생성합니다.")
     @PostMapping("/team")
     public ResponseTemplate<Long> save(@RequestBody TeamRequestDto requestDto){
         if(requestDto.getName()==null) return ResponseTemplate.of(EMPTY_TEAM_NAME);
@@ -47,6 +49,7 @@ public class TeamController {
     /**
      * team 카드들 조회
      */
+    @ApiOperation(value = "team 카드 조회 API", notes = "팀 리스트를 조회합니다.")
     @GetMapping("/team")
     public ResponseTemplate<Page<TeamResponseDto>> getTeams(@PageableDefault(size=ServiceConstant.PAGING_SIZE) Pageable pageable){
         try{
