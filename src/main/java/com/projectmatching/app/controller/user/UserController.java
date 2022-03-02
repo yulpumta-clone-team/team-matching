@@ -9,7 +9,6 @@ import com.projectmatching.app.domain.user.dto.UserProfileDto;
 import com.projectmatching.app.service.user.UserServiceImpl;
 import com.projectmatching.app.service.user.UserSignInServiceImpl;
 import com.projectmatching.app.service.user.UserSignUpServiceImpl;
-import com.projectmatching.app.service.user.userdetail.UserDetailService;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -33,7 +32,7 @@ public class UserController {
     private final UserServiceImpl userService;
     private final UserSignUpServiceImpl userSignUpService;
     private final UserSignInServiceImpl userSignInService;
-    private final UserDetailService userDetailService;
+
 
     /**
      * 일반 회원가입
@@ -64,7 +63,7 @@ public class UserController {
     @ApiOperation(value = "회원 탈퇴, 해당 유저의 Status 칼럼을 NA(Not Avaliable)로 바꿈")
     @DeleteMapping("/withdrawal")
     public ResponseTemplate<String> withDrawal(){
-        userSignInService.userDelete(userDetailService.getAuthUserEmail());
+        userSignInService.userDelete(userService.getAuthUserEmail());
         return ResponseTemplate.of(SUCCESS);
 
     }
@@ -82,16 +81,31 @@ public class UserController {
     }
 
 
-//    /**
-//     * 유저 프로필 최초 생성
-//     * @param userProfileDto
-//     * @return
-//     */
-//    @PostMapping("/user/myprofile")
-//    public ResponseTemplate<> createUserProfile(@RequestBody UserProfileDto userProfileDto){
-//
-//
-//    }
+    /**
+     * 특정 유저 카드 조회
+     */
+
+
+    @ApiOperation(value = "특정 유저 상세 조회")
+    @ApiImplicitParam(name = "id",required = true,value = "유저 id")
+    @GetMapping("/{id}")
+    public ResponseTemplate<UserDto> getUserDetail(@PathVariable(name="id") Long id){
+
+        return ResponseTemplate.valueOf(userService.getUserDetail(id));
+
+    }
+
+    
+    
+    /**
+     * 유저 프로필 수정
+     */
+    @PatchMapping("/profile")
+    public ResponseTemplate<Void> createUserProfile(@RequestBody UserDto userDto){
+        userService.updateUser(userDto);
+        return ResponseTemplate.of(SUCCESS);
+
+    }
 
 
 

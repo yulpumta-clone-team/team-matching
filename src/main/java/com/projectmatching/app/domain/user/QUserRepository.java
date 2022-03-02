@@ -18,7 +18,7 @@ import static com.projectmatching.app.domain.user.entity.QUser.user;
 public class QUserRepository {
 
     private final JPAQueryFactory jpaQueryFactory;
-    private final UserRepository userRepository;
+
 
 
     /**

@@ -42,7 +42,6 @@ public class UserJoinDto implements Validatable {
      */
     @Override
     public void validate() {
-
         if(!REGEX_EMAIL.matcher(this.email).matches()){
             throw new ResponeException(ResponseTemplateStatus.EMAIL_FORM_INVALID);
         }
@@ -50,7 +49,6 @@ public class UserJoinDto implements Validatable {
         if(!REGEX_PWD.matcher(this.pwd).matches()){
             throw new ResponeException(ResponseTemplateStatus.PWD_FORM_INVALID);
         }
-
 
     }
 }

@@ -15,4 +15,7 @@ public interface UserService {
     List<UserProfileDto> getUserList(PageRequest pageRequest);
 
 
+    Long updateUser(UserDto userDto);
+    //유저 카드 생성
+
 }
