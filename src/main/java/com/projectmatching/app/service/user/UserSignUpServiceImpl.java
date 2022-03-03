@@ -9,6 +9,7 @@ import com.projectmatching.app.domain.user.dto.UserDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import static com.projectmatching.app.constant.ServiceConstant.NAME_SIZE_MAX;
@@ -16,7 +17,8 @@ import static com.projectmatching.app.constant.ServiceConstant.REGEX_EMAIL;
 
 @RequiredArgsConstructor
 @Repository
-public class UserSignUpServiceImpl {
+@Service
+public class UserSignUpServiceImpl implements UserSignUpService{
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
 

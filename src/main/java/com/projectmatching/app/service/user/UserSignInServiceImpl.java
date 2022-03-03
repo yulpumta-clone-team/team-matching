@@ -20,7 +20,7 @@ import static com.projectmatching.app.constant.ResponseTemplateStatus.LOGIN_USER
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class UserSignInServiceImpl {
+public class UserSignInServiceImpl implements UserSignInService{
 
     private final UserRepository userRepository;
     private final QUserRepository qUserRepository;

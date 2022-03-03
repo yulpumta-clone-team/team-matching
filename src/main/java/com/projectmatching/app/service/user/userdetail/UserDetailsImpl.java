@@ -14,7 +14,6 @@ import java.util.Collection;
 @Setter
 @NoArgsConstructor
 
-
 //시큐리티에서는 UserDetails를 이용해 유저정보를 관리함
 public class UserDetailsImpl implements UserDetails {
 

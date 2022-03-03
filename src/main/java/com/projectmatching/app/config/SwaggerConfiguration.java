@@ -19,7 +19,7 @@ public class SwaggerConfiguration {
                 .useDefaultResponseMessages(false)
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("com.projectmatching.app.controller"))
-                .paths(PathSelectors.ant("/**/**"))
+                .paths(PathSelectors.ant("/**"))
                 .build()
                 .apiInfo(new ApiInfoBuilder()
                         .title("Co-nect API")
