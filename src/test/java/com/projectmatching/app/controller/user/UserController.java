@@ -3,8 +3,10 @@ package com.projectmatching.app.controller.user;
 import com.projectmatching.app.controller.ControllerTest;
 import com.projectmatching.app.domain.user.QUserRepository;
 import com.projectmatching.app.domain.user.UserRepository;
+import com.projectmatching.app.domain.user.dto.UserJoinDto;
 import com.projectmatching.app.service.user.UserService;
 import com.projectmatching.app.service.user.UserServiceImpl;
+import com.projectmatching.app.util.JsonUtil;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -15,6 +17,9 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.event.annotation.BeforeTestClass;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -45,10 +50,22 @@ public class UserController extends ControllerTest {
     @Test
     void UserJoinTest() throws Exception {
 
+        UserJoinDto userJoinDto = UserJoinDto.builder()
+                .job("학생")
+                .content("나의 각오")
+                .email("hyun123@naver.com")
+                .hope_session("기간 제한 없음")
+                .portfolio("깃허브 링크 등")
+                .img(null)
+                .slogan("나는 할 수 있다")
+                .pwd("12312123123@@askdjgjz")
+                .skills(new ArrayList<>(Arrays.asList("스프링","리액트","리눅스")))
+                .build();
+
         mockMvc.perform(post("/user/join")
                 .contentType(MediaType.APPLICATION_JSON)
                 .headers(HttpHeaders.EMPTY)
-//                .content()
+                .content(JsonUtil.asJson(userJoinDto))
                 )
                 .andDo(print())
                 .andExpect(status().is(HttpStatus.OK.value()))
