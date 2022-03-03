@@ -6,9 +6,9 @@ import com.projectmatching.app.domain.common.Paging;
 import com.projectmatching.app.domain.user.dto.UserDto;
 import com.projectmatching.app.domain.user.dto.UserLoginDto;
 import com.projectmatching.app.domain.user.dto.UserProfileDto;
-import com.projectmatching.app.service.user.UserServiceImpl;
-import com.projectmatching.app.service.user.UserSignInServiceImpl;
-import com.projectmatching.app.service.user.UserSignUpServiceImpl;
+import com.projectmatching.app.service.user.UserService;
+import com.projectmatching.app.service.user.UserSignInService;
+import com.projectmatching.app.service.user.UserSignUpService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
@@ -30,9 +30,9 @@ import static com.projectmatching.app.constant.ServiceConstant.PAGING_SIZE;
 @Api(tags = "유저 컨트롤러")
 public class UserController {
 
-    private final UserServiceImpl userService;
-    private final UserSignUpServiceImpl userSignUpService;
-    private final UserSignInServiceImpl userSignInService;
+    private final UserService userService;
+    private final UserSignUpService userSignUpService;
+    private final UserSignInService userSignInService;
 
     /**
      * 일반 회원가입
