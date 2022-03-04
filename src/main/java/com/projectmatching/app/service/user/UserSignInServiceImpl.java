@@ -4,6 +4,7 @@ import com.projectmatching.app.annotation.Validation;
 import com.projectmatching.app.config.resTemplate.ResponeException;
 import com.projectmatching.app.domain.user.QUserRepository;
 import com.projectmatching.app.domain.user.UserRepository;
+import com.projectmatching.app.domain.user.dto.UserDto;
 import com.projectmatching.app.domain.user.dto.UserLoginDto;
 import com.projectmatching.app.domain.user.entity.User;
 import com.projectmatching.app.util.AuthTokenProvider;
@@ -35,11 +36,17 @@ public class UserSignInServiceImpl implements UserSignInService{
      */
     @Transactional(readOnly = true)
     @Validation
-    public Long userLogin(UserLoginDto userLoginDto, HttpServletResponse response){
+    public UserDto userLogin(UserLoginDto userLoginDto, HttpServletResponse response){
         try {
             Optional<User> user = Optional.of(qUserRepository.login(userLoginDto));
-            user.ifPresent(ret->jwtTokenProvider.createCookie(response, jwtTokenProvider.createToken(ret)));
-            return user.get().getId();
+            user.ifPresent(u->{
+                jwtTokenProvider.createCookie(response, jwtTokenProvider.createToken(u));
+            });
+
+            //로그인 성공시 유저 이미지와 이름 아이디를 반환
+            User u = user.get();
+            UserDto ret = UserDto.builder().img(u.getImg()).name(u.getName()).id(u.getId()).build();
+            return ret;
         }catch (NullPointerException e){
             throw new ResponeException(LOGIN_USER_ERROR);
         }

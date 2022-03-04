@@ -42,11 +42,11 @@ public class UserServiceImpl implements UserService {
         String userEmail = this.getAuthUserEmail();
         UserDto DBUser =  Optional.ofNullable(userRepository.findByEmail(userEmail))
               .map(u -> UserDto.of(u.get())).orElse(UserDto.createEmpty());
+
         BeanUtils.copyProperties(NewUserDto,DBUser);
-
        return userRepository.save(DBUser.asEntity()).getId();
-
     }
+
     @Transactional(readOnly = true)
     @Override
     public List<UserProfileDto> getUserList(PageRequest pageRequest){

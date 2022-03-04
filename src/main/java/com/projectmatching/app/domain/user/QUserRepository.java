@@ -20,7 +20,6 @@ public class QUserRepository {
     private final JPAQueryFactory jpaQueryFactory;
 
 
-
     /**
      * 유저 로그인
      */

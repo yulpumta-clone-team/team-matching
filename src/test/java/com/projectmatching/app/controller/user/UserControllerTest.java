@@ -50,7 +50,7 @@ public class UserControllerTest extends ControllerTest {
     @BeforeTestClass
     public void setup(){
         MockitoAnnotations.openMocks(this);
-        userService = new UserServiceImpl(qUserRepository);
+        userService = new UserServiceImpl(qUserRepository,userRepository);
 
     }
 
