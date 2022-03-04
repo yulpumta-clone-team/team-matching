@@ -30,8 +30,6 @@ public class TeamComment extends BaseTimeEntity {
 
     private String content;
 
-
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="team_id")
     private Team team;

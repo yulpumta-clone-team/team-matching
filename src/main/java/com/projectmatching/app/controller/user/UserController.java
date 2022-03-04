@@ -3,20 +3,18 @@ package com.projectmatching.app.controller.user;
 import com.projectmatching.app.config.resTemplate.ResponeException;
 import com.projectmatching.app.config.resTemplate.ResponseTemplate;
 import com.projectmatching.app.domain.common.Paging;
-import com.projectmatching.app.domain.user.UserRepository;
 import com.projectmatching.app.domain.user.dto.UserDto;
 import com.projectmatching.app.domain.user.dto.UserLoginDto;
 import com.projectmatching.app.domain.user.dto.UserProfileDto;
 import com.projectmatching.app.service.user.UserService;
 import com.projectmatching.app.service.user.UserSignInService;
 import com.projectmatching.app.service.user.UserSignUpService;
-import com.projectmatching.app.util.AuthTokenProvider;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Sort;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
@@ -27,19 +25,14 @@ import static com.projectmatching.app.constant.ServiceConstant.PAGING_SIZE;
 
 @RestController
 @RequestMapping("/user")
-@RequiredArgsConstructor
 @Slf4j
+@RequiredArgsConstructor
+@Api(tags = "유저 컨트롤러")
 public class UserController {
 
-    @Deprecated
-    private final PasswordEncoder passwordEncoder;
-
-    private final AuthTokenProvider jwtTokenProvider;
-    private final UserRepository userRepository;
     private final UserService userService;
     private final UserSignUpService userSignUpService;
     private final UserSignInService userSignInService;
-
 
     /**
      * 일반 회원가입
@@ -80,24 +73,37 @@ public class UserController {
      * 유저 카드(리스트) 조회
      */
     @ApiOperation(value = "유저 리스트(카드) 조회")
-    @ApiImplicitParam(name="lastIdx", required = true, value = "마지막 페이지 기준으로 10개씩 유저 리스트를 보내줌")
-    @GetMapping("")
+    @ApiImplicitParam(name="lastPage", required = true, value = "마지막 페이지 기준으로 10개씩 유저 리스트를 보내줌")
+    @GetMapping
     public ResponseTemplate<List<UserProfileDto>> getUserList(@RequestParam(name="lastPage") int lastPage){
         Paging paging = new Paging(lastPage,PAGING_SIZE, Sort.by("created_at").descending());
         return ResponseTemplate.valueOf(userService.getUserList(paging));
     }
 
 
-//    /**
-//     * 유저 프로필 최초 생성
-//     * @param userProfileDto
-//     * @return
-//     */
-//    @PostMapping("/user/myprofile")
-//    public ResponseTemplate<> createUserProfile(@RequestBody UserProfileDto userProfileDto){
-//
-//
-//    }
+    /**
+     * 특정 유저 카드 조회
+     */
+    @ApiOperation(value = "특정 유저 상세 조회")
+    @ApiImplicitParam(name = "id",required = true,value = "유저 id")
+    @GetMapping("/{id}")
+    public ResponseTemplate<UserDto> getUserDetail(@PathVariable(name="id") Long id){
+
+        return ResponseTemplate.valueOf(userService.getUserDetail(id));
+
+    }
+
+
+
+    /**
+     * 유저 프로필 수정
+     */
+    @PatchMapping("/profile")
+    public ResponseTemplate<Void> createUserProfile(@RequestBody UserDto userDto){
+        userService.updateUser(userDto);
+        return ResponseTemplate.of(SUCCESS);
+
+    }
 
 
 

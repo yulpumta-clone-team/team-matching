@@ -21,6 +21,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Map;
 
 @Component
 @Slf4j
@@ -89,7 +90,7 @@ public class OAuth2AuthenticationSuccessHandler implements AuthenticationSuccess
 
 
     private UserDto toDto(OAuth2User oAuth2User) {
-        var attributes = oAuth2User.getAttributes();
+       Map<String,Object> attributes = oAuth2User.getAttributes();
         return UserDto.builder()
                 .email((String)attributes.get("email"))
                 .name((String)attributes.get("name")).build();
