@@ -20,7 +20,6 @@ import java.util.Set;
 @Table(name="user")
 public class User extends BaseTimeEntity  {
 
-
     @Id
     @GeneratedValue
     private Long id;

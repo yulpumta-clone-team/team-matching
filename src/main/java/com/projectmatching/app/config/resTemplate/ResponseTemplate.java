@@ -13,9 +13,9 @@ import static com.projectmatching.app.constant.ResponseTemplateStatus.SUCCESS;
 @JsonPropertyOrder({"isSuccess","code","message","data"})
 public class ResponseTemplate<T> {
     @JsonProperty("isSuccess")
-    private final Boolean isSuccess;
-    private final String message;
-    private final int code; //내부 코드
+    private Boolean isSuccess;
+    private String message;
+    private int code; //내부 코드
     private T data;
 
 
