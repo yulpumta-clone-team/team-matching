@@ -2,6 +2,7 @@ package com.projectmatching.app.domain.team.entity;
 
 import com.projectmatching.app.domain.BaseTimeEntity;
 import com.projectmatching.app.domain.comment.entity.TeamComment;
+import com.projectmatching.app.domain.liking.entity.TeamLiking;
 import com.projectmatching.app.domain.user.entity.UserTeam;
 import lombok.*;
 
@@ -54,6 +55,8 @@ public class Team extends BaseTimeEntity {
     private Set<TeamTech> teamTeches = new HashSet<>();
 
 
-
+    @OneToMany
+    @JoinColumn(name="team_liking")
+    private Set<TeamLiking> teamLikings = new HashSet<>();
 
 }
