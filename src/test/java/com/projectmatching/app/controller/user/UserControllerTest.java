@@ -1,6 +1,5 @@
 package com.projectmatching.app.controller.user;
 
-import com.projectmatching.app.config.resTemplate.ResponeException;
 import com.projectmatching.app.controller.ControllerTest;
 import com.projectmatching.app.domain.user.QUserRepository;
 import com.projectmatching.app.domain.user.UserRepository;
@@ -25,7 +24,6 @@ import org.springframework.test.context.event.annotation.BeforeTestClass;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -114,10 +112,10 @@ public class UserControllerTest extends ControllerTest {
                 .headers(HttpHeaders.EMPTY)
                 .content(JsonUtil.asJson(userJoinDto)))
                 .andDo(print())
-                .andExpect(status().is(HttpStatus.INTERNAL_SERVER_ERROR.value()))
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("code").value("3007"))
-                .andExpect(result -> assertTrue(result.getResolvedException().getClass().isAssignableFrom(ResponeException.class)));
+                .andExpect(jsonPath("isSuccess").value("false"))
+                .andExpect(jsonPath("message").value("비밀번호 형식 오류"));
 
 
     }

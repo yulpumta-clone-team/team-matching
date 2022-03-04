@@ -39,7 +39,7 @@ public class UserDto {
     public static UserDto createEmpty() { return new UserDto();}
 
     //entity를 dto로
-    public static UserDto of(User user ){
+    public static UserDto of(User user){
         UserDto userDto = createEmpty();
         BeanUtils.copyProperties(user, userDto);
         return userDto;
