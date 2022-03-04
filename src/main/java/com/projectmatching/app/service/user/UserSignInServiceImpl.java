@@ -4,9 +4,8 @@ import com.projectmatching.app.annotation.Validation;
 import com.projectmatching.app.config.resTemplate.ResponeException;
 import com.projectmatching.app.domain.user.QUserRepository;
 import com.projectmatching.app.domain.user.UserRepository;
-import com.projectmatching.app.domain.user.dto.UserDto;
 import com.projectmatching.app.domain.user.dto.UserLoginDto;
-import com.projectmatching.app.domain.user.entity.User;
+import com.projectmatching.app.domain.user.dto.UserLoginResDto;
 import com.projectmatching.app.util.AuthTokenProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,25 +27,23 @@ public class UserSignInServiceImpl implements UserSignInService{
     private final AuthTokenProvider jwtTokenProvider;
 
     //유저 로그인
-
     /**
      * 해당 유저 존재하면
      * 토큰을 만들어 헤더에 저장하고
-     * 유저의 id값 반환
+     * 유저 정보와
+     * 최초 로그인인지 확인 하여 전달
+     *
      */
     @Transactional(readOnly = true)
     @Validation
-    public UserDto userLogin(UserLoginDto userLoginDto, HttpServletResponse response){
+    public UserLoginResDto userLogin(UserLoginDto userLoginDto, HttpServletResponse response){
         try {
-            Optional<User> user = Optional.of(qUserRepository.login(userLoginDto));
-            user.ifPresent(u->{
-                jwtTokenProvider.createCookie(response, jwtTokenProvider.createToken(u));
-            });
-
-            //로그인 성공시 유저 이미지와 이름 아이디를 반환
-            User u = user.get();
-            UserDto ret = UserDto.builder().img(u.getImg()).name(u.getName()).id(u.getId()).build();
-            return ret;
+            //로그인 성공시 유저 이미지와 이름 아이디를 반환, 최초 로그인인지도 체크하여 반환
+            UserLoginResDto userLoginResDto = Optional.ofNullable(qUserRepository.login(userLoginDto))
+                    .map(UserLoginResDto::toUserLoginDto)
+                    .orElseThrow(NullPointerException::new);
+            jwtTokenProvider.createCookie(response, jwtTokenProvider.createToken(userLoginResDto)); //쿠키 생성
+            return userLoginResDto;
         }catch (NullPointerException e){
             throw new ResponeException(LOGIN_USER_ERROR);
         }
@@ -57,5 +54,10 @@ public class UserSignInServiceImpl implements UserSignInService{
         qUserRepository.deleteUser(userEamil);
         log.info("유저 삭제됨 user email = {}",userEamil);
     }
+
+
+
+
+
 
 }
