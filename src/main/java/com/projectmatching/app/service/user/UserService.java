@@ -18,10 +18,8 @@ public interface UserService {
     //유저 카드 조회
     List<UserProfileDto> getUserList(PageRequest pageRequest);
 
-
+    //유저 업데이트
     Long updateUser(UserDto userDto);
-    //유저 카드 생성
-
 
 
 

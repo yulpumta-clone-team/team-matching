@@ -1,6 +1,7 @@
 package com.projectmatching.app.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.projectmatching.app.DemoApplication;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -10,7 +11,7 @@ import org.springframework.web.context.WebApplicationContext;
 
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
-@SpringBootTest
+@SpringBootTest(classes = DemoApplication.class)
 @AutoConfigureMockMvc
 public abstract class ControllerTest {
     @Autowired
@@ -25,7 +26,8 @@ public abstract class ControllerTest {
     @BeforeEach
     void setUp() {
         mockMvc = webAppContextSetup(webApplicationContext).addFilter(((request, response, chain) -> {
-            response.setCharacterEncoding("UTF-8");
+            request.setCharacterEncoding("utf-8");
+            response.setCharacterEncoding("utf-8");
             chain.doFilter(request, response);
         })).build();
     }

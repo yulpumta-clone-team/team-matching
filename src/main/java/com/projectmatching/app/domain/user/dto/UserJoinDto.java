@@ -4,7 +4,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.projectmatching.app.config.resTemplate.ResponeException;
 import com.projectmatching.app.constant.ResponseTemplateStatus;
 import com.projectmatching.app.domain.Validatable;
+import com.projectmatching.app.domain.user.entity.User;
 import lombok.*;
+import org.springframework.beans.BeanUtils;
 
 import java.util.List;
 
@@ -34,6 +36,23 @@ public class UserJoinDto implements Validatable {
     private String hope_session; //원하는 작업기간
     private String job; //직업
 
+    public static UserJoinDto createEmpty() { return new UserJoinDto();}
+
+    //dto를 entity로
+    public User asEntity(){
+        User user = new User();
+        BeanUtils.copyProperties(this,user);
+        return user;
+
+    }
+
+
+    //entity를 dto로
+    public static UserJoinDto of(User user ){
+        UserJoinDto userJoinDto = createEmpty();
+        BeanUtils.copyProperties(user, userJoinDto);
+        return userJoinDto;
+    }
 
     /**
      * 회원가입 유저 Validation 체크

@@ -1,10 +1,10 @@
 package com.projectmatching.app.service.user;
 
-import com.projectmatching.app.domain.user.dto.UserDto;
+import com.projectmatching.app.domain.user.dto.UserJoinDto;
 
 
 public interface UserSignUpService {
 
-    Long join(UserDto userDto);
+    Long join(UserJoinDto userJoinDto);
 
 }

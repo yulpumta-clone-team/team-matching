@@ -3,10 +3,11 @@ package com.projectmatching.app.service.user;
 import com.projectmatching.app.annotation.Validation;
 import com.projectmatching.app.config.resTemplate.ResponeException;
 import com.projectmatching.app.constant.ResponseTemplateStatus;
-import com.projectmatching.app.domain.user.entity.User;
 import com.projectmatching.app.domain.user.UserRepository;
-import com.projectmatching.app.domain.user.dto.UserDto;
+import com.projectmatching.app.domain.user.dto.UserJoinDto;
+import com.projectmatching.app.domain.user.entity.User;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
@@ -18,29 +19,30 @@ import static com.projectmatching.app.constant.ServiceConstant.REGEX_EMAIL;
 @RequiredArgsConstructor
 @Repository
 @Service
+@Slf4j
 public class UserSignUpServiceImpl implements UserSignUpService{
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
 
-
     @Transactional
     @Validation
-    public Long join(UserDto userDto) throws ResponeException {
+    @Override
+    public Long join(UserJoinDto userJoinDto) {
         try {
-            checkUserValidation(userDto);
-            userDto.setPwd(passwordEncoder.encode(userDto.getPwd())); //비밀번호 암호화
-            User user = userDto.asEntity();
+            checkUserValidation(userJoinDto);
+            userJoinDto.setPwd(passwordEncoder.encode(userJoinDto.getPwd())); //비밀번호 암호화
+            User user = userJoinDto.asEntity();
             return userRepository.save(user).getId();
         }catch (ResponeException e){
-            throw e;
+            throw  e;
         }
-
     }
 
 
 
 
-    private void checkUserValidation(UserDto userDto)throws ResponeException {
+
+    private void checkUserValidation(UserJoinDto userDto)throws ResponeException {
 
         //형식 체크
         validateEmail(userDto.getEmail());

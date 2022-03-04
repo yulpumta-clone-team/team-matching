@@ -4,6 +4,7 @@ import com.projectmatching.app.config.resTemplate.ResponeException;
 import com.projectmatching.app.config.resTemplate.ResponseTemplate;
 import com.projectmatching.app.domain.common.Paging;
 import com.projectmatching.app.domain.user.dto.UserDto;
+import com.projectmatching.app.domain.user.dto.UserJoinDto;
 import com.projectmatching.app.domain.user.dto.UserLoginDto;
 import com.projectmatching.app.domain.user.dto.UserProfileDto;
 import com.projectmatching.app.service.user.UserService;
@@ -40,10 +41,13 @@ public class UserController {
      */
     @ApiOperation(value = "일반 회원가입, 성공시 유저 id 반환됨 ")
     @PostMapping("/join")
-    public ResponseTemplate<Long> join(@RequestBody UserDto userDto) throws ResponeException {
+    public ResponseTemplate<Long> join(@RequestBody UserJoinDto userJoinDto) throws ResponeException {
 
-         return ResponseTemplate.valueOf(userSignUpService.join(userDto));
-
+        try {
+            return ResponseTemplate.valueOf(userSignUpService.join(userJoinDto));
+        }catch (ResponeException e){
+            return ResponseTemplate.of(e.getStatus());
+        }
     }
 
     /**
