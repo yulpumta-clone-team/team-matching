@@ -9,7 +9,7 @@ import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Repository;
 
@@ -20,6 +20,7 @@ import java.util.stream.Collectors;
 
 import static com.projectmatching.app.domain.team.entity.QTeam.team;
 import static com.projectmatching.app.domain.team.entity.QTeamTech.teamTech;
+import static com.projectmatching.app.domain.user.entity.QUser.user;
 import static com.querydsl.core.group.GroupBy.groupBy;
 import static com.querydsl.core.group.GroupBy.list;
 
@@ -31,24 +32,10 @@ public class TeamRepositoryImpl implements TeamRepositoryCustom{
 
 
     @Override
-    public Page<TeamResponseDto> getTeams(Pageable pageable) {
-        List<Team> teams = queryFactory
-                .selectFrom(team)
-                .leftJoin(team.teamTeches, teamTech).fetchJoin()
-                .orderBy(team.team_id.desc())
-                .offset(pageable.getOffset())
-                .limit(pageable.getPageSize())
+    public List<Team> getTeams(PageRequest pageRequest) {
+        return queryFactory.selectFrom(team)
+                .offset(pageRequest.getOffset())
+                .limit(pageRequest.getPageSize())
                 .fetch();
-
-        JPAQuery<Team> countQuery = queryFactory
-                .select(team)
-                .from(team)
-                .leftJoin(team.teamTeches, teamTech).fetchJoin();
-
-        List<TeamResponseDto> content = teams.stream()
-                .map(t -> new TeamResponseDto(t.getName(), t.getSession(), t.getImg(), t.getRead(), t.getTeamTeches()))
-                .collect(Collectors.toList());
-
-        return PageableExecutionUtils.getPage(content, pageable, countQuery::fetchCount);
     }
 }
