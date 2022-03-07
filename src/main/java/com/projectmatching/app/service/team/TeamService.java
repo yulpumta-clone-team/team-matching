@@ -9,7 +9,11 @@ import com.projectmatching.app.domain.team.repository.TeamRepository;
 import com.projectmatching.app.domain.team.repository.TeamTechRepository;
 import com.projectmatching.app.domain.techStack.TechStackRepository;
 import com.projectmatching.app.domain.techStack.entity.TechStack;
+import com.projectmatching.app.domain.user.UserRepository;
+import com.projectmatching.app.domain.user.UserTeamRepository;
 import com.projectmatching.app.domain.user.dto.UserProfileDto;
+import com.projectmatching.app.domain.user.entity.User;
+import com.projectmatching.app.domain.user.entity.UserTeam;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -31,8 +35,11 @@ public class TeamService {
     private final TeamRepository teamRepository;
     private final TechStackRepository techStackRepository;
     private final TeamTechRepository teamTechRepository;
+    private final UserRepository userRepository;
+    private final UserTeamRepository userTeamRepository;
 
-    public Long save(TeamRequestDto requestDto) throws ResponeException {
+    public Long save(TeamRequestDto requestDto, String email) throws ResponeException {
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new ResponeException(NOT_EXIST_USER));
         try {
             Team team = Team.builder()
                     .name(requestDto.getT_name())
@@ -45,13 +52,6 @@ public class TeamService {
             Long teamId = teamRepository.save(team).getTeam_id();
 
             List<String> techs = requestDto.getT_techs();
-            if(techs.size() == 0 ){
-                TeamTech teamTech = TeamTech.builder()
-                        .team(team)
-                        .build();
-                teamTechRepository.save(teamTech);
-            }
-
             for (String t : techs){
                 TechStack techStack = techStackRepository.findByName(t).orElseThrow(() -> new ResponeException(SAVE_TEAM_ERROR));
                 TeamTech teamTech = TeamTech.builder()
@@ -61,6 +61,13 @@ public class TeamService {
 
                 teamTechRepository.save(teamTech);
             }
+
+            UserTeam userTeam = UserTeam.builder()
+                    .user(user)
+                    .team(team)
+                    .build();
+
+            userTeamRepository.save(userTeam);
 
             return teamId;
 

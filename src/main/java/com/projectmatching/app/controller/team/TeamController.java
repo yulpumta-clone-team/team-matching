@@ -43,7 +43,8 @@ public class TeamController {
         if(requestDto.getT_name()==null) return ResponseTemplate.of(EMPTY_TEAM_NAME);
 
         try {
-            Long result = teamService.save(requestDto);
+            String email = userService.getAuthUserEmail();
+            Long result = teamService.save(requestDto, email);
             return ResponseTemplate.of(SUCCESS, result);
         }catch(ResponeException e){
             return ResponseTemplate.of(e.getStatus());
