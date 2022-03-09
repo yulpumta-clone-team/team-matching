@@ -5,6 +5,7 @@ import com.projectmatching.app.config.resTemplate.ResponeException;
 import com.projectmatching.app.config.resTemplate.ResponseTemplate;
 import com.projectmatching.app.constant.ServiceConstant;
 import com.projectmatching.app.domain.common.Paging;
+import com.projectmatching.app.domain.team.dto.TeamDetailResponseDto;
 import com.projectmatching.app.domain.team.dto.TeamRequestDto;
 import com.projectmatching.app.domain.team.dto.TeamResponseDto;
 import com.projectmatching.app.service.team.TeamService;
@@ -57,9 +58,9 @@ public class TeamController {
      */
     @ApiOperation(value = "team 카드 조회 API", notes = "팀 리스트를 조회합니다.")
     @GetMapping("/team")
-    public ResponseTemplate<List<TeamResponseDto>> getTeams(@RequestParam(name="Page") int lastPage){
+    public ResponseTemplate<List<TeamResponseDto>> getTeams(@RequestParam(name="page") int page){
         try{
-            Paging paging = new Paging(lastPage,PAGING_SIZE, Sort.by("created_at").descending());
+            Paging paging = new Paging(page,PAGING_SIZE);
             return ResponseTemplate.of(SUCCESS, teamService.getTeams(paging));
         }catch (ResponeException e){
             return ResponseTemplate.of(e.getStatus());
@@ -80,4 +81,19 @@ public class TeamController {
             return ResponseTemplate.of(e.getStatus());
         }
     }
+
+    /**
+     * team 상세페이지 조회
+     */
+    /*public ResponseTemplate<TeamDetailResponseDto> getTeamDetail(@PathVariable Long team_id){
+        try{
+
+        }catch (ResponeException e){
+            return ResponseTemplate.of(e.getStatus());
+        }
+    }*/
+
+    /**
+     * team 수정
+     */
 }

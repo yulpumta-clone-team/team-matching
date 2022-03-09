@@ -36,6 +36,7 @@ public class TeamRepositoryImpl implements TeamRepositoryCustom{
         return queryFactory.selectFrom(team)
                 .offset(pageRequest.getOffset())
                 .limit(pageRequest.getPageSize())
+                .orderBy(team.createdAt.desc())
                 .fetch();
     }
 

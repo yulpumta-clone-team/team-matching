@@ -5,6 +5,7 @@ import com.projectmatching.app.domain.comment.entity.TeamComment;
 import com.projectmatching.app.domain.liking.entity.TeamLiking;
 import com.projectmatching.app.domain.user.entity.UserTeam;
 import lombok.*;
+import org.hibernate.annotations.BatchSize;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -41,22 +42,22 @@ public class Team extends BaseTimeEntity {
     private String content;
 
 
-    @OneToMany
-    @JoinColumn(name = "user_team")
+    @OneToMany(mappedBy = "team", cascade = CascadeType.ALL)
+    @BatchSize(size = 8)
     private Set<UserTeam> userTeams = new HashSet<>();
 
-    @OneToMany
-    @JoinColumn(name="team_comment")
+    @OneToMany(mappedBy = "team", cascade = CascadeType.ALL)
+    @BatchSize(size = 8)
     private Set<TeamComment> teamComments = new HashSet<>();
 
 
-    @OneToMany
-    @JoinColumn(name="team_tech")
+    @OneToMany(mappedBy = "team", cascade = CascadeType.ALL)
+    @BatchSize(size = 8)
     private Set<TeamTech> teamTeches = new HashSet<>();
 
 
-    @OneToMany
-    @JoinColumn(name="team_liking")
+    @OneToMany(mappedBy = "team", cascade = CascadeType.ALL)
+    @BatchSize(size = 8)
     private Set<TeamLiking> teamLikings = new HashSet<>();
 
 }
