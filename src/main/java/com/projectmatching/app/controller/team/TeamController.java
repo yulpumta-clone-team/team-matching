@@ -27,6 +27,7 @@ import static com.projectmatching.app.constant.ServiceConstant.PAGING_SIZE;
 
 
 @Slf4j
+@RequestMapping("/api")
 @RequiredArgsConstructor
 @RestController
 public class TeamController {
@@ -68,15 +69,15 @@ public class TeamController {
     /**
      * team 삭제
      */
-    /**
+    @ApiOperation(value = "team 게시글 삭제 API", notes = "팀 게시글을 삭제합니다.")
     @DeleteMapping("/team")
-    public ResponseTemplate<String> deleteTeam(@PathVariable Long teamIdx){
+    public ResponseTemplate<String> deleteTeam(@PathVariable Long team_id){
         try{
-            teamService.delete(teamIdx);
+            teamService.delete(team_id);
             String result = "팀 삭제에 성공하였습니다.";
             return ResponseTemplate.of(SUCCESS, result);
         }catch (ResponeException e){
             return ResponseTemplate.of(e.getStatus());
         }
-    }*/
+    }
 }

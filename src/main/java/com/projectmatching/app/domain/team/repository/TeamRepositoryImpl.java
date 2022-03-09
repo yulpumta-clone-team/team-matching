@@ -38,4 +38,13 @@ public class TeamRepositoryImpl implements TeamRepositoryCustom{
                 .limit(pageRequest.getPageSize())
                 .fetch();
     }
+
+    @Override
+    public void deleteTeam(Long team_id) {
+        queryFactory.update(team)
+                .set(team.status, "NA")
+                .where(
+                        team.team_id.eq(team_id)
+                ).execute();
+    }
 }

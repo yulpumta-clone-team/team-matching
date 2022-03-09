@@ -84,7 +84,11 @@ public class TeamService {
     }
 
 
-    public void delete(Long teamIdx) throws ResponeException {
-
+    public void delete(Long team_id) throws ResponeException {
+        try{
+            teamRepository.deleteTeam(team_id);
+        }catch(Exception e){
+            throw new ResponeException(DELETE_TEAM_ERROR);
+        }
     }
 }
