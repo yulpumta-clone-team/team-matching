@@ -22,7 +22,7 @@ public class BaseTimeEntity {
     @LastModifiedDate
     private LocalDateTime updatedAt;
 
-    @Column(nullable = false)
+
     @ColumnDefault("'active'")
     private String status;
 

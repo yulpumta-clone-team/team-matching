@@ -46,9 +46,6 @@ public class OAuth2AuthenticationSuccessHandler implements AuthenticationSuccess
         writeTokenCookie(response,token);
         resultRedirectStrategy(request, response, authentication);
 
-
-
-
     }
 
     protected void resultRedirectStrategy(HttpServletRequest request, HttpServletResponse response,

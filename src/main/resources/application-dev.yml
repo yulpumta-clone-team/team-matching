@@ -2,10 +2,12 @@ spring:
   config:
     activate:
       on-profile: dev
+
+
+---
+spring:
   jackson:
     default-property-inclusion: non_null # null 인경우 필드 생성하지않음
-
-
 #포트 변수
 env:
   port: 3000
