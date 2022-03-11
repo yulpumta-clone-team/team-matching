@@ -46,6 +46,16 @@ logging.level:
 # org.hibernate.type: trace
 
 
+
+logging:
+  level:
+    com:
+      amazonaws:
+        util:
+          EC2MetadataUtils: ERROR
+
+
+
 server:
   port: 8081
 

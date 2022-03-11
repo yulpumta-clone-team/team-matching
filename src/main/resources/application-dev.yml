@@ -45,6 +45,16 @@ cloud:
       auto: false
     stack:
       auto: false
+
+
+
+logging:
+  level:
+    com:
+      amazonaws:
+        util:
+          EC2MetadataUtils: ERROR
+
 #포트 변수
 env:
   port: 3000
