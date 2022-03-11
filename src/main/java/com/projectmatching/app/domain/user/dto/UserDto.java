@@ -17,15 +17,10 @@ import java.util.List;
 @JsonInclude(JsonInclude.Include.NON_NULL) //null 이면 생성되지 않음
 public class UserDto {
     private Long id = IdGenerator.number();
-
     private String oauthId;
-
     private String email;
-
     private String name;
-
     private String pwd;
-
     private String portfolio;
     private String slogan;
     private String img;

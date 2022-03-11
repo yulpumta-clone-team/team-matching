@@ -2,7 +2,7 @@ package com.projectmatching.app.util;
 
 import com.projectmatching.app.config.secret.Secret;
 import com.projectmatching.app.domain.user.Role;
-import com.projectmatching.app.domain.user.entity.User;
+import com.projectmatching.app.domain.user.dto.UserLoginResDto;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
@@ -114,8 +114,8 @@ public class AuthTokenProvider {
 
     }
 
-    public String createToken(User user){
-        Claims claims = Jwts.claims().setSubject(user.getEmail()); // JWT payload 에 저장되는 정보단위
+    public String createToken(UserLoginResDto user){
+        Claims claims = Jwts.claims().setSubject(user.getName()); // JWT payload 에 저장되는 정보단위
         claims.put("roles", user.getRole().getKey()); // 정보는 key / value 쌍으로 저장된다.
         Date now = new Date();
         return Jwts.builder()
