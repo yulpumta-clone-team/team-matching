@@ -1,4 +1,4 @@
-package com.projectmatching.app.domain.user.service;
+package com.projectmatching.app.service.user;
 
 import com.projectmatching.app.domain.user.User;
 import com.projectmatching.app.domain.user.UserProfile;

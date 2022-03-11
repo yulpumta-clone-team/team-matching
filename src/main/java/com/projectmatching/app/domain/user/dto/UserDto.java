@@ -1,22 +1,26 @@
 package com.projectmatching.app.domain.user.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import com.projectmatching.app.domain.user.User;
+import com.projectmatching.app.util.IdGenerator;
+import lombok.*;
+import org.springframework.beans.BeanUtils;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 
-@AllArgsConstructor
-@NoArgsConstructor
+
 @Getter
+@Setter
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@NoArgsConstructor
 @Builder
 @JsonInclude(JsonInclude.Include.NON_NULL) //null 이면 생성되지 않음
 public class UserDto {
+    private Long id = IdGenerator.number();
 
+    private String oauthId;
     @Email
     private String email;
 
@@ -37,7 +41,22 @@ public class UserDto {
 
 
 
+    public static UserDto createEmpty() { return new UserDto();}
 
+    //entity를 dto로
+    public static UserDto of(User user ){
+        UserDto userDto = createEmpty();
+        BeanUtils.copyProperties(user, userDto);
+        return userDto;
+    }
+
+    //dto를 entity로
+    public User asEntity(){
+        User user = new User();
+        BeanUtils.copyProperties(this,user);
+        return user;
+
+    }
 
 
 }

@@ -1,8 +1,8 @@
-package com.projectmatching.app.domain.user.service;
+package com.projectmatching.app.service.user;
 
 import com.projectmatching.app.domain.user.User;
 import com.projectmatching.app.domain.user.UserRepository;
-import com.projectmatching.app.domain.user.service.userdetail.UserDetailsImpl;
+import com.projectmatching.app.service.user.userdetail.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

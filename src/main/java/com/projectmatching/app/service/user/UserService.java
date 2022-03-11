@@ -1,18 +1,18 @@
-package com.projectmatching.app.domain.user.service;
+package com.projectmatching.app.service.user;
 
 import com.projectmatching.app.config.resTemplate.ResponeException;
-import com.projectmatching.app.config.resTemplate.ResponseTemplateStatus;
-import com.projectmatching.app.domain.user.Role;
+import com.projectmatching.app.constant.ResponseTemplateStatus;
 import com.projectmatching.app.domain.user.User;
 import com.projectmatching.app.domain.user.UserRepository;
 import com.projectmatching.app.domain.user.dto.UserDto;
-import com.projectmatching.app.domain.user.service.userdetail.UserDetailsImpl;
+import com.projectmatching.app.service.user.userdetail.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -23,27 +23,22 @@ public class UserService {
     private final UserRepository userRepository;
 
 
-    public void join(UserDto userDto) throws ResponeException {
+    @Transactional
+    public Long join(UserDto userDto) throws ResponeException {
+        try {
+            checkUserValidation(userDto);
+            userDto.setPwd(passwordEncoder.encode(userDto.getPwd())); //비밀번호 암호화
+            User user = userDto.asEntity();
+            return userRepository.save(user).getId();
+        }catch (ResponeException e){
+            throw e;
+        }
 
+    }
+
+    private void checkUserValidation(UserDto userDto)throws ResponeException {
         checkDuplicateEmail(userDto.getEmail());
         checkDuplicateName(userDto.getName());
-
-        User user = User.builder()
-                .email(userDto.getEmail())
-                .name(userDto.getName())
-                .content(userDto.getContent())
-                .hope_session(userDto.getHope_session())
-                .img(userDto.getImg())
-                .role(Role.USER)
-                .portfolio(userDto.getPortfolio())
-                .job(userDto.getJob())
-                .oauthId(null)
-                .pwd(passwordEncoder.encode(userDto.getPwd()))
-                .slogan(userDto.getSlogan())
-                .build();
-
-        log.info("result  == {} ", user);
-        userRepository.save(user);
 
     }
 
@@ -59,7 +54,6 @@ public class UserService {
         }
 
     }
-
 
 
     public void DeleteUser() throws ResponeException{

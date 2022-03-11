@@ -1,8 +1,9 @@
 package com.projectmatching.app.config;
 
-import com.projectmatching.app.domain.user.service.OAuthService;
+import com.projectmatching.app.config.handler.OAuth2AuthenticationSuccessHandler;
+import com.projectmatching.app.service.user.OAuthService;
 import com.projectmatching.app.util.AuthTokenProvider;
-import com.projectmatching.app.util.JwtAuthFilter;
+import com.projectmatching.app.util.filter.JwtAuthFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

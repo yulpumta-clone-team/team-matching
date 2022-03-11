@@ -1,9 +1,11 @@
-package com.projectmatching.app.config.resTemplate;
+package com.projectmatching.app.constant;
 
-import lombok.Getter;
+import lombok.*;
 
 @Getter
+@RequiredArgsConstructor
 public enum ResponseTemplateStatus {
+
     /**    private final Boolean isSuccess;
      private final String message;
      private final int code; //내부 코드

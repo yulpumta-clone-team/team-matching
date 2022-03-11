@@ -1,5 +1,6 @@
 package com.projectmatching.app.config.resTemplate;
 
+import com.projectmatching.app.constant.ResponseTemplateStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
