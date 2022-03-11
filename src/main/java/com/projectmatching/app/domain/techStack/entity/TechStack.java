@@ -26,9 +26,7 @@ public class TechStack {
     private String name; //기술 이름
 
 
-    @OneToMany
-    @JoinColumn(name = "team_tech")
-    @ToString.Exclude
+    @OneToMany(mappedBy = "techStack", cascade = CascadeType.ALL)
     private Set<TeamTech> teamTechs = new HashSet<>();
 
     @OneToMany

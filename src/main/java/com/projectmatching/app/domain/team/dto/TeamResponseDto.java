@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.springframework.beans.BeanUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -34,6 +35,14 @@ public class TeamResponseDto {
     public static TeamResponseDto of(Team team){
         TeamResponseDto teamResponseDto = createEmpty();
         BeanUtils.copyProperties(team, teamResponseDto);
+
+        Set<TeamTech> teamtech = team.getTeamTeches();
+        List<String> findTeamTech = new ArrayList<>();
+        for (TeamTech tech : teamtech){
+            TechStack t = tech.getTechStack();
+            if(t!=null) findTeamTech.add(t.getName());
+        }
+        teamResponseDto.tech_stack = findTeamTech;
 
         teamResponseDto.comment_cnt = team.getTeamComments().size();
         //teamResponseDto.like_cnt = team.getUserLikings().size();

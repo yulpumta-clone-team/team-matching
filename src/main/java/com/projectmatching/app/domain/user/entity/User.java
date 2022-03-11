@@ -6,6 +6,7 @@ import com.projectmatching.app.domain.liking.entity.UserCommentLiking;
 import com.projectmatching.app.domain.liking.entity.UserLiking;
 import com.projectmatching.app.domain.user.Role;
 import lombok.*;
+import org.hibernate.annotations.BatchSize;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -76,6 +77,8 @@ public class User extends BaseTimeEntity  {
     private Set<UserTech> skills = new HashSet<>();
 
 
+    @OneToMany(mappedBy = "team", cascade = CascadeType.ALL)
+    private Set<UserTeam> userTeams = new HashSet<>();
 
     public User(String oauthId,String name, String email, Role role ){
         this.id = null;
