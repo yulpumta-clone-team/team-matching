@@ -77,7 +77,7 @@ public class UserController {
      * 유저 카드(리스트) 조회
      */
     @ApiOperation(value = "유저 리스트(카드) 조회")
-    @ApiImplicitParam(name="lastPage", required = true, value = "마지막 페이지 기준으로 10개씩 유저 리스트를 보내줌")
+    @ApiImplicitParam(name="lastPage", example = "1",required = true, value = "마지막 페이지 기준으로 10개씩 유저 리스트를 보내줌")
     @GetMapping
     public ResponseTemplate<List<UserProfileDto>> getUserList(@RequestParam(name="lastPage") int lastPage){
         Paging paging = new Paging(lastPage,PAGING_SIZE, Sort.by("created_at").descending());
@@ -89,7 +89,7 @@ public class UserController {
      * 특정 유저 카드 조회
      */
     @ApiOperation(value = "특정 유저 상세 조회")
-    @ApiImplicitParam(name = "id",required = true,value = "유저 id")
+    @ApiImplicitParam(name = "id",example = "1",required = true,value = "유저 id")
     @GetMapping("/{id}")
     public ResponseTemplate<UserDto> getUserDetail(@PathVariable(name="id") Long id){
 
