@@ -40,8 +40,14 @@ public enum ResponseTemplateStatus {
     EMAIL_DUPLICATE(false,"중복된 이메일입니다",3005),
     NAME_DUPLICATE(false,"중복된 이름입니다.",3006),
     PWD_FORM_INVALID(false,"비밀번호 형식 오류",3007)
-    ;
+    ,
 
+
+    /**
+     *
+     * 9000: 논리적 에러
+     */
+    LOGICAL_ERROR(false,"서버 내부 논리 에러",9000);
 
     private final boolean isSuccess;
     private final int code;
