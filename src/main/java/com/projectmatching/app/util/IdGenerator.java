@@ -7,7 +7,7 @@ import java.util.stream.IntStream;
 /**
  * 랜덤 id 생성용
  */
-public class IdGenerator {
+public final class IdGenerator {
     private static final Random random;
     private static final int DEFAULT_SIZE = 10;
 

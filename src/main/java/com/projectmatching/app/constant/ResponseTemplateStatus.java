@@ -53,9 +53,19 @@ public enum ResponseTemplateStatus {
     GET_TEAM_ERROR(false, "팀 게시글 가져오기 실패", 4002),
 
     PWD_FORM_INVALID(false,"비밀번호 형식 오류",3007)
+<<<<<<< HEAD
 
     ;
+=======
+    ,
+>>>>>>> develop
 
+
+    /**
+     *
+     * 9000: 논리적 에러
+     */
+    LOGICAL_ERROR(false,"서버 내부 논리 에러",9000);
 
     private final boolean isSuccess;
     private final int code;
