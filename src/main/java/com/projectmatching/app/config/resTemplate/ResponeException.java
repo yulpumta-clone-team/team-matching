@@ -9,5 +9,6 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public class ResponeException extends RuntimeException{
-    private ResponseTemplateStatus status;
+    private ResponseTemplateStatus responseTemplateStatus;
+
 }
