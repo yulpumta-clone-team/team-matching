@@ -53,12 +53,8 @@ public enum ResponseTemplateStatus {
     GET_TEAM_ERROR(false, "팀 게시글 가져오기 실패", 4002),
 
     PWD_FORM_INVALID(false,"비밀번호 형식 오류",3007)
-<<<<<<< HEAD
 
-    ;
-=======
     ,
->>>>>>> develop
 
 
     /**
