@@ -10,6 +10,7 @@ import com.projectmatching.app.domain.team.dto.TeamRequestDto;
 import com.projectmatching.app.domain.team.dto.TeamResponseDto;
 import com.projectmatching.app.service.team.TeamService;
 import com.projectmatching.app.service.user.UserService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,6 +32,7 @@ import static com.projectmatching.app.constant.ServiceConstant.PAGING_SIZE;
 @RequestMapping("/api")
 @RequiredArgsConstructor
 @RestController
+@Api(tags = "팀 컨트롤러")
 public class TeamController {
     private final TeamService teamService;
     private final UserService userService;
@@ -41,7 +43,7 @@ public class TeamController {
      */
     @ApiOperation(value = "team 생성 API", notes = "team을 생성합니다.")
     @PostMapping("/team")
-    public ResponseTemplate<Long> save(@RequestBody TeamRequestDto requestDto){
+    public ResponseTemplate<Long> saveTeam(@RequestBody TeamRequestDto requestDto){
         if(requestDto.getT_name()==null) return ResponseTemplate.of(EMPTY_TEAM_NAME);
 
         try {
@@ -85,6 +87,7 @@ public class TeamController {
     /**
      * team 상세페이지 조회
      */
+    @ApiOperation(value = "team 게시글 상세 조회 API", notes = "팀 게시글 상세 페이지를 조회합니다.")
     @GetMapping("/team/{team_id}")
     public ResponseTemplate<TeamDetailResponseDto> getTeamDetail(@PathVariable Long team_id){
         try{
@@ -97,4 +100,13 @@ public class TeamController {
     /**
      * team 수정
      */
+    @PatchMapping("/team")
+    public ResponseTemplate<String> update(@RequestBody TeamRequestDto requestDto){
+        try {
+
+            return null;
+        }catch (ResponeException e){
+            return ResponseTemplate.of(e.getStatus());
+        }
+    }
 }
