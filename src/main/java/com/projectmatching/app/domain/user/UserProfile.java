@@ -1,6 +1,10 @@
 package com.projectmatching.app.domain.user;
 
-import lombok.*;
+import com.projectmatching.app.domain.user.entity.User;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
 @Getter
 @Setter
@@ -11,13 +15,9 @@ public class UserProfile {
     private final String name;
     private final String email;
 
-
     public User toUser() {
         return new User(oauthId, name, email, Role.USER);
     }
-
-
-
 
 
 }

@@ -1,23 +1,51 @@
 package com.projectmatching.app.domain.user.dto;
 
+import com.projectmatching.app.domain.user.entity.User;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.beans.BeanUtils;
 
 import java.util.List;
 
 @Getter @Setter
-@RequiredArgsConstructor
+
+@NoArgsConstructor
 public class UserProfileDto {
 
-    private final String name;
-    private final String slogan;
-    private final String description;
-    private final String img;
-    private final String hope_session;
-    private final List<String> skills;
-    private final String job;
-    private final String status;
+    private String name;
+    private String slogan;
+    private String description;
+    private String img;
+    private String hope_session;
+    private List<String> skills;
+    private String job;
+    private String status; //현재 상태 (유저가 수동으로 변경, 상태가 Closed 일 경우 인력시장에서 사라짐)
 
+    private int commentCnt;
+    private int likeCnt;
+
+
+    public static UserProfileDto createEmpty(){return new UserProfileDto();}
+
+    //entity를 dto로
+    public static UserProfileDto of(User user){
+        UserProfileDto userProfileDto = createEmpty();
+        BeanUtils.copyProperties(user, userProfileDto);
+
+        userProfileDto.commentCnt = user.getUserComments().size();
+        userProfileDto.likeCnt = user.getUserLikings().size();
+
+
+        return userProfileDto;
+    }
+
+    //dto를 entity로
+    public User asEntity(){
+        User user = new User();
+        BeanUtils.copyProperties(this,user);
+        return user;
+
+    }
 
 }
