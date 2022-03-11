@@ -8,7 +8,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.springframework.beans.BeanUtils;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -25,7 +27,7 @@ public class TeamDetailResponseDto {
     private Long read;
     private int comment_cnt;
     private int like_cnt;
-    List<TeamComment> comment;
+    List<TeamCommentDto> comment;
 
     public static TeamDetailResponseDto createEmpty(){return new TeamDetailResponseDto();}
 
@@ -33,6 +35,16 @@ public class TeamDetailResponseDto {
     public static TeamDetailResponseDto of(Team team){
         TeamDetailResponseDto teamResponseDto = createEmpty();
         BeanUtils.copyProperties(team, teamResponseDto);
+
+        /**
+         * 수정해야함
+         */
+        List<TeamComment> collect = team.getTeamComments().stream().collect(Collectors.toList());
+        List<TeamCommentDto> findComment = new ArrayList<>();
+        for (TeamComment c : collect){
+            findComment.add(new TeamCommentDto(c.getId(), c.getParentId(), c.getSecret(), c.getContent(), c.getCreatedAt()));
+        }
+        teamResponseDto.comment = findComment;
 
         teamResponseDto.comment_cnt = team.getTeamComments().size();
         //teamResponseDto.like_cnt = team.getUserLikings().size();

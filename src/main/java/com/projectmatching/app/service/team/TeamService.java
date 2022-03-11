@@ -1,6 +1,7 @@
 package com.projectmatching.app.service.team;
 
 import com.projectmatching.app.config.resTemplate.ResponeException;
+import com.projectmatching.app.domain.team.dto.TeamDetailResponseDto;
 import com.projectmatching.app.domain.team.dto.TeamRequestDto;
 import com.projectmatching.app.domain.team.dto.TeamResponseDto;
 import com.projectmatching.app.domain.team.entity.Team;
@@ -78,11 +79,23 @@ public class TeamService {
 
     public List<TeamResponseDto> getTeams(PageRequest pageRequest) throws ResponeException {
 
-        return teamRepository.getTeams(pageRequest)
-                .stream().map(TeamResponseDto::of)
-                .collect(Collectors.toList());
+        try {
+            return teamRepository.getTeams(pageRequest)
+                    .stream().map(TeamResponseDto::of)
+                    .collect(Collectors.toList());
+        }catch (Exception e){
+            throw new ResponeException(GET_TEAMS_ERROR);
+        }
     }
 
+    public TeamDetailResponseDto getTeam(Long team_id) throws ResponeException {
+        try{
+            Team team = teamRepository.findById(team_id).orElseThrow(() -> new ResponeException(INVALID_TEAM_IDX));
+            return TeamDetailResponseDto.of(team);
+        }catch (Exception e){
+            throw new ResponeException(GET_TEAM_ERROR);
+        }
+    }
 
     public void delete(Long team_id) throws ResponeException {
         try{

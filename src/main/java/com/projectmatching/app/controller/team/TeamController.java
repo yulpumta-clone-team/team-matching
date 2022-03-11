@@ -57,7 +57,7 @@ public class TeamController {
      * team 카드들 조회
      */
     @ApiOperation(value = "team 카드 조회 API", notes = "팀 리스트를 조회합니다.")
-    @GetMapping("/team")
+    @GetMapping("/teams")
     public ResponseTemplate<List<TeamResponseDto>> getTeams(@RequestParam(name="page") int page){
         try{
             Paging paging = new Paging(page,PAGING_SIZE);
@@ -71,7 +71,7 @@ public class TeamController {
      * team 삭제
      */
     @ApiOperation(value = "team 게시글 삭제 API", notes = "팀 게시글을 삭제합니다.")
-    @DeleteMapping("/team")
+    @DeleteMapping("/team/{team_id}")
     public ResponseTemplate<String> deleteTeam(@PathVariable Long team_id){
         try{
             teamService.delete(team_id);
@@ -85,13 +85,14 @@ public class TeamController {
     /**
      * team 상세페이지 조회
      */
-    /*public ResponseTemplate<TeamDetailResponseDto> getTeamDetail(@PathVariable Long team_id){
+    @GetMapping("/team/{team_id}")
+    public ResponseTemplate<TeamDetailResponseDto> getTeamDetail(@PathVariable Long team_id){
         try{
-
+            return ResponseTemplate.of(SUCCESS, teamService.getTeam(team_id));
         }catch (ResponeException e){
             return ResponseTemplate.of(e.getStatus());
         }
-    }*/
+    }
 
     /**
      * team 수정
