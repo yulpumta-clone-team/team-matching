@@ -46,7 +46,7 @@ public class UserController {
         try {
             return ResponseTemplate.valueOf(userSignUpService.join(userJoinDto));
         }catch (ResponeException e){
-            return ResponseTemplate.of(e.getStatus());
+            return ResponseTemplate.of(e.getResponseTemplateStatus());
         }
     }
 
