@@ -5,6 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface TeamCommentRepository extends JpaRepository<Long, TeamComment> {
+public interface TeamCommentRepository extends JpaRepository<TeamComment,Long> {
 
 }
