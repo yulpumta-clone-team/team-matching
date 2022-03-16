@@ -100,6 +100,7 @@ public class TeamController {
     /**
      * team 수정
      */
+    @ApiOperation(value = "team 게시글 수정 API", notes = "팀 게시글을 수정합니다.")
     @PatchMapping("/team")
     public ResponseTemplate<String> update(@RequestBody TeamRequestDto requestDto){
         try {

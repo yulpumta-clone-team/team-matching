@@ -3,6 +3,7 @@ package com.projectmatching.app.domain.team.dto;
 import com.projectmatching.app.domain.team.entity.Team;
 import com.projectmatching.app.domain.team.entity.TeamTech;
 import com.projectmatching.app.domain.techStack.entity.TechStack;
+import com.projectmatching.app.domain.user.entity.UserTeam;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -36,9 +37,15 @@ public class TeamResponseDto {
         TeamResponseDto teamResponseDto = createEmpty();
         BeanUtils.copyProperties(team, teamResponseDto);
 
-        Set<TeamTech> teamtech = team.getTeamTeches();
+        List<UserTeam> userTeamList = team.getUserTeams().stream().collect(Collectors.toList());
+        if(userTeamList != null) {
+            UserTeam findUser = userTeamList.get(0);
+            teamResponseDto.user_id = findUser.getUser().getId();
+        }
+
+        Set<TeamTech> teamTechSet = team.getTeamTeches();
         List<String> findTeamTech = new ArrayList<>();
-        for (TeamTech tech : teamtech){
+        for (TeamTech tech : teamTechSet){
             TechStack t = tech.getTechStack();
             if(t!=null) findTeamTech.add(t.getName());
         }

@@ -4,6 +4,7 @@ import com.projectmatching.app.domain.comment.entity.TeamComment;
 import com.projectmatching.app.domain.team.entity.Team;
 import com.projectmatching.app.domain.team.entity.TeamTech;
 import com.projectmatching.app.domain.techStack.entity.TechStack;
+import com.projectmatching.app.domain.user.entity.UserTeam;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -40,17 +41,23 @@ public class TeamDetailResponseDto {
         TeamDetailResponseDto teamResponseDto = createEmpty();
         BeanUtils.copyProperties(team, teamResponseDto);
 
-        Set<TeamTech> teamtech = team.getTeamTeches();
+        List<UserTeam> userTeamList = team.getUserTeams().stream().collect(Collectors.toList());
+        if(userTeamList != null) {
+            UserTeam findUser = userTeamList.get(0);
+            teamResponseDto.user_id = findUser.getUser().getId();
+        }
+
+        Set<TeamTech> teamTechSet = team.getTeamTeches();
         List<String> findTeamTech = new ArrayList<>();
-        for (TeamTech tech : teamtech){
+        for (TeamTech tech : teamTechSet){
             TechStack t = tech.getTechStack();
             if(t!=null) findTeamTech.add(t.getName());
         }
         teamResponseDto.tech_stack = findTeamTech;
 
-        List<TeamComment> collect = team.getTeamComments().stream().collect(Collectors.toList());
+        List<TeamComment> teamCommentList = team.getTeamComments().stream().collect(Collectors.toList());
         List<TeamCommentDto> findComment = new ArrayList<>();
-        for (TeamComment c : collect){
+        for (TeamComment c : teamCommentList){
             findComment.add(new TeamCommentDto(c.getId(), c.getParentId(), c.getSecret(), c.getContent(), c.getCreatedAt()));
         }
         teamResponseDto.comment = findComment;
