@@ -54,7 +54,8 @@ public enum ResponseTemplateStatus {
     INVALID_TEAM_IDX(HttpStatus.BAD_REQUEST, "유효하지 않은 team id입니다.", 4003),
     DELETE_TEAM_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "팀 삭제하기 실패", 4004),
     NOT_EXIST_USER(HttpStatus.BAD_REQUEST, "존재하지 않는 유저입니다.", 4005),
-    GET_TEAM_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "팀 게시글 가져오기 실패", 4002)
+    GET_TEAM_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "팀 게시글 가져오기 실패", 4006),
+    UPDATE_TEAM_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "팀 수정하기 실패", 4007)
 
 
 

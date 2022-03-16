@@ -20,6 +20,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -29,6 +30,7 @@ import static com.projectmatching.app.constant.ResponseTemplateStatus.*;
 
 @RequiredArgsConstructor
 @Service
+@Transactional
 public class TeamService {
     private final TeamRepository teamRepository;
     private final TechStackRepository techStackRepository;
@@ -47,7 +49,7 @@ public class TeamService {
                     .read(0L)
                     .build();
 
-            Long teamId = teamRepository.save(team).getTeam_id();
+            Long teamId = teamRepository.save(team).getId();
 
             List<String> techs = requestDto.getT_techs();
             for (String t : techs){
@@ -104,7 +106,23 @@ public class TeamService {
 
     public void update(Long teamId, TeamRequestDto teamRequestDto) throws ResponeException {
         Team team = teamRepository.findById(teamId).orElseThrow(() -> new ResponeException(INVALID_TEAM_IDX));
-        team.update(teamRequestDto);
-        teamRepository.save(team);
+        try {
+            team.update(teamRequestDto);
+            teamTechRepository.deleteAllByTeam_Id(team.getId());
+
+            List<String> techs = teamRequestDto.getT_techs();
+            for (String t : techs) {
+                TechStack techStack = techStackRepository.findByName(t).orElseThrow(() -> new ResponeException(SAVE_TEAM_ERROR));
+                TeamTech teamTech = TeamTech.builder()
+                        .team(team)
+                        .techStack(techStack)
+                        .build();
+
+                teamTechRepository.save(teamTech);
+            }
+            teamRepository.save(team);
+        }catch(Exception e){
+            throw new ResponeException(UPDATE_TEAM_ERROR);
+        }
     }
 }

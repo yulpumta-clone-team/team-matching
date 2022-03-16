@@ -45,7 +45,7 @@ public class TeamRepositoryImpl implements TeamRepositoryCustom{
         queryFactory.update(team)
                 .set(team.status, "NA")
                 .where(
-                        team.team_id.eq(team_id)
+                        team.id.eq(team_id)
                 ).execute();
     }
 }

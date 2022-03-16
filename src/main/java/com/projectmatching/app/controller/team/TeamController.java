@@ -1,7 +1,6 @@
 package com.projectmatching.app.controller.team;
 
 
-import com.projectmatching.app.config.resTemplate.ResponeException;
 import com.projectmatching.app.config.resTemplate.ResponseTemplate;
 import com.projectmatching.app.constant.ServiceConstant;
 import com.projectmatching.app.domain.common.Paging;
@@ -15,10 +14,6 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
@@ -26,7 +21,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 import static com.projectmatching.app.constant.ResponseTemplateStatus.EMPTY_TEAM_NAME;
-import static com.projectmatching.app.constant.ResponseTemplateStatus.SUCCESS;
 import static com.projectmatching.app.constant.ServiceConstant.PAGING_SIZE;
 
 
@@ -48,7 +42,7 @@ public class TeamController {
     public ResponseTemplate<Long> saveTeam(@AuthenticationPrincipal UserDetails userDetails, @RequestBody TeamRequestDto requestDto){
         if(requestDto.getT_name()==null) return ResponseTemplate.of(EMPTY_TEAM_NAME);
 
-        String email = "";
+        String email = " ";  //email 받아오게 수정
         Long result = teamService.save(requestDto, email);
         return ResponseTemplate.valueOf(result);
     }
@@ -88,7 +82,7 @@ public class TeamController {
      */
     @ApiOperation(value = "team 게시글 수정 API", notes = "팀 게시글을 수정합니다.")
     @PatchMapping("/team/{team_id}")
-    public ResponseTemplate<String> update(@PathVariable Long team_id, @RequestBody TeamRequestDto requestDto){
+    public ResponseTemplate<String> updateTeam(@PathVariable Long team_id, @RequestBody TeamRequestDto requestDto){
         teamService.update(team_id, requestDto);
         String result = "팀 수정에 성공하였습니다.";
         return ResponseTemplate.valueOf(result);
