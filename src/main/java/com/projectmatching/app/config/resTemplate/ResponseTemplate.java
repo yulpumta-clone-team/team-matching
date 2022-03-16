@@ -5,15 +5,16 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.projectmatching.app.constant.ResponseTemplateStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import org.springframework.http.HttpStatus;
 
 
 import static com.projectmatching.app.constant.ResponseTemplateStatus.SUCCESS;
 @Getter
 @AllArgsConstructor
-@JsonPropertyOrder({"isSuccess","code","message","data"})
+@JsonPropertyOrder({"status","code","message","data"})
 public class ResponseTemplate<T> {
-    @JsonProperty("isSuccess")
-    private Boolean isSuccess;
+    @JsonProperty("status")
+    private HttpStatus httpStatus;
     private String message;
     private int code; //내부 코드
     private T data;
@@ -26,7 +27,7 @@ public class ResponseTemplate<T> {
 
     //데이터 전달
     public static <T> ResponseTemplate<T> of(ResponseTemplateStatus status, T data){
-        return new ResponseTemplate<>(status.isSuccess(),status.getMessage(),status.getCode(),data);
+        return new ResponseTemplate<>(status.getHttpStatus(), status.getMessage(),status.getCode(),data);
 
     }
 

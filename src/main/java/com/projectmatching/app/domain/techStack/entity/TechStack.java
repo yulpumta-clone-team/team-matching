@@ -14,6 +14,7 @@ import java.util.Set;
 @Getter @Setter
 @NoArgsConstructor
 @Entity
+@Table(name = "tech_stack")
 public class TechStack {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

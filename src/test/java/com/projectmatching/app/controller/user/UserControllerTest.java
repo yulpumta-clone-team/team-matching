@@ -113,8 +113,8 @@ public class UserControllerTest extends ControllerTest {
                 .content(JsonUtil.asJson(userJoinDto)))
                 .andDo(print())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(status().is(HttpStatus.BAD_REQUEST.value()))
                 .andExpect(jsonPath("code").value("3007"))
-                .andExpect(jsonPath("isSuccess").value("false"))
                 .andExpect(jsonPath("message").value("비밀번호 형식 오류"));
 
 
