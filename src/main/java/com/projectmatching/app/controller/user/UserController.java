@@ -10,12 +10,14 @@ import com.projectmatching.app.domain.user.dto.UserProfileDto;
 import com.projectmatching.app.service.user.UserService;
 import com.projectmatching.app.service.user.UserSignInService;
 import com.projectmatching.app.service.user.UserSignUpService;
+import com.projectmatching.app.service.user.userdetail.UserDetailsImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
@@ -98,11 +100,24 @@ public class UserController {
     /**
      * 유저 프로필 수정
      */
+    @ApiOperation(value ="유저 프로필 수정 요청")
     @PatchMapping("/profile")
     public ResponseTemplate<Void> createUserProfile(@RequestBody UserDto userDto){
         userService.updateUser(userDto);
         return ResponseTemplate.of(SUCCESS);
 
+    }
+
+
+    /**
+     * 유저 좋아요 누르기
+     */
+    @ApiOperation(value = "특정 유저프로필 좋아요 누르기")
+    @GetMapping("/liking/{user_id}")
+    public ResponseTemplate<Void> addUserLiking(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable(name="user_id") int userId){
+        log.info("유저 좋아요 누르기, userDetails? = {}",userDetails);
+        userService.addLiking(userDetails,userId);
+        return ResponseTemplate.of(SUCCESS);
     }
 
 

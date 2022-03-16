@@ -4,7 +4,9 @@ import com.projectmatching.app.domain.user.QUserRepository;
 import com.projectmatching.app.domain.user.UserRepository;
 import com.projectmatching.app.domain.user.dto.UserDto;
 import com.projectmatching.app.domain.user.dto.UserProfileDto;
+import com.projectmatching.app.domain.user.entity.User;
 import com.projectmatching.app.exception.CoNectRuntimeException;
+import com.projectmatching.app.service.user.userdetail.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -52,6 +54,19 @@ public class UserServiceImpl implements UserService {
         return qUserRepository.find(pageRequest)
                 .stream().map(UserProfileDto::of)
                 .collect(Collectors.toList());
+    }
+
+
+
+    @Transactional
+    @Override
+    public Long addLiking(UserDetailsImpl userDetails, int userId){
+
+        User from = userRepository.getById(userDetails.getId());
+        User to = userRepository.getById((long) userId);
+
+        return null;
+
     }
 
 

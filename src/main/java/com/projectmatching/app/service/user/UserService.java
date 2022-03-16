@@ -21,6 +21,9 @@ public interface UserService {
     //유저 업데이트
     Long updateUser(UserDto userDto);
 
+    //특정 유저 좋아요 누르기
+    Long addLiking(UserDetailsImpl userDetails, int userId);
+
 
 
     /**
@@ -49,5 +52,6 @@ public interface UserService {
         }
 
     }
+
 
 }

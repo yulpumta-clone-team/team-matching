@@ -54,6 +54,8 @@ public class UserDetailsImpl implements UserDetails {
         return this.email;
     }
 
+    public Long getUserId(){return this.id;}
+
 
 
     @Override
