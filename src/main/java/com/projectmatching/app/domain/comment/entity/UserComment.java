@@ -39,6 +39,7 @@ public class UserComment extends BaseTimeEntity {
     @OneToMany
     @JoinColumn(name="user_comment_liking")
     @ToString.Exclude
+    @Builder.Default
     private Set<UserCommentLiking> userCommentLikings = new HashSet<>();
 
 

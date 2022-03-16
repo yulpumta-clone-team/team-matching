@@ -56,23 +56,27 @@ public class User extends BaseTimeEntity  {
     @OneToMany
     @JoinColumn(name="user_liking")
     @ToString.Exclude
+    @Builder.Default
     private Set<UserLiking> userLikings = new HashSet<>();
 
     @OneToMany
     @JoinColumn(name="user_comment_liking")
     @ToString.Exclude
+    @Builder.Default
     private Set<UserCommentLiking> userCommentLikings = new HashSet<>();
 
 
     @OneToMany
     @JoinColumn(name="user_comment")
     @ToString.Exclude
+    @Builder.Default
     private Set<UserComment> userComments = new HashSet<>();
 
 
     @OneToMany
     @JoinColumn(name="user_tech")
     @ToString.Exclude
+    @Builder.Default
     private Set<UserTech> skills = new HashSet<>();
 
 
