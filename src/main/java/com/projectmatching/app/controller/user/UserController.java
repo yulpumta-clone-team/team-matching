@@ -42,12 +42,8 @@ public class UserController {
     @ApiOperation(value = "일반 회원가입, 성공시 유저 id 반환됨 ")
     @PostMapping("/join")
     public ResponseTemplate<Long> join(@RequestBody UserJoinDto userJoinDto) throws ResponeException {
+        return ResponseTemplate.valueOf(userSignUpService.join(userJoinDto));
 
-        try {
-            return ResponseTemplate.valueOf(userSignUpService.join(userJoinDto));
-        }catch (ResponeException e){
-            return ResponseTemplate.of(e.getResponseTemplateStatus());
-        }
     }
 
     /**
