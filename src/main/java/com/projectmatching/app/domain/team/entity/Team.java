@@ -3,6 +3,7 @@ package com.projectmatching.app.domain.team.entity;
 import com.projectmatching.app.domain.BaseTimeEntity;
 import com.projectmatching.app.domain.comment.entity.TeamComment;
 import com.projectmatching.app.domain.liking.entity.TeamLiking;
+import com.projectmatching.app.domain.team.dto.TeamRequestDto;
 import com.projectmatching.app.domain.user.entity.UserTeam;
 import lombok.*;
 import org.hibernate.annotations.BatchSize;
@@ -60,4 +61,10 @@ public class Team extends BaseTimeEntity {
     @BatchSize(size = 8)
     private Set<TeamLiking> teamLikings = new HashSet<>();
 
+    public void update(TeamRequestDto teamRequestDto){
+        this.name = teamRequestDto.getT_name();
+        this.session = teamRequestDto.getT_session();
+        this.img = teamRequestDto.getT_img();
+        this.content = teamRequestDto.getT_content();
+    }
 }

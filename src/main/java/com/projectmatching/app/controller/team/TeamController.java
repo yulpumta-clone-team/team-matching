@@ -19,6 +19,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -43,11 +45,11 @@ public class TeamController {
      */
     @ApiOperation(value = "team 생성 API", notes = "team을 생성합니다.")
     @PostMapping("/team")
-    public ResponseTemplate<Long> saveTeam(@RequestBody TeamRequestDto requestDto){
+    public ResponseTemplate<Long> saveTeam(@AuthenticationPrincipal UserDetails userDetails, @RequestBody TeamRequestDto requestDto){
         if(requestDto.getT_name()==null) return ResponseTemplate.of(EMPTY_TEAM_NAME);
 
         try {
-            String email = userService.getAuthUserEmail();
+            String email = "";
             Long result = teamService.save(requestDto, email);
             return ResponseTemplate.of(SUCCESS, result);
         }catch(ResponeException e){
@@ -101,11 +103,12 @@ public class TeamController {
      * team 수정
      */
     @ApiOperation(value = "team 게시글 수정 API", notes = "팀 게시글을 수정합니다.")
-    @PatchMapping("/team")
-    public ResponseTemplate<String> update(@RequestBody TeamRequestDto requestDto){
+    @PatchMapping("/team/{team_id}")
+    public ResponseTemplate<String> update(@PathVariable Long team_id, @RequestBody TeamRequestDto requestDto){
         try {
-
-            return null;
+            teamService.update(team_id, requestDto);
+            String result = "팀 수정에 성공하였습니다.";
+            return ResponseTemplate.of(SUCCESS, result);
         }catch (ResponeException e){
             return ResponseTemplate.of(e.getStatus());
         }

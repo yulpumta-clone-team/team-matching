@@ -21,10 +21,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.projectmatching.app.constant.ResponseTemplateStatus.*;
@@ -79,18 +76,18 @@ public class TeamService {
 
     public List<TeamResponseDto> getTeams(PageRequest pageRequest) throws ResponeException {
 
-        //try {
+        try {
             return teamRepository.getTeams(pageRequest)
                     .stream().map(TeamResponseDto::of)
                     .collect(Collectors.toList());
-        //}catch (Exception e){
-       //     throw new ResponeException(GET_TEAMS_ERROR);
-        //}
+        }catch (Exception e){
+            throw new ResponeException(GET_TEAMS_ERROR);
+        }
     }
 
     public TeamDetailResponseDto getTeam(Long team_id) throws ResponeException {
+        Team team = teamRepository.findById(team_id).orElseThrow(() -> new ResponeException(INVALID_TEAM_IDX));
         try{
-            Team team = teamRepository.findById(team_id).orElseThrow(() -> new ResponeException(INVALID_TEAM_IDX));
             return TeamDetailResponseDto.of(team);
         }catch (Exception e){
             throw new ResponeException(GET_TEAM_ERROR);
@@ -105,7 +102,9 @@ public class TeamService {
         }
     }
 
-    public void update(TeamRequestDto teamRequestDto) throws ResponeException {
-
+    public void update(Long teamId, TeamRequestDto teamRequestDto) throws ResponeException {
+        Team team = teamRepository.findById(teamId).orElseThrow(() -> new ResponeException(INVALID_TEAM_IDX));
+        team.update(teamRequestDto);
+        teamRepository.save(team);
     }
 }
