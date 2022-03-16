@@ -37,6 +37,8 @@ public class QUserLiking extends EntityPathBase<UserLiking> {
 
     public final com.projectmatching.app.domain.user.entity.QUser user;
 
+    public final com.projectmatching.app.domain.comment.entity.QUserComment userComment;
+
     public QUserLiking(String variable) {
         this(UserLiking.class, forVariable(variable), INITS);
     }
@@ -56,6 +58,7 @@ public class QUserLiking extends EntityPathBase<UserLiking> {
     public QUserLiking(Class<? extends UserLiking> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
         this.user = inits.isInitialized("user") ? new com.projectmatching.app.domain.user.entity.QUser(forProperty("user")) : null;
+        this.userComment = inits.isInitialized("userComment") ? new com.projectmatching.app.domain.comment.entity.QUserComment(forProperty("userComment"), inits.get("userComment")) : null;
     }
 
 }

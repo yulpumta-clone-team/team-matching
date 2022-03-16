@@ -8,16 +8,16 @@ import lombok.*;
 
 import javax.persistence.*;
 
-@Getter @Setter
+@Getter
+@Setter
 @ToString
-@Entity
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Builder
+@Entity
 @Table(name="user_liking")
 public class UserLiking extends BaseTimeEntity {
     @Id
-    @GeneratedValue
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -27,7 +27,6 @@ public class UserLiking extends BaseTimeEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "comment_id")
     @ToString.Exclude
-    @Builder.Default
     private UserComment userComment;
 
 }

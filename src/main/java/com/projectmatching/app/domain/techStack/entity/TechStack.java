@@ -9,12 +9,11 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Getter @Setter
-@NoArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Entity
 @Table(name = "tech_stack")
 public class TechStack {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long techStackId;
 
     @Column

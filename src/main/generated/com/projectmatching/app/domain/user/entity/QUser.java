@@ -45,6 +45,8 @@ public class QUser extends EntityPathBase<User> {
 
     public final StringPath pwd = createString("pwd");
 
+    public final NumberPath<Integer> respected = createNumber("respected", Integer.class);
+
     public final EnumPath<com.projectmatching.app.domain.user.Role> role = createEnum("role", com.projectmatching.app.domain.user.Role.class);
 
     public final SetPath<UserTech, QUserTech> skills = this.<UserTech, QUserTech>createSet("skills", UserTech.class, QUserTech.class, PathInits.DIRECT2);
