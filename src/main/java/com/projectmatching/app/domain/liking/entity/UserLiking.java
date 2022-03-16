@@ -2,12 +2,11 @@ package com.projectmatching.app.domain.liking.entity;
 
 
 import com.projectmatching.app.domain.BaseTimeEntity;
+import com.projectmatching.app.domain.comment.entity.UserComment;
 import com.projectmatching.app.domain.user.entity.User;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
 
 @Getter @Setter
 @ToString
@@ -25,10 +24,10 @@ public class UserLiking extends BaseTimeEntity {
     @JoinColumn(name="user_id")
     private User user;
 
-    @OneToMany
-    @JoinColumn(name = "user_comment_liking_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "comment_id")
     @ToString.Exclude
     @Builder.Default
-    private Set<UserLiking> userLikings = new HashSet<>();
+    private UserComment userComment;
 
 }
