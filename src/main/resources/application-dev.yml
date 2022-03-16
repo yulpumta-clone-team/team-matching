@@ -6,6 +6,7 @@ spring:
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
+
   datasource:
     url: jdbc:h2:tcp://localhost/~/MPTest
     driver-class-name: org.h2.Driver
@@ -33,18 +34,7 @@ spring:
   jackson:
     default-property-inclusion: non_null # null 인경우 필드 생성하지않음
 
-cloud:
-  aws:
-    s3:
-      bucket: mp-static-file
-    credentials:
-      access-key: ${MP_AWS_ACCESS_KEY}
-      secret-key: ${MP_AWS_SECRET_KEY}
-    region:
-      static: ap-northeast-2
-      auto: false
-    stack:
-      auto: false
+
 #포트 변수
 env:
   port: 3000

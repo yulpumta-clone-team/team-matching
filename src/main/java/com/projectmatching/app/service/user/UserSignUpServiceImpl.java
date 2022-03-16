@@ -34,7 +34,7 @@ public class UserSignUpServiceImpl implements UserSignUpService{
             User user = userJoinDto.asEntity();
             return userRepository.save(user).getId();
         }catch (ResponeException e){
-            throw  e;
+            throw e;
         }
     }
 

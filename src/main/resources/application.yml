@@ -1,4 +1,3 @@
-
 spring:
   mvc:
     pathmatch:
@@ -46,9 +45,20 @@ logging.level:
 # org.hibernate.type: trace
 
 
+
+logging:
+  level:
+    com:
+      amazonaws:
+        util:
+          EC2MetadataUtils: ERROR
+
+
+
 server:
   port: 8081
 
 
 env:
   port: 8081
+

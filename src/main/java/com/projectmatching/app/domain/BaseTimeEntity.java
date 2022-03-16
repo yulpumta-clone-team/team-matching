@@ -25,7 +25,6 @@ public class BaseTimeEntity {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-
     @Column(columnDefinition = "varchar(10) default 'active' ")
     private String status;
 }
