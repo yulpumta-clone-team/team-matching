@@ -48,13 +48,9 @@ public class TeamController {
     public ResponseTemplate<Long> saveTeam(@AuthenticationPrincipal UserDetails userDetails, @RequestBody TeamRequestDto requestDto){
         if(requestDto.getT_name()==null) return ResponseTemplate.of(EMPTY_TEAM_NAME);
 
-        try {
-            String email = "";
-            Long result = teamService.save(requestDto, email);
-            return ResponseTemplate.of(SUCCESS, result);
-        }catch(ResponeException e){
-            return ResponseTemplate.of(e.getStatus());
-        }
+        String email = "";
+        Long result = teamService.save(requestDto, email);
+        return ResponseTemplate.valueOf(result);
     }
 
     /**
@@ -63,12 +59,8 @@ public class TeamController {
     @ApiOperation(value = "team 카드 조회 API", notes = "팀 리스트를 조회합니다.")
     @GetMapping("/teams")
     public ResponseTemplate<List<TeamResponseDto>> getTeams(@RequestParam(name="page") int page){
-        try{
-            Paging paging = new Paging(page,PAGING_SIZE);
-            return ResponseTemplate.of(SUCCESS, teamService.getTeams(paging));
-        }catch (ResponeException e){
-            return ResponseTemplate.of(e.getStatus());
-        }
+        Paging paging = new Paging(page,PAGING_SIZE);
+        return ResponseTemplate.valueOf(teamService.getTeams(paging));
     }
 
     /**
@@ -77,13 +69,9 @@ public class TeamController {
     @ApiOperation(value = "team 게시글 삭제 API", notes = "팀 게시글을 삭제합니다.")
     @DeleteMapping("/team/{team_id}")
     public ResponseTemplate<String> deleteTeam(@PathVariable Long team_id){
-        try{
-            teamService.delete(team_id);
-            String result = "팀 삭제에 성공하였습니다.";
-            return ResponseTemplate.of(SUCCESS, result);
-        }catch (ResponeException e){
-            return ResponseTemplate.of(e.getStatus());
-        }
+        teamService.delete(team_id);
+        String result = "팀 삭제에 성공하였습니다.";
+        return ResponseTemplate.valueOf(result);
     }
 
     /**
@@ -92,11 +80,7 @@ public class TeamController {
     @ApiOperation(value = "team 게시글 상세 조회 API", notes = "팀 게시글 상세 페이지를 조회합니다.")
     @GetMapping("/team/{team_id}")
     public ResponseTemplate<TeamDetailResponseDto> getTeamDetail(@PathVariable Long team_id){
-        try{
-            return ResponseTemplate.of(SUCCESS, teamService.getTeam(team_id));
-        }catch (ResponeException e){
-            return ResponseTemplate.of(e.getStatus());
-        }
+        return ResponseTemplate.valueOf(teamService.getTeam(team_id));
     }
 
     /**
@@ -105,12 +89,8 @@ public class TeamController {
     @ApiOperation(value = "team 게시글 수정 API", notes = "팀 게시글을 수정합니다.")
     @PatchMapping("/team/{team_id}")
     public ResponseTemplate<String> update(@PathVariable Long team_id, @RequestBody TeamRequestDto requestDto){
-        try {
-            teamService.update(team_id, requestDto);
-            String result = "팀 수정에 성공하였습니다.";
-            return ResponseTemplate.of(SUCCESS, result);
-        }catch (ResponeException e){
-            return ResponseTemplate.of(e.getStatus());
-        }
+        teamService.update(team_id, requestDto);
+        String result = "팀 수정에 성공하였습니다.";
+        return ResponseTemplate.valueOf(result);
     }
 }
