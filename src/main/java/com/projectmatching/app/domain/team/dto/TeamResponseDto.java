@@ -38,7 +38,7 @@ public class TeamResponseDto {
         BeanUtils.copyProperties(team, teamResponseDto);
 
         List<UserTeam> userTeamList = team.getUserTeams().stream().collect(Collectors.toList());
-        if(userTeamList != null) {
+        if(userTeamList.size() != 0) {
             UserTeam findUser = userTeamList.get(0);
             teamResponseDto.user_id = findUser.getUser().getId();
         }
