@@ -42,13 +42,19 @@ public class UserDetailsImpl implements UserDetails {
 
     @Override
     public String getPassword() {
-        return null;
+        return this.pwd;
     }
 
     @Override
     public String getUsername() {
-        return null;
+        return this.name;
     }
+
+    public String getUserEmail(){
+        return this.email;
+    }
+
+
 
     @Override
     public boolean isAccountNonExpired() {

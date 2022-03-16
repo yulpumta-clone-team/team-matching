@@ -18,6 +18,7 @@ public class CoNectControllerAdvice {
     @ExceptionHandler(ResponeException.class)
     public ResponseEntity<ResponseTemplate<ResponseTemplateStatus>> except(ResponeException e){
         e.printStackTrace();
+        log.info("Controller Advice , Exception : {}",e);
         ResponseTemplateStatus status = e.getResponseTemplateStatus();
         return ResponseEntity.status(status.getHttpStatus()) //http code
                 .body(ResponseTemplate.of(status));

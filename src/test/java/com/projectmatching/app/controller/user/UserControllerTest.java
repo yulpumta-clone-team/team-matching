@@ -36,6 +36,7 @@ public class UserControllerTest extends ControllerTest {
     @MockBean
     private UserRepository userRepository;
 
+
     @MockBean
     private QUserRepository qUserRepository;
     @MockBean
@@ -113,7 +114,7 @@ public class UserControllerTest extends ControllerTest {
                 .content(JsonUtil.asJson(userJoinDto)))
                 .andDo(print())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(status().is(HttpStatus.BAD_REQUEST.value()))
+                .andExpect(status().is(HttpStatus.OK.value()))
                 .andExpect(jsonPath("code").value("3007"))
                 .andExpect(jsonPath("message").value("비밀번호 형식 오류"));
 
