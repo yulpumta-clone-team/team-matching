@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.springframework.beans.BeanUtils;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -30,8 +31,12 @@ public class TeamDetailResponseDto {
     private List<String> tech_stack;
     private String img;
     private Long read;
+    private Boolean status;
     private int comment_cnt;
     private int like_cnt;
+    private LocalDateTime create_at;
+    private LocalDateTime update_at;
+
     private List<TeamCommentDto> comment;
 
     public static TeamDetailResponseDto createEmpty(){return new TeamDetailResponseDto();}
@@ -42,7 +47,7 @@ public class TeamDetailResponseDto {
         BeanUtils.copyProperties(team, teamResponseDto);
 
         List<UserTeam> userTeamList = team.getUserTeams().stream().collect(Collectors.toList());
-        if(userTeamList != null) {
+        if(userTeamList.size() != 0) {
             UserTeam findUser = userTeamList.get(0);
             teamResponseDto.user_id = findUser.getUser().getId();
         }
@@ -64,6 +69,10 @@ public class TeamDetailResponseDto {
 
         teamResponseDto.comment_cnt = team.getTeamComments().size();
         //teamResponseDto.like_cnt = team.getUserLikings().size();
+
+        teamResponseDto.status = team.getStatus()=="NA" ? Boolean.FALSE : Boolean.TRUE;
+        teamResponseDto.create_at = team.getCreatedAt();
+        teamResponseDto.update_at = team.getUpdatedAt();
 
         return teamResponseDto;
     }

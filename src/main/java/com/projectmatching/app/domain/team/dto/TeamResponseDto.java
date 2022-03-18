@@ -29,6 +29,7 @@ public class TeamResponseDto {
     private int comment_cnt;
     private int like_cnt;
     private List<String> tech_stack;
+    private Boolean status;
 
     public static TeamResponseDto createEmpty(){return new TeamResponseDto();}
 
@@ -53,6 +54,8 @@ public class TeamResponseDto {
 
         teamResponseDto.comment_cnt = team.getTeamComments().size();
         //teamResponseDto.like_cnt = team.getUserLikings().size();
+
+        teamResponseDto.status = team.getStatus()=="NA" ? Boolean.FALSE : Boolean.TRUE;
 
         return teamResponseDto;
     }

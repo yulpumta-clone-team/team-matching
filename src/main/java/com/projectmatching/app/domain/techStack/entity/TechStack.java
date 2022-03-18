@@ -10,6 +10,8 @@ import java.util.Set;
 
 @Getter @Setter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
+@NoArgsConstructor
+@Builder
 @Entity
 @Table(name = "tech_stack")
 public class TechStack {
