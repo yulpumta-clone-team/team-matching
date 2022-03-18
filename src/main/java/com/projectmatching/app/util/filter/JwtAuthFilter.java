@@ -1,9 +1,12 @@
 package com.projectmatching.app.util.filter;
 
+import com.projectmatching.app.service.user.userdetail.UserDetailsImpl;
 import com.projectmatching.app.util.AuthTokenProvider;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -28,7 +31,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         // 유효한 토큰인지 확인합니다.
         if (token != null && authTokenProvider.validateToken(token)) {
             // 토큰이 유효하면 토큰으로부터 유저 정보를 받아옵니다.
-            Authentication authentication = authTokenProvider.getAuthentication(token);
+            Authentication authentication = getAuthentication(token);
             // SecurityContext 에 Authentication 객체를 저장합니다.
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }
@@ -45,4 +48,16 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         return excludeUrlPatterns.stream()
                 .anyMatch(pattern -> new AntPathMatcher().match(pattern, request.getServletPath()));
     }
+
+
+    // JWT 토큰에서 인증 정보 조회
+    private Authentication getAuthentication(String token) {
+        UserDetails userDetails = UserDetailsImpl.builder()
+                .email(authTokenProvider.getUserEmail(token))
+                .name(authTokenProvider.getUserName(token))
+                .role(authTokenProvider.getUserRole(token))
+                .build();
+        return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
+    }
+
 }

@@ -60,11 +60,9 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public Long addLiking(UserDetailsImpl userDetails, int userId){
-
+    public Long addLiking(UserDetailsImpl userDetails, long userId){
         User from = userRepository.getById(userDetails.getId());
-        User to = userRepository.getById((long) userId);
-
+        User to = userRepository.getById(userId);
         return null;
 
     }

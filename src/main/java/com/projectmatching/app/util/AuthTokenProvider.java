@@ -6,20 +6,21 @@ import com.projectmatching.app.domain.user.dto.UserLoginResDto;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseCookie;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.nio.charset.StandardCharsets;
+import java.security.Key;
 import java.util.Date;
+
+import static com.projectmatching.app.constant.JwtConstant.*;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -27,44 +28,65 @@ import java.util.Date;
 public class AuthTokenProvider {
 
 
+    private final Key key;
     private String secretKey = Secret.JWT_SECRET_KEY;
 
     // 토큰 유효시간 30분
-    private long tokenValidTime = 30 * 60 * 1000L;
+    private long tokenValidTime;
 
-    private final UserDetailsService userDetailsService;
+
+
+    @Autowired
+    public AuthTokenProvider(){
+        this.key = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
+        this.tokenValidTime = 30 * 60 * 1000L;
+    }
+
 
     // JWT 토큰 생성
-    public String createToken(String userName, Role roles) {
-        Claims claims = Jwts.claims().setSubject(userName); // JWT payload 에 저장되는 정보단위
-        claims.put("roles", roles.getKey()); // 정보는 key / value 쌍으로 저장된다.
+    public String createToken(UserLoginResDto user){
+        Claims claims = Jwts.claims().setSubject(user.getName()); // JWT payload 에 저장되는 정보단위
+        claims.put(CLAIM_ROLE, user.getRole().getKey()); // 정보는 key / value 쌍으로 저장된다.
+        claims.put(CLAIM_EMAIL,user.getEmail());
+        claims.put(CLAIM_NAME,user.getName());
         Date now = new Date();
         return Jwts.builder()
                 .setClaims(claims) // 정보 저장
                 .setIssuedAt(now) // 토큰 발행 시간 정보
                 .setExpiration(new Date(now.getTime() + tokenValidTime))// set Expire Time
-                .signWith(SignatureAlgorithm.HS256, secretKey)  // 사용할 암호화 알고리즘과
+                .signWith(key)  // 사용할 암호화 알고리즘과
                 // signature 에 들어갈 secret값 세팅
                 .compact();
+
     }
 
-    // JWT 토큰에서 인증 정보 조회
-    public Authentication getAuthentication(String token) {
-        UserDetails userDetails = userDetailsService.loadUserByUsername(this.getUserName(token));
-        return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
-    }
+
 
     // 토큰에서 회원 정보 추출
     public String getUserName(String token)  {
-
-        Jws<Claims> claims = Jwts.parserBuilder()
-                    .setSigningKey(Secret.JWT_SECRET_KEY)
-                    .build().parseClaimsJws(token);
-
-
-        return claims.getBody().get("username",String.class);
-
+        return getClaimProperty(token,CLAIM_NAME,String.class);
     }
+
+    public String getUserEmail(String token){
+        return getClaimProperty(token,CLAIM_EMAIL,String.class);
+    }
+
+    public Role getUserRole(String token){
+        return Role.valueOf(getClaimProperty(token,CLAIM_ROLE,String.class));
+    }
+
+    private <T> T getClaimProperty(String token, String property, Class<T> clazz) {
+        Jws<Claims> claims = getParsedClaimsJws(token);
+        return claims.getBody().get(property, clazz);
+    }
+
+    private Jws<Claims> getParsedClaimsJws(String token) {
+        return Jwts.parserBuilder()
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(token);
+    }
+
 
     // Request의 Header에서 token 값을 가져옵니다. "Authorization" : "TOKEN값'
     public String resolveToken(HttpServletRequest request) {
@@ -114,17 +136,4 @@ public class AuthTokenProvider {
 
     }
 
-    public String createToken(UserLoginResDto user){
-        Claims claims = Jwts.claims().setSubject(user.getName()); // JWT payload 에 저장되는 정보단위
-        claims.put("roles", user.getRole().getKey()); // 정보는 key / value 쌍으로 저장된다.
-        Date now = new Date();
-        return Jwts.builder()
-                .setClaims(claims) // 정보 저장
-                .setIssuedAt(now) // 토큰 발행 시간 정보
-                .setExpiration(new Date(now.getTime() + tokenValidTime))// set Expire Time
-                .signWith(SignatureAlgorithm.HS256, secretKey)  // 사용할 암호화 알고리즘과
-                // signature 에 들어갈 secret값 세팅
-                .compact();
-
-    }
 }

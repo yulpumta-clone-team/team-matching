@@ -114,7 +114,7 @@ public class UserController {
      */
     @ApiOperation(value = "특정 유저프로필 좋아요 누르기")
     @GetMapping("/liking/{user_id}")
-    public ResponseTemplate<Void> addUserLiking(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable(name="user_id") int userId){
+    public ResponseTemplate<Void> addUserLiking(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable(name="user_id") long userId){
         log.info("유저 좋아요 누르기, userDetails? = {}",userDetails);
         userService.addLiking(userDetails,userId);
         return ResponseTemplate.of(SUCCESS);

@@ -13,7 +13,7 @@ import java.util.Collection;
 @Getter
 @Setter
 @NoArgsConstructor
-
+@Builder
 //시큐리티에서는 UserDetails를 이용해 유저정보를 관리함
 public class UserDetailsImpl implements UserDetails {
 
@@ -25,7 +25,7 @@ public class UserDetailsImpl implements UserDetails {
     private String pwd;
 
 
-    @Builder
+
     public UserDetailsImpl(Long id, String oauthId, Role role, String email, String name, String pwd) {
         this.id = id;
         this.oauthId = oauthId;
