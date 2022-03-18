@@ -24,7 +24,7 @@ public class UserLoginResDto {
     private Role role;
 
 
-    public static UserLoginResDto toUserLoginDto(User user) {
+    public static UserLoginResDto toUserLoginResDto(User user) {
         UserLoginResDto userLoginResDto = UserLoginResDto.builder()
                 .img(user.getImg())
                 .email(user.getEmail())

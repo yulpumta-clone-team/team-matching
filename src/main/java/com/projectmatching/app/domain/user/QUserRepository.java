@@ -4,6 +4,7 @@ import com.projectmatching.app.domain.user.dto.UserLoginDto;
 import com.projectmatching.app.domain.user.entity.User;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
@@ -15,6 +16,7 @@ import static com.projectmatching.app.domain.user.entity.QUser.user;
 
 @Repository
 @RequiredArgsConstructor
+@Slf4j
 public class QUserRepository {
 
     private final JPAQueryFactory jpaQueryFactory;
@@ -24,13 +26,14 @@ public class QUserRepository {
      * 유저 로그인
      */
     public User login(UserLoginDto userLoginDto){
+
         return jpaQueryFactory.selectFrom(user)
                 .where(
-                        user.email.eq(userLoginDto.getEmail()),
-                        user.pwd.eq(userLoginDto.getPwd())
+                        user.email.eq(userLoginDto.getEmail())
                 ).fetchOne();
 
     }
+
 
 
     /**

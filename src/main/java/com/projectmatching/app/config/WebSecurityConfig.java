@@ -33,8 +33,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http)throws Exception {
         http.csrf().ignoringAntMatchers("/h2-console/**")
                 .disable();
-
-
         http.httpBasic().disable();
         http.csrf().disable().
                 cors().configurationSource(corsConfigurationSource())

@@ -117,4 +117,11 @@ public class UserControllerTest extends ControllerTest {
 
     }
 
+
+    @DisplayName("유저 좋아요 누르기")
+    @Test
+    void UserLikingTest(){
+
+
+    }
 }
