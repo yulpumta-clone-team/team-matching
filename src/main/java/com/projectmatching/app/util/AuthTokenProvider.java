@@ -2,6 +2,7 @@ package com.projectmatching.app.util;
 
 import com.projectmatching.app.config.secret.Secret;
 import com.projectmatching.app.domain.user.Role;
+import com.projectmatching.app.domain.user.dto.UserDto;
 import com.projectmatching.app.domain.user.dto.UserLoginResDto;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
@@ -45,8 +46,8 @@ public class AuthTokenProvider {
 
     // JWT 토큰 생성
     public String createToken(UserLoginResDto user){
-        Claims claims = Jwts.claims().setSubject(user.getName()); // JWT payload 에 저장되는 정보단위
-        claims.put(CLAIM_ROLE, user.getRole().getKey()); // 정보는 key / value 쌍으로 저장된다.
+        Claims claims = Jwts.claims(); // JWT payload 에 저장되는 정보단위
+        claims.put(CLAIM_ROLE, user.getRole()); // 정보는 key / value 쌍으로 저장된다.
         claims.put(CLAIM_EMAIL,user.getEmail());
         claims.put(CLAIM_NAME,user.getName());
         Date now = new Date();
@@ -54,10 +55,24 @@ public class AuthTokenProvider {
                 .setClaims(claims) // 정보 저장
                 .setIssuedAt(now) // 토큰 발행 시간 정보
                 .setExpiration(new Date(now.getTime() + tokenValidTime))// set Expire Time
-                .signWith(key)  // 사용할 암호화 알고리즘과
-                // signature 에 들어갈 secret값 세팅
+                .signWith(key)
                 .compact();
 
+    }
+
+    //JWT 토큰 생성 , OAuth Login 용
+    public String createToken(UserDto user){
+        Claims claims = Jwts.claims();
+        claims.put(CLAIM_ROLE, Role.USER); // 정보는 key / value 쌍으로 저장된다.
+        claims.put(CLAIM_EMAIL,user.getEmail());
+        claims.put(CLAIM_NAME,user.getName());
+        Date now = new Date();
+        return Jwts.builder()
+                .setClaims(claims) // 정보 저장
+                .setIssuedAt(now) // 토큰 발행 시간 정보
+                .setExpiration(new Date(now.getTime() + tokenValidTime))// set Expire Time
+                .signWith(key)
+                .compact();
     }
 
 
