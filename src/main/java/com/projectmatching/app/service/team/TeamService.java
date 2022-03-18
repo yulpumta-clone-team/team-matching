@@ -1,6 +1,8 @@
 package com.projectmatching.app.service.team;
 
 import com.projectmatching.app.config.resTemplate.ResponeException;
+import com.projectmatching.app.domain.liking.entity.TeamLiking;
+import com.projectmatching.app.domain.liking.repository.TeamLikingRepository;
 import com.projectmatching.app.domain.team.dto.TeamDetailResponseDto;
 import com.projectmatching.app.domain.team.dto.TeamRequestDto;
 import com.projectmatching.app.domain.team.dto.TeamResponseDto;
@@ -37,6 +39,7 @@ public class TeamService {
     private final TeamTechRepository teamTechRepository;
     private final UserRepository userRepository;
     private final UserTeamRepository userTeamRepository;
+    private final TeamLikingRepository teamLikingRepository;
 
     public Long save(TeamRequestDto requestDto, String email) throws ResponeException {
         User user = userRepository.findByEmail(email).orElseThrow(() -> new ResponeException(NOT_EXIST_USER));
@@ -88,7 +91,7 @@ public class TeamService {
     }
 
     public TeamDetailResponseDto getTeam(Long team_id) throws ResponeException {
-        Team team = teamRepository.findById(team_id).orElseThrow(() -> new ResponeException(INVALID_TEAM_IDX));
+        Team team = teamRepository.findById(team_id).orElseThrow(() -> new ResponeException(NOT_EXIST_TEAM));
         try{
             return TeamDetailResponseDto.of(team);
         }catch (Exception e){
@@ -104,8 +107,8 @@ public class TeamService {
         }
     }
 
-    public void update(Long teamId, TeamRequestDto teamRequestDto) throws ResponeException {
-        Team team = teamRepository.findById(teamId).orElseThrow(() -> new ResponeException(INVALID_TEAM_IDX));
+    public void update(Long team_id, TeamRequestDto teamRequestDto) throws ResponeException {
+        Team team = teamRepository.findById(team_id).orElseThrow(() -> new ResponeException(NOT_EXIST_TEAM));
         try {
             team.update(teamRequestDto);
             teamTechRepository.deleteAllByTeam_Id(team.getId());
@@ -123,6 +126,27 @@ public class TeamService {
             teamRepository.save(team);
         }catch(Exception e){
             throw new ResponeException(UPDATE_TEAM_ERROR);
+        }
+    }
+
+    public Boolean teamLike(Long user_id, Long team_id) throws ResponeException {
+        User user = userRepository.findById(user_id).orElseThrow(() -> new ResponeException(NOT_EXIST_USER));
+        Team team = teamRepository.findById(team_id).orElseThrow(() -> new ResponeException(NOT_EXIST_TEAM));
+        try {
+            Boolean check = teamLikingRepository.existsByUser_IdAndTeam_Id(user.getId(), team.getId());
+            if (check == false) {
+                TeamLiking teamLiking = TeamLiking.builder()
+                        .user(user)
+                        .team(team)
+                        .build();
+                teamLikingRepository.save(teamLiking);
+                return true;
+            } else {
+                teamLikingRepository.deleteByUser_IdAndTeam_Id(user.getId(), team.getId());
+                return false;
+            }
+        }catch(Exception e){
+            throw new ResponeException(TEAM_LIKE_ERROR);
         }
     }
 }

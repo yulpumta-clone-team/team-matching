@@ -9,13 +9,13 @@ import com.projectmatching.app.domain.team.dto.TeamRequestDto;
 import com.projectmatching.app.domain.team.dto.TeamResponseDto;
 import com.projectmatching.app.service.team.TeamService;
 import com.projectmatching.app.service.user.UserService;
+import com.projectmatching.app.service.user.userdetail.UserDetailsImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -39,7 +39,7 @@ public class TeamController {
      */
     @ApiOperation(value = "team 생성 API", notes = "team을 생성합니다.")
     @PostMapping("/team")
-    public ResponseTemplate<Long> saveTeam(@AuthenticationPrincipal UserDetails userDetails, @RequestBody TeamRequestDto requestDto){
+    public ResponseTemplate<Long> saveTeam(@AuthenticationPrincipal UserDetailsImpl userDetails, @RequestBody TeamRequestDto requestDto){
         if(requestDto.getT_name()==null) return ResponseTemplate.of(EMPTY_TEAM_NAME);
 
         String email = " ";  //email 받아오게 수정
@@ -85,6 +85,16 @@ public class TeamController {
     public ResponseTemplate<String> updateTeam(@PathVariable Long team_id, @RequestBody TeamRequestDto requestDto){
         teamService.update(team_id, requestDto);
         String result = "팀 수정에 성공하였습니다.";
+        return ResponseTemplate.valueOf(result);
+    }
+
+    /**
+     * team 좋아요 등록 및 삭제
+     */
+    @ApiOperation(value = "team 게시글 좋아요 등록 및 취소 API", notes = "팀 게시글을 수정합니다.")
+    @PostMapping("/team/liking/{team_id}/{user_id}")
+    public ResponseTemplate<Boolean> teamLike(@PathVariable Long team_id, @PathVariable Long user_id){  //user_id 부분 수정필요
+        Boolean result = teamService.teamLike(user_id, team_id);
         return ResponseTemplate.valueOf(result);
     }
 }

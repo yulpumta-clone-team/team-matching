@@ -51,11 +51,12 @@ public enum ResponseTemplateStatus {
     SAVE_TEAM_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "팀 등록 실패", 4000),
     EMPTY_TEAM_NAME(HttpStatus.BAD_REQUEST, "팀 이름을 입력해주세요.", 4001),
     GET_TEAMS_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "팀 게시글 리스트 가져오기 실패", 4002),
-    INVALID_TEAM_IDX(HttpStatus.BAD_REQUEST, "유효하지 않은 team id입니다.", 4003),
+    NOT_EXIST_TEAM(HttpStatus.BAD_REQUEST, "존재하지 않는 팀입니다.", 4003),
     DELETE_TEAM_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "팀 삭제하기 실패", 4004),
     NOT_EXIST_USER(HttpStatus.BAD_REQUEST, "존재하지 않는 유저입니다.", 4005),
     GET_TEAM_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "팀 게시글 가져오기 실패", 4006),
-    UPDATE_TEAM_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "팀 수정하기 실패", 4007)
+    UPDATE_TEAM_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "팀 수정하기 실패", 4007),
+    TEAM_LIKE_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "팀 좋아요 등록 및 취소 실패", 4008)
 
 
 
