@@ -36,6 +36,7 @@ public class TeamComment extends BaseTimeEntity {
 
     @OneToMany
     @JoinColumn(name = "team_comment_liking")
+    @Builder.Default
     private Set<TeamCommentLiking> teamCommentLikings = new HashSet<>();
 
 

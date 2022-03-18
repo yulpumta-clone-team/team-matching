@@ -64,6 +64,13 @@ public enum ResponseTemplateStatus {
     ,
 
     /**
+     * 4000: 댓글 관련 오류
+     */
+
+    ADD_COMMENT_FAILED(HttpStatus.BAD_REQUEST,"부모 댓글인 경우에만 대댓글을 달 수 있습니다.",4000)
+    ,
+
+    /**
      *
      * 9000: 논리적 에러
      */

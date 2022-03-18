@@ -20,15 +20,18 @@ public class UserDto {
     private String oauthId;
     private String email;
     private String name;
-    private String pwd;
     private String portfolio;
     private String slogan;
     private String img;
     private String content;//자기소개
-    private List<String> skills;
-    private String hope_session; //원하는 작업기간
-    private String job; //직업
 
+    private String hopeSession; //원하는 작업기간
+    private String job; //직업
+    private String status;
+    private int likeCnt;
+    private int commentCnt;
+    private List<String> userComments;
+    private List<String> skills;
 
 
     public static UserDto createEmpty() { return new UserDto();}
@@ -37,6 +40,8 @@ public class UserDto {
     public static UserDto of(User user){
         UserDto userDto = createEmpty();
         BeanUtils.copyProperties(user, userDto);
+        userDto.commentCnt = user.getUserComments().size();
+        userDto.likeCnt = user.getRespected();
         return userDto;
     }
 

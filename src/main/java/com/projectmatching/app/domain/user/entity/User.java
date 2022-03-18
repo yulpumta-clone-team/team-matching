@@ -22,58 +22,64 @@ import java.util.Set;
 public class User extends BaseTimeEntity  {
 
     @Id
-    @GeneratedValue
     private Long id;
 
-    @Column
+
     private String oauthId;
 
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    @Column
+
     private String email;
-    @Column
+
     private String name;
-    @Column
+
     private String pwd;
-    @Column
+
     private String img;
-    @Column
+
     private String portfolio;
-    @Column
+
     private String slogan;
 
     @Column(columnDefinition = "TEXT")
     private String content;
 
-    @Column
+
     private String hope_session;
 
-    @Column
+
     private String job;
+
+    @Column(columnDefinition = "INT")
+    private int respected;
 
 
     @OneToMany
     @JoinColumn(name="user_liking")
     @ToString.Exclude
+    @Builder.Default
     private Set<UserLiking> userLikings = new HashSet<>();
 
     @OneToMany
     @JoinColumn(name="user_comment_liking")
     @ToString.Exclude
+    @Builder.Default
     private Set<UserCommentLiking> userCommentLikings = new HashSet<>();
 
 
     @OneToMany
     @JoinColumn(name="user_comment")
     @ToString.Exclude
+    @Builder.Default
     private Set<UserComment> userComments = new HashSet<>();
 
 
     @OneToMany
     @JoinColumn(name="user_tech")
     @ToString.Exclude
+    @Builder.Default
     private Set<UserTech> skills = new HashSet<>();
 
 
