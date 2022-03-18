@@ -27,17 +27,17 @@ public class QUserLiking extends EntityPathBase<UserLiking> {
     //inherited
     public final DateTimePath<java.time.LocalDateTime> createdAt = _super.createdAt;
 
+    public final com.projectmatching.app.domain.user.entity.QUser fromUser;
+
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
     //inherited
     public final StringPath status = _super.status;
 
+    public final com.projectmatching.app.domain.user.entity.QUser toUser;
+
     //inherited
     public final DateTimePath<java.time.LocalDateTime> updatedAt = _super.updatedAt;
-
-    public final com.projectmatching.app.domain.user.entity.QUser user;
-
-    public final com.projectmatching.app.domain.comment.entity.QUserComment userComment;
 
     public QUserLiking(String variable) {
         this(UserLiking.class, forVariable(variable), INITS);
@@ -57,8 +57,8 @@ public class QUserLiking extends EntityPathBase<UserLiking> {
 
     public QUserLiking(Class<? extends UserLiking> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
-        this.user = inits.isInitialized("user") ? new com.projectmatching.app.domain.user.entity.QUser(forProperty("user")) : null;
-        this.userComment = inits.isInitialized("userComment") ? new com.projectmatching.app.domain.comment.entity.QUserComment(forProperty("userComment"), inits.get("userComment")) : null;
+        this.fromUser = inits.isInitialized("fromUser") ? new com.projectmatching.app.domain.user.entity.QUser(forProperty("fromUser")) : null;
+        this.toUser = inits.isInitialized("toUser") ? new com.projectmatching.app.domain.user.entity.QUser(forProperty("toUser")) : null;
     }
 
 }

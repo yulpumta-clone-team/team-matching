@@ -1,5 +1,7 @@
 package com.projectmatching.app.service.user;
 
+import com.projectmatching.app.domain.liking.entity.UserLiking;
+import com.projectmatching.app.domain.liking.repository.UserLikingRepository;
 import com.projectmatching.app.domain.user.QUserRepository;
 import com.projectmatching.app.domain.user.UserRepository;
 import com.projectmatching.app.domain.user.dto.UserDto;
@@ -26,6 +28,7 @@ public class UserServiceImpl implements UserService {
 
     private final QUserRepository qUserRepository;
     private final UserRepository userRepository;
+    private final UserLikingRepository userLikingRepository;
 
     @Transactional(readOnly = true)
     @Override
@@ -40,12 +43,12 @@ public class UserServiceImpl implements UserService {
     //유저 업데이트
     @Transactional
     @Override
-    public Long updateUser(UserDto NewUserDto) {
+    public UserDto updateUser(UserDto NewUserDto) {
         String userEmail = this.getAuthUserEmail();
         UserDto DBUser =  Optional.ofNullable(userRepository.findByEmail(userEmail))
               .map(u -> UserDto.of(u.get())).orElse(UserDto.createEmpty());
         BeanUtils.copyProperties(NewUserDto,DBUser);
-       return userRepository.save(DBUser.asEntity()).getId();
+       return UserDto.of(userRepository.save(DBUser.asEntity()));
     }
 
     @Transactional(readOnly = true)
@@ -58,12 +61,14 @@ public class UserServiceImpl implements UserService {
 
 
 
+    //좋아요 누르기
     @Transactional
     @Override
     public Long addLiking(UserDetailsImpl userDetails, long userId){
         User from = userRepository.getById(userDetails.getId());
         User to = userRepository.getById(userId);
-        return null;
+        UserLiking userLiking = UserLiking.builder().fromUser(from).toUser(to).build();
+        return userLikingRepository.save(userLiking).getId();
 
     }
 

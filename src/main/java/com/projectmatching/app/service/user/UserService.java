@@ -19,7 +19,7 @@ public interface UserService {
     List<UserProfileDto> getUserList(PageRequest pageRequest);
 
     //유저 업데이트
-    Long updateUser(UserDto userDto);
+    UserDto updateUser(UserDto userDto);
 
     //특정 유저 좋아요 누르기
     Long addLiking(UserDetailsImpl userDetails, long userId);
