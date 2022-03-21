@@ -8,6 +8,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Component;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -20,8 +21,10 @@ import java.util.Collection;
 import java.util.LinkedHashSet;
 
 
+
 @RequiredArgsConstructor
 @Slf4j
+@Component
 public class JwtAuthFilter extends OncePerRequestFilter {
 
     private final AuthTokenProvider authTokenProvider;
@@ -29,7 +32,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
-        String token = authTokenProvider.resolveCookie((HttpServletRequest) request);
+        String token = authTokenProvider.resolveCookie(request);
         // 유효한 토큰인지 확인합니다.
         if (token != null && authTokenProvider.validateToken(token)) {
             log.info("토큰 유효");

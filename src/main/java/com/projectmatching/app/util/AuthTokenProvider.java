@@ -114,9 +114,10 @@ public class AuthTokenProvider {
     // 토큰의 유효성 + 만료일자 확인
     public boolean validateToken(String jwtToken) {
         try {
-            Jws<Claims> claims = Jwts.parserBuilder().setSigningKey(secretKey).build().parseClaimsJws(jwtToken);
+            Jws<Claims> claims = Jwts.parserBuilder().setSigningKey(secretKey.getBytes()).build().parseClaimsJws(jwtToken);
             return !claims.getBody().getExpiration().before(new Date());
         } catch (Exception e) {
+            e.printStackTrace();
             return false;
         }
     }
@@ -143,10 +144,14 @@ public class AuthTokenProvider {
      */
 
     public String resolveCookie(HttpServletRequest request){
+
         final Cookie[] cookies = request.getCookies();
         if(cookies == null)return  null;
         for(Cookie cookie : cookies){
+            log.info("쿠키 이름 : {}",cookie.getName());
+            log.info("쿠키 값 : {}",cookie.getValue());
             if(cookie.getName().equals("Authorization")){
+                log.info("통과");
                 return cookie.getValue();
             }
         }

@@ -1,6 +1,6 @@
 package com.projectmatching.app.service.user;
 
-import com.projectmatching.app.domain.liking.entity.UserLiking;
+import com.projectmatching.app.domain.liking.dto.UserLikingDto;
 import com.projectmatching.app.domain.liking.repository.UserLikingRepository;
 import com.projectmatching.app.domain.user.QUserRepository;
 import com.projectmatching.app.domain.user.UserRepository;
@@ -65,10 +65,11 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public Long addLiking(UserDetailsImpl userDetails, long userId){
-        User from = userRepository.getById(userDetails.getId());
-        User to = userRepository.getById(userId);
-        UserLiking userLiking = UserLiking.builder().fromUser(from).toUser(to).build();
-        return userLikingRepository.save(userLiking).getId();
+        User from = userRepository.findByEmail(userDetails.getEmail()).orElseThrow(RuntimeException::new);
+        User to = userRepository.findById(userId).orElseThrow(RuntimeException::new);
+        UserLikingDto userLikingDto = UserLikingDto.of(from,to);
+        return userLikingRepository.save(userLikingDto.asEntity()).getId();
+
 
     }
 

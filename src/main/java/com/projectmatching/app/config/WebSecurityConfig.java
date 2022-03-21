@@ -39,18 +39,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .formLogin().disable()
                     .authorizeRequests()
                     .antMatchers("/h2-console/**").permitAll()
-                    .antMatchers("/login").permitAll()
+                    .antMatchers("/user/login").permitAll()
+                    .antMatchers("/user/join/**").permitAll()
                     .antMatchers(
                         "/swagger*/**",
                         "/webjars/**",
                         "/v2/api-docs").permitAll()
-                    .anyRequest().permitAll()
+                    .anyRequest().authenticated()
                 .and()
                 .headers()
                 .frameOptions().sameOrigin() // h2 console을 위해
                 .and()
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
-//                .antMatchers("/").hasRole(Role.USER.name())
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) //토큰 사용하므로 세션 사용 x
                 .and()
                 .logout()
