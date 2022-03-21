@@ -65,10 +65,10 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public Long addLiking(UserDetailsImpl userDetails, long userId){
-        User from = userRepository.findByEmail(userDetails.getEmail()).orElseThrow(RuntimeException::new);
+        User from =userRepository.findByEmail(userDetails.getEmail()).orElseThrow(RuntimeException::new);
         User to = userRepository.findById(userId).orElseThrow(RuntimeException::new);
-        UserLikingDto userLikingDto = UserLikingDto.of(from,to);
-        return userLikingRepository.save(userLikingDto.asEntity()).getId();
+        UserLikingDto userLikingDto = new UserLikingDto();
+        return userLikingRepository.save(userLikingDto.asEntity(from,to)).getId();
 
 
     }
