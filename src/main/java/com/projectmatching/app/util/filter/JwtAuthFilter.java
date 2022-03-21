@@ -47,7 +47,6 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         Collection<String> excludeUrlPatterns = new LinkedHashSet<>();
         excludeUrlPatterns.add("/login/**");
         excludeUrlPatterns.add("/join/**");
-        excludeUrlPatterns.add("/**");
         excludeUrlPatterns.add("/h2-console/**");
         return excludeUrlPatterns.stream()
                 .anyMatch(pattern -> new AntPathMatcher().match(pattern, request.getServletPath()));
