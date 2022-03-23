@@ -42,8 +42,7 @@ public class TeamController {
     public ResponseTemplate<Long> saveTeam(@AuthenticationPrincipal UserDetailsImpl userDetails, @RequestBody TeamRequestDto requestDto){
         if(requestDto.getT_name()==null) return ResponseTemplate.of(EMPTY_TEAM_NAME);
 
-        String email = " ";  //email 받아오게 수정
-        Long result = teamService.save(requestDto, email);
+        Long result = teamService.save(requestDto, userDetails.getName());
         return ResponseTemplate.valueOf(result);
     }
 
@@ -62,8 +61,8 @@ public class TeamController {
      */
     @ApiOperation(value = "team 게시글 삭제 API", notes = "팀 게시글을 삭제합니다.")
     @DeleteMapping("/team/{team_id}")
-    public ResponseTemplate<String> deleteTeam(@PathVariable Long team_id){
-        teamService.delete(team_id);
+    public ResponseTemplate<String> deleteTeam(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long team_id){
+        teamService.delete(team_id, userDetails.getName());
         String result = "팀 삭제에 성공하였습니다.";
         return ResponseTemplate.valueOf(result);
     }
@@ -82,8 +81,8 @@ public class TeamController {
      */
     @ApiOperation(value = "team 게시글 수정 API", notes = "팀 게시글을 수정합니다.")
     @PatchMapping("/team/{team_id}")
-    public ResponseTemplate<String> updateTeam(@PathVariable Long team_id, @RequestBody TeamRequestDto requestDto){
-        teamService.update(team_id, requestDto);
+    public ResponseTemplate<String> updateTeam(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long team_id, @RequestBody TeamRequestDto requestDto){
+        teamService.update(team_id, requestDto, userDetails.getName());
         String result = "팀 수정에 성공하였습니다.";
         return ResponseTemplate.valueOf(result);
     }
@@ -93,8 +92,8 @@ public class TeamController {
      */
     @ApiOperation(value = "team 게시글 좋아요 등록 및 취소 API", notes = "팀 게시글을 수정합니다.")
     @PostMapping("/team/liking/{team_id}/{user_id}")
-    public ResponseTemplate<Boolean> teamLike(@PathVariable Long team_id, @PathVariable Long user_id){  //user_id 부분 수정필요
-        Boolean result = teamService.teamLike(user_id, team_id);
+    public ResponseTemplate<Boolean> teamLike(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long team_id){  //user_id 부분 수정필요
+        Boolean result = teamService.teamLike(team_id, userDetails.getName());
         return ResponseTemplate.valueOf(result);
     }
 }

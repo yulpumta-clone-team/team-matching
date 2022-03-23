@@ -38,8 +38,9 @@ public class TeamDetailResponseDto {
     private LocalDateTime update_at;
 
     private List<TeamCommentDto> comment;
-
+    /**
     public static TeamDetailResponseDto createEmpty(){return new TeamDetailResponseDto();}
+
 
     //entity를 dto로
     public static TeamDetailResponseDto of(Team team){
@@ -83,5 +84,5 @@ public class TeamDetailResponseDto {
         BeanUtils.copyProperties(this,team);
         return team;
 
-    }
+    }**/
 }

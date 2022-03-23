@@ -1,8 +1,10 @@
 package com.projectmatching.app.service.team;
 
 import com.projectmatching.app.config.resTemplate.ResponeException;
+import com.projectmatching.app.domain.comment.entity.TeamComment;
 import com.projectmatching.app.domain.liking.entity.TeamLiking;
 import com.projectmatching.app.domain.liking.repository.TeamLikingRepository;
+import com.projectmatching.app.domain.team.dto.TeamCommentDto;
 import com.projectmatching.app.domain.team.dto.TeamDetailResponseDto;
 import com.projectmatching.app.domain.team.dto.TeamRequestDto;
 import com.projectmatching.app.domain.team.dto.TeamResponseDto;
@@ -18,6 +20,7 @@ import com.projectmatching.app.domain.user.dto.UserProfileDto;
 import com.projectmatching.app.domain.user.entity.User;
 import com.projectmatching.app.domain.user.entity.UserTeam;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -82,9 +85,27 @@ public class TeamService {
     public List<TeamResponseDto> getTeams(PageRequest pageRequest) throws ResponeException {
 
         try {
-            return teamRepository.getTeams(pageRequest)
-                    .stream().map(TeamResponseDto::of)
-                    .collect(Collectors.toList());
+            List<Team> teams = teamRepository.getTeams(pageRequest);
+            List<TeamResponseDto> responseDtos = new ArrayList<>();
+
+            for(Team team : teams){
+                TeamResponseDto teamResponseDto = new TeamResponseDto();
+                BeanUtils.copyProperties(team, teamResponseDto);
+                teamResponseDto.setUser_id(findTeamUser(team));
+                teamResponseDto.setTech_stack(findTeamTech(team));
+                teamResponseDto.setComment_cnt(team.getTeamComments().size());
+                teamResponseDto.setLike_cnt(team.getTeamLikings().size());
+
+                if(team.getStatus()=="NA") {
+                    teamResponseDto.setStatus(Boolean.FALSE);
+                } else{
+                    teamResponseDto.setStatus(Boolean.TRUE);
+                }
+
+                responseDtos.add(teamResponseDto);
+            }
+            return responseDtos;
+
         }catch (Exception e){
             throw new ResponeException(GET_TEAMS_ERROR);
         }
@@ -93,13 +114,62 @@ public class TeamService {
     public TeamDetailResponseDto getTeam(Long team_id) throws ResponeException {
         Team team = teamRepository.findById(team_id).orElseThrow(() -> new ResponeException(NOT_EXIST_TEAM));
         try{
-            return TeamDetailResponseDto.of(team);
+            TeamDetailResponseDto teamResponseDto = new TeamDetailResponseDto();
+            BeanUtils.copyProperties(team, teamResponseDto);
+            teamResponseDto.setUser_id(findTeamUser(team));
+            teamResponseDto.setTech_stack(findTeamTech(team));
+            teamResponseDto.setComment(findTeamComment(team));
+            teamResponseDto.setComment_cnt(team.getTeamComments().size());
+            teamResponseDto.setLike_cnt(team.getTeamLikings().size());
+
+            if(team.getStatus()=="NA") {
+                teamResponseDto.setStatus(Boolean.FALSE);
+            } else{
+                teamResponseDto.setStatus(Boolean.TRUE);
+            }
+            teamResponseDto.setCreate_at(team.getCreatedAt());
+            teamResponseDto.setUpdate_at(team.getUpdatedAt());
+
+            return teamResponseDto;
         }catch (Exception e){
             throw new ResponeException(GET_TEAM_ERROR);
         }
     }
 
-    public void delete(Long team_id) throws ResponeException {
+    public Long findTeamUser(Team team){
+        List<UserTeam> userTeamList = team.getUserTeams().stream().collect(Collectors.toList());
+        if(userTeamList.size() != 0) {
+            UserTeam findUser = userTeamList.get(0);
+            return findUser.getUser().getId();
+        }
+        else return null;
+    }
+
+    public List<String> findTeamTech(Team team){
+        Set<TeamTech> teamTechSet = team.getTeamTeches();
+        List<String> findTeamTech = new ArrayList<>();
+        for (TeamTech tech : teamTechSet){
+            TechStack t = tech.getTechStack();
+            if(t!=null) findTeamTech.add(t.getName());
+        }
+        return findTeamTech;
+    }
+
+    public List<TeamCommentDto> findTeamComment(Team team){
+        List<TeamComment> teamCommentList = team.getTeamComments().stream().collect(Collectors.toList());
+        List<TeamCommentDto> findComment = new ArrayList<>();
+        for (TeamComment c : teamCommentList){
+            findComment.add(new TeamCommentDto(c.getId(), c.getParentId(), c.getSecret(), c.getContent(), c.getCreatedAt()));
+        }
+        return findComment;
+    }
+
+    public void delete(Long team_id, String email) throws ResponeException {
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new ResponeException(NOT_EXIST_USER));
+        Team team = teamRepository.findById(team_id).orElseThrow(() -> new ResponeException(NOT_EXIST_TEAM));
+
+        if(checkTeamUser(team, user)==false) throw new ResponeException(PERMISSION_DENIED);
+
         try{
             teamRepository.deleteTeam(team_id);
         }catch(Exception e){
@@ -107,8 +177,12 @@ public class TeamService {
         }
     }
 
-    public void update(Long team_id, TeamRequestDto teamRequestDto) throws ResponeException {
+    public void update(Long team_id, TeamRequestDto teamRequestDto, String email) throws ResponeException {
         Team team = teamRepository.findById(team_id).orElseThrow(() -> new ResponeException(NOT_EXIST_TEAM));
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new ResponeException(NOT_EXIST_USER));
+
+        if(checkTeamUser(team, user)==false) throw new ResponeException(PERMISSION_DENIED);
+
         try {
             team.update(teamRequestDto);
             teamTechRepository.deleteAllByTeam_Id(team.getId());
@@ -129,8 +203,17 @@ public class TeamService {
         }
     }
 
-    public Boolean teamLike(Long user_id, Long team_id) throws ResponeException {
-        User user = userRepository.findById(user_id).orElseThrow(() -> new ResponeException(NOT_EXIST_USER));
+    public boolean checkTeamUser(Team team, User user){
+        List<UserTeam> userTeamList = team.getUserTeams().stream().collect(Collectors.toList());
+        boolean find = false;
+        for(UserTeam userTeam : userTeamList){
+            if(userTeam.getUser().getId() == user.getId()) find = true;
+        }
+        return find;
+    }
+
+    public Boolean teamLike(Long team_id, String email) throws ResponeException {
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new ResponeException(NOT_EXIST_USER));
         Team team = teamRepository.findById(team_id).orElseThrow(() -> new ResponeException(NOT_EXIST_TEAM));
         try {
             Boolean check = teamLikingRepository.existsByUser_IdAndTeam_Id(user.getId(), team.getId());

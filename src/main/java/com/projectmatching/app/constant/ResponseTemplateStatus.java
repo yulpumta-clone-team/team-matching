@@ -56,7 +56,8 @@ public enum ResponseTemplateStatus {
     NOT_EXIST_USER(HttpStatus.BAD_REQUEST, "존재하지 않는 유저입니다.", 4005),
     GET_TEAM_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "팀 게시글 가져오기 실패", 4006),
     UPDATE_TEAM_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "팀 수정하기 실패", 4007),
-    TEAM_LIKE_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "팀 좋아요 등록 및 취소 실패", 4008)
+    TEAM_LIKE_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "팀 좋아요 등록 및 취소 실패", 4008),
+    PERMISSION_DENIED(HttpStatus.INTERNAL_SERVER_ERROR, "게시글 작성자만 사용할 수 있습니다.", 4009)
 
 
 

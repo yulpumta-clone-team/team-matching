@@ -31,6 +31,7 @@ public class TeamResponseDto {
     private List<String> tech_stack;
     private Boolean status;
 
+    /**
     public static TeamResponseDto createEmpty(){return new TeamResponseDto();}
 
     //entity를 dto로
@@ -66,5 +67,5 @@ public class TeamResponseDto {
         BeanUtils.copyProperties(this,team);
         return team;
 
-    }
+    }**/
 }
