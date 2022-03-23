@@ -43,7 +43,9 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public Long addUserCommnet(Long userPostId) {
+    public Long addUserComment(String content,Long userPostId) {
+
+
         return null;
     }
 
@@ -78,7 +80,9 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public Long addUserNestedComment(Long userPostId, Long parentCommentId) {
+    public Long addUserNestedComment(String content,Long userPostId, Long parentCommentId) {
+        UserComment userComment = userCommentRepository.getUserCommentByPostId(userPostId);
+
         return null;
     }
 

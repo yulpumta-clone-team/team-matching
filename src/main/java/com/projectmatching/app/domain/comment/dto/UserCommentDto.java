@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.projectmatching.app.util.StreamUtil.mapToSet;
+
 @Getter @Setter
 @ToString
 @NoArgsConstructor
@@ -58,6 +60,10 @@ public class UserCommentDto {
     public UserComment asEntity(){
         UserComment userComment = new UserComment();
         BeanUtils.copyProperties(this, userComment);
+
+        userComment.setComments(mapToSet(this.comments,UserCommentDto::asEntity));
+        userComment.setUserCommentLikings(mapToSet(this.feelings,UserCommentLikingDto::asEntity));
+
         return userComment;
 
     }

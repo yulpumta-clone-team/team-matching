@@ -16,7 +16,7 @@ public interface CommentService {
     Long addTeamComment(Long teamPostId);
     Long updateTeamComment(Long teamPostId, Long commentId);
 
-    Long addUserCommnet(Long userPostId);
+    Long addUserComment(String content,Long userPostId);
     Long updateUserComment(Long userPostId, Long comentId);
 
     void deleteUserComment(Long userPostId, Long commentId);

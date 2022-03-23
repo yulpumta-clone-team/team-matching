@@ -1,4 +1,4 @@
-package com.projectmatching.app.service.user;
+package com.projectmatching.app.service.user.Impl;
 
 import com.projectmatching.app.domain.liking.dto.UserLikingDto;
 import com.projectmatching.app.domain.liking.repository.UserLikingRepository;
@@ -8,15 +8,13 @@ import com.projectmatching.app.domain.user.dto.UserDto;
 import com.projectmatching.app.domain.user.dto.UserProfileDto;
 import com.projectmatching.app.domain.user.entity.User;
 import com.projectmatching.app.exception.CoNectRuntimeException;
+import com.projectmatching.app.service.user.UserService;
 import com.projectmatching.app.service.user.userdetail.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
-import org.springframework.context.annotation.Bean;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -50,7 +48,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public UserDto updateUser(UserDto NewUserDto) {
-        String userEmail = userDetails.getUsername()
+        String userEmail = userDetails.getUsername();
         UserDto DBUser =  Optional.ofNullable(userRepository.findByEmail(userEmail))
               .map(u -> UserDto.of(u.get())).orElse(UserDto.createEmpty());
         BeanUtils.copyProperties(NewUserDto,DBUser);
