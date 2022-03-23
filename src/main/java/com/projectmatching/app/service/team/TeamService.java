@@ -156,7 +156,7 @@ public class TeamService {
         List<TeamComment> teamCommentList = team.getTeamComments().stream().collect(Collectors.toList());
         List<TeamCommentDto> findComment = new ArrayList<>();
         for (TeamComment c : teamCommentList){
-            findComment.add(new TeamCommentDto(c.getId(), c.getParentId(), c.getSecret(), c.getContent(), c.getCreatedAt()));
+            //findComment.add(new TeamCommentDto(c.getId(), c.getParentId(), c.getSecret(), c.getContent(), c.getStatus(), c.getCreatedAt()));
         }
         return findComment;
     }

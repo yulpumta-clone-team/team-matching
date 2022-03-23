@@ -1,6 +1,7 @@
 package com.projectmatching.app.domain.user.entity;
 
 import com.projectmatching.app.domain.BaseTimeEntity;
+import com.projectmatching.app.domain.comment.entity.TeamComment;
 import com.projectmatching.app.domain.comment.entity.UserComment;
 import com.projectmatching.app.domain.liking.entity.UserCommentLiking;
 import com.projectmatching.app.domain.liking.entity.UserLiking;
@@ -83,8 +84,11 @@ public class User extends BaseTimeEntity  {
     private Set<UserTech> skills = new HashSet<>();
 
 
-    @OneToMany(mappedBy = "team", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private Set<UserTeam> userTeams = new HashSet<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private Set<TeamComment> teamComments = new HashSet<>();
 
     public User(String oauthId,String name, String email, Role role ){
         this.id = null;
