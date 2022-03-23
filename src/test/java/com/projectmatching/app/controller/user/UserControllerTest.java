@@ -1,25 +1,23 @@
 package com.projectmatching.app.controller.user;
 
 import com.projectmatching.app.controller.ControllerTest;
+import com.projectmatching.app.domain.liking.repository.UserLikingRepository;
 import com.projectmatching.app.domain.user.QUserRepository;
 import com.projectmatching.app.domain.user.UserRepository;
 import com.projectmatching.app.domain.user.dto.UserJoinDto;
 import com.projectmatching.app.domain.user.entity.User;
 import com.projectmatching.app.service.user.UserService;
-import com.projectmatching.app.service.user.UserServiceImpl;
 import com.projectmatching.app.util.JsonUtil;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.AdditionalAnswers;
-import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.test.context.event.annotation.BeforeTestClass;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -36,24 +34,22 @@ public class UserControllerTest extends ControllerTest {
     @MockBean
     private UserRepository userRepository;
 
-
     @MockBean
     private QUserRepository qUserRepository;
+
+    @MockBean
+    private UserLikingRepository userLikingRepository;
+
+
     @MockBean
     private PasswordEncoder passwordEncoder;
 
 
     private UserJoinDto userJoinDto;
 
+    @MockBean
     private UserService userService;
 
-
-    @BeforeTestClass
-    public void setup(){
-        MockitoAnnotations.openMocks(this);
-        userService = new UserServiceImpl(qUserRepository,userRepository);
-
-    }
 
 
     @DisplayName("유저 회원가입 요청 테스트")
@@ -114,11 +110,18 @@ public class UserControllerTest extends ControllerTest {
                 .content(JsonUtil.asJson(userJoinDto)))
                 .andDo(print())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(status().is(HttpStatus.OK.value()))
+                .andExpect(status().is(HttpStatus.BAD_REQUEST.value()))
                 .andExpect(jsonPath("code").value("3007"))
                 .andExpect(jsonPath("message").value("비밀번호 형식 오류"));
 
 
     }
 
+
+    @DisplayName("유저 좋아요 누르기")
+    @Test
+    void UserLikingTest(){
+
+
+    }
 }

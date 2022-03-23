@@ -6,9 +6,11 @@ import com.projectmatching.app.domain.user.QUserRepository;
 import com.projectmatching.app.domain.user.UserRepository;
 import com.projectmatching.app.domain.user.dto.UserLoginDto;
 import com.projectmatching.app.domain.user.dto.UserLoginResDto;
+import com.projectmatching.app.domain.user.entity.User;
 import com.projectmatching.app.util.AuthTokenProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,6 +27,7 @@ public class UserSignInServiceImpl implements UserSignInService{
     private final UserRepository userRepository;
     private final QUserRepository qUserRepository;
     private final AuthTokenProvider jwtTokenProvider;
+    private final PasswordEncoder passwordEncoder;
 
     //유저 로그인
     /**
@@ -38,13 +41,20 @@ public class UserSignInServiceImpl implements UserSignInService{
     @Validation
     public UserLoginResDto userLogin(UserLoginDto userLoginDto, HttpServletResponse response){
         try {
-            //로그인 성공시 유저 이미지와 이름 아이디를 반환, 최초 로그인인지도 체크하여 반환
-            UserLoginResDto userLoginResDto = Optional.ofNullable(qUserRepository.login(userLoginDto))
-                    .map(UserLoginResDto::toUserLoginDto)
-                    .orElseThrow(NullPointerException::new);
-            jwtTokenProvider.createCookie(response, jwtTokenProvider.createToken(userLoginResDto)); //쿠키 생성
-            return userLoginResDto;
+            User user = userRepository.findByEmail(userLoginDto.getEmail()).orElseThrow(NullPointerException::new);
+            if(passwordEncoder.matches(userLoginDto.getPwd(),user.getPwd())){
+                //로그인 성공시 유저 이미지와 이름 아이디를 반환, 최초 로그인인지도 체크하여 반환
+                UserLoginResDto userLoginResDto = Optional.ofNullable(qUserRepository.login(userLoginDto))
+                        .map(UserLoginResDto::toUserLoginResDto)
+                        .orElseThrow(NullPointerException::new);
+                jwtTokenProvider.createCookie(response, jwtTokenProvider.createToken(userLoginResDto)); //쿠키 생성
+                return userLoginResDto;
+            }
+
+            throw new ResponeException(LOGIN_USER_ERROR);
+
         }catch (NullPointerException e){
+            e.printStackTrace();
             throw new ResponeException(LOGIN_USER_ERROR);
         }
     }

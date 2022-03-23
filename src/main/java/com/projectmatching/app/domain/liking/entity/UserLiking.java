@@ -2,7 +2,6 @@ package com.projectmatching.app.domain.liking.entity;
 
 
 import com.projectmatching.app.domain.BaseTimeEntity;
-import com.projectmatching.app.domain.comment.entity.UserComment;
 import com.projectmatching.app.domain.user.entity.User;
 import lombok.*;
 
@@ -21,12 +20,14 @@ public class UserLiking extends BaseTimeEntity {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="user_id")
-    private User user;
+    @JoinColumn(name="from_id")
+    @ToString.Exclude
+    private User fromUser;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "comment_id")
+    @JoinColumn(name = "to_id")
     @ToString.Exclude
-    private UserComment userComment;
+    private User toUser;
+
 
 }

@@ -18,14 +18,16 @@ public class UserLoginResDto {
 
     private Long id;
     private String img;
+    private String email;
     private String name;
     private Boolean isFirst;//최초 로그인인지 확인하는 부분
     private Role role;
 
 
-    public static UserLoginResDto toUserLoginDto(User user) {
+    public static UserLoginResDto toUserLoginResDto(User user) {
         UserLoginResDto userLoginResDto = UserLoginResDto.builder()
                 .img(user.getImg())
+                .email(user.getEmail())
                 .id(user.getId())
                 .name(user.getName())
                 .role(user.getRole())

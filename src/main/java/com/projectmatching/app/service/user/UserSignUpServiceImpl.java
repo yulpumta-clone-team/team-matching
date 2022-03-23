@@ -3,6 +3,7 @@ package com.projectmatching.app.service.user;
 import com.projectmatching.app.annotation.Validation;
 import com.projectmatching.app.config.resTemplate.ResponeException;
 import com.projectmatching.app.constant.ResponseTemplateStatus;
+import com.projectmatching.app.domain.user.Role;
 import com.projectmatching.app.domain.user.UserRepository;
 import com.projectmatching.app.domain.user.dto.UserJoinDto;
 import com.projectmatching.app.domain.user.entity.User;
@@ -31,7 +32,9 @@ public class UserSignUpServiceImpl implements UserSignUpService{
         try {
             checkUserValidation(userJoinDto);
             userJoinDto.setPwd(passwordEncoder.encode(userJoinDto.getPwd())); //비밀번호 암호화
-            User user = userJoinDto.asEntity();
+            User user = userJoinDto.asEntity(Role.USER);
+            log.info("유저 info : {}",user);
+
             return userRepository.save(user).getId();
         }catch (ResponeException e){
             throw e;

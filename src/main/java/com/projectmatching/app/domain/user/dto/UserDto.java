@@ -1,6 +1,7 @@
 package com.projectmatching.app.domain.user.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.projectmatching.app.domain.comment.dto.UserCommentDto;
 import com.projectmatching.app.domain.user.entity.User;
 import com.projectmatching.app.util.IdGenerator;
 import lombok.*;
@@ -30,7 +31,7 @@ public class UserDto {
     private String status;
     private int likeCnt;
     private int commentCnt;
-    private List<String> userComments;
+    private List<UserCommentDto> userComments; //유저에 달린 댓글
     private List<String> skills;
 
 

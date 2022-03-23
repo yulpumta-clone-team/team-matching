@@ -1,7 +1,6 @@
 package com.projectmatching.app.config.handler;
 
 import com.projectmatching.app.config.YAMLConfig;
-import com.projectmatching.app.domain.user.Role;
 import com.projectmatching.app.domain.user.UserRepository;
 import com.projectmatching.app.domain.user.dto.UserDto;
 import com.projectmatching.app.util.AuthTokenProvider;
@@ -41,8 +40,7 @@ public class OAuth2AuthenticationSuccessHandler implements AuthenticationSuccess
 
         OAuth2User oAuth2User = (OAuth2User)authentication.getPrincipal();
         UserDto user = toDto(oAuth2User);
-
-        String token = authTokenProvider.createToken(user.getName(),Role.GUEST);
+        String token = authTokenProvider.createToken(user);
         log.info("Oatuh 로그인후 토큰 생성  : {}",token);
 
         writeTokenCookie(response,token);

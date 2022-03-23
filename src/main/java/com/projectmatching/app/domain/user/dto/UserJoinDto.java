@@ -1,10 +1,13 @@
 package com.projectmatching.app.domain.user.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.projectmatching.app.config.resTemplate.ResponeException;
 import com.projectmatching.app.constant.ResponseTemplateStatus;
 import com.projectmatching.app.domain.Validatable;
+import com.projectmatching.app.domain.user.Role;
 import com.projectmatching.app.domain.user.entity.User;
+import com.projectmatching.app.util.IdGenerator;
 import lombok.*;
 import org.springframework.beans.BeanUtils;
 
@@ -22,6 +25,8 @@ import static com.projectmatching.app.constant.ServiceConstant.REGEX_PWD;
 
 public class UserJoinDto implements Validatable {
 
+    @JsonIgnore
+    private Long id = IdGenerator.number();
     private String email;
 
     private String name;
@@ -39,16 +44,17 @@ public class UserJoinDto implements Validatable {
     public static UserJoinDto createEmpty() { return new UserJoinDto();}
 
     //dto를 entity로
-    public User asEntity(){
+    public User asEntity(Role role){
         User user = new User();
         BeanUtils.copyProperties(this,user);
+        user.setRole(role);
         return user;
 
     }
 
 
     //entity를 dto로
-    public static UserJoinDto of(User user ){
+    public static UserJoinDto of(User user){
         UserJoinDto userJoinDto = createEmpty();
         BeanUtils.copyProperties(user, userJoinDto);
         return userJoinDto;

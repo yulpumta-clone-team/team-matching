@@ -1,6 +1,7 @@
 package com.projectmatching.app.domain.user.dto;
 
 import com.projectmatching.app.domain.user.entity.User;
+import com.projectmatching.app.util.IdGenerator;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -13,7 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 public class UserProfileDto {
 
-    private Long id;
+    private Long id = IdGenerator.number();
     private String name;
     private String slogan;
     private String description;

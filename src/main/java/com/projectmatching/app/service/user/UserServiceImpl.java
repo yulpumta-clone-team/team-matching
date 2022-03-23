@@ -1,10 +1,14 @@
 package com.projectmatching.app.service.user;
 
+import com.projectmatching.app.domain.liking.dto.UserLikingDto;
+import com.projectmatching.app.domain.liking.repository.UserLikingRepository;
 import com.projectmatching.app.domain.user.QUserRepository;
 import com.projectmatching.app.domain.user.UserRepository;
 import com.projectmatching.app.domain.user.dto.UserDto;
 import com.projectmatching.app.domain.user.dto.UserProfileDto;
+import com.projectmatching.app.domain.user.entity.User;
 import com.projectmatching.app.exception.CoNectRuntimeException;
+import com.projectmatching.app.service.user.userdetail.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -24,6 +28,7 @@ public class UserServiceImpl implements UserService {
 
     private final QUserRepository qUserRepository;
     private final UserRepository userRepository;
+    private final UserLikingRepository userLikingRepository;
 
     @Transactional(readOnly = true)
     @Override
@@ -38,12 +43,12 @@ public class UserServiceImpl implements UserService {
     //유저 업데이트
     @Transactional
     @Override
-    public Long updateUser(UserDto NewUserDto) {
+    public UserDto updateUser(UserDto NewUserDto) {
         String userEmail = this.getAuthUserEmail();
         UserDto DBUser =  Optional.ofNullable(userRepository.findByEmail(userEmail))
               .map(u -> UserDto.of(u.get())).orElse(UserDto.createEmpty());
         BeanUtils.copyProperties(NewUserDto,DBUser);
-       return userRepository.save(DBUser.asEntity()).getId();
+       return UserDto.of(userRepository.save(DBUser.asEntity()));
     }
 
     @Transactional(readOnly = true)
@@ -52,6 +57,20 @@ public class UserServiceImpl implements UserService {
         return qUserRepository.find(pageRequest)
                 .stream().map(UserProfileDto::of)
                 .collect(Collectors.toList());
+    }
+
+
+
+    //좋아요 누르기
+    @Transactional
+    @Override
+    public Long addLiking(UserDetailsImpl userDetails, long userId){
+        User from = userRepository.findByEmail(userDetails.getEmail()).orElseThrow(RuntimeException::new);
+        User to = userRepository.findById(userId).orElseThrow(RuntimeException::new);
+        UserLikingDto userLikingDto = UserLikingDto.of(from,to);
+        return userLikingRepository.save(userLikingDto.asEntity()).getId();
+
+
     }
 
 
