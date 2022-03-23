@@ -1,21 +1,13 @@
 package com.projectmatching.app.domain.team.dto;
 
-import com.projectmatching.app.domain.comment.entity.TeamComment;
-import com.projectmatching.app.domain.team.entity.Team;
-import com.projectmatching.app.domain.team.entity.TeamTech;
-import com.projectmatching.app.domain.techStack.entity.TechStack;
-import com.projectmatching.app.domain.user.entity.UserTeam;
+import com.projectmatching.app.domain.comment.dto.TeamCommentDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-import org.springframework.beans.BeanUtils;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Getter
 @Setter

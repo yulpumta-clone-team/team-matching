@@ -1,4 +1,4 @@
-package com.projectmatching.app.domain.team.dto;
+package com.projectmatching.app.domain.comment.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -17,5 +17,6 @@ public class TeamCommentDto {
     private Long parent_id;
     private Boolean secret;
     private String content;
+    private String status;
     private LocalDateTime create_at;
 }
