@@ -1,15 +1,21 @@
 package com.projectmatching.app.service.comment;
 
+import com.projectmatching.app.config.resTemplate.ResponeException;
+import com.projectmatching.app.constant.ResponseTemplateStatus;
+import com.projectmatching.app.domain.comment.dto.UserCommentDto;
 import com.projectmatching.app.domain.comment.entity.TeamComment;
 import com.projectmatching.app.domain.comment.entity.UserComment;
 import com.projectmatching.app.domain.comment.repository.QTeamCommentRepository;
 import com.projectmatching.app.domain.comment.repository.QUserCommentRepository;
 import com.projectmatching.app.domain.comment.repository.TeamCommentRepository;
 import com.projectmatching.app.domain.comment.repository.UserCommentRepository;
+import com.projectmatching.app.domain.user.UserRepository;
+import com.projectmatching.app.domain.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -18,7 +24,7 @@ public class CommentServiceImpl implements CommentService {
 
     private final TeamCommentRepository teamCommentRepository;
     private final UserCommentRepository userCommentRepository;
-
+    private final UserRepository userRepository;
     private final QTeamCommentRepository qTeamCommentRepository;
     private final QUserCommentRepository qUserCommentRepository;
 
@@ -43,10 +49,15 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public Long addUserComment(String content,Long userPostId) {
-
-
-        return null;
+    public UserCommentDto addUserComment(UserCommentDto userCommentDto) {
+        try{
+        User user = Optional.ofNullable(userRepository.getById(userCommentDto.getUserId())).orElseThrow(NullPointerException::new);
+        return UserCommentDto.of(userCommentRepository.save(userCommentDto.asEntity(user)));
+        }
+        catch (NullPointerException e){
+            e.printStackTrace();
+            throw new ResponeException(ResponseTemplateStatus.ADD_COMMENT_FAILED);
+        }
     }
 
     @Override
@@ -80,11 +91,12 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public Long addUserNestedComment(String content,Long userPostId, Long parentCommentId) {
+    public Long addUserNestedComment(Long userPostId, Long parentCommentId) {
         UserComment userComment = userCommentRepository.getUserCommentByPostId(userPostId);
 
         return null;
     }
+
 
     @Override
     public void deleteUserNestedComment(Long userPostId, Long parentCommentId, Long childCommentId) {

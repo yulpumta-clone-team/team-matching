@@ -1,6 +1,7 @@
 package com.projectmatching.app.service.comment;
 
 
+import com.projectmatching.app.domain.comment.dto.UserCommentDto;
 import com.projectmatching.app.domain.comment.entity.TeamComment;
 import com.projectmatching.app.domain.comment.entity.UserComment;
 
@@ -16,7 +17,7 @@ public interface CommentService {
     Long addTeamComment(Long teamPostId);
     Long updateTeamComment(Long teamPostId, Long commentId);
 
-    Long addUserComment(String content,Long userPostId);
+    UserCommentDto addUserComment(UserCommentDto userCommentDto);
     Long updateUserComment(Long userPostId, Long comentId);
 
     void deleteUserComment(Long userPostId, Long commentId);

@@ -35,7 +35,7 @@ public class UserCommentLikingDto {
     public UserCommentLiking asEntity(){
         UserCommentLiking userCommentLiking = new UserCommentLiking();
         userCommentLiking.setUser(userDto.asEntity());
-        userCommentLiking.setUserComment(userCommentDto.asEntity());
+        userCommentLiking.setUserComment(userCommentDto.asEntity(userDto.asEntity()));
         return userCommentLiking;
     }
 }

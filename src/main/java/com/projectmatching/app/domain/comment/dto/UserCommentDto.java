@@ -1,8 +1,8 @@
 package com.projectmatching.app.domain.comment.dto;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.projectmatching.app.domain.comment.entity.UserComment;
 import com.projectmatching.app.domain.liking.dto.UserCommentLikingDto;
+import com.projectmatching.app.domain.user.entity.User;
 import com.projectmatching.app.util.IdGenerator;
 import lombok.*;
 import org.springframework.beans.BeanUtils;
@@ -18,7 +18,6 @@ import static com.projectmatching.app.util.StreamUtil.mapToSet;
 @NoArgsConstructor
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @Builder
-@JsonInclude(JsonInclude.Include.NON_NULL)
 public class UserCommentDto {
 
     private Long id = IdGenerator.number();
@@ -26,7 +25,7 @@ public class UserCommentDto {
     private Long parentId;
     private Boolean secret;
     private String content;
-    private String status;
+
 
     @Builder.Default
     private List<UserCommentDto> comments = new ArrayList<>();
@@ -57,12 +56,15 @@ public class UserCommentDto {
     }
 
     //dto를 entity로
-    public UserComment asEntity(){
+    public UserComment asEntity(User user){
         UserComment userComment = new UserComment();
         BeanUtils.copyProperties(this, userComment);
 
-        userComment.setComments(mapToSet(this.comments,UserCommentDto::asEntity));
+        userComment.setComments(comments.stream()
+                .map(userCommentDto ->  userCommentDto.asEntity(user)
+                ).collect(Collectors.toSet()));
         userComment.setUserCommentLikings(mapToSet(this.feelings,UserCommentLikingDto::asEntity));
+
 
         return userComment;
 
