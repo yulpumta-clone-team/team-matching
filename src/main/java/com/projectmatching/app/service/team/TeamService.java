@@ -26,6 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static com.projectmatching.app.constant.ResponseTemplateStatus.*;
 
@@ -153,11 +154,8 @@ public class TeamService {
     }
 
     public List<TeamCommentDto> findTeamComment(Team team){
-        List<TeamComment> teamCommentList = team.getTeamComments().stream().collect(Collectors.toList());
-        List<TeamCommentDto> findComment = new ArrayList<>();
-        for (TeamComment c : teamCommentList){
-            //findComment.add(new TeamCommentDto(c.getId(), c.getParentId(), c.getSecret(), c.getContent(), c.getStatus(), c.getCreatedAt()));
-        }
+        List<TeamCommentDto> findComment = team.getTeamComments().stream().
+                map(teamComment -> TeamCommentDto.of(teamComment)).collect(Collectors.toList());
         return findComment;
     }
 

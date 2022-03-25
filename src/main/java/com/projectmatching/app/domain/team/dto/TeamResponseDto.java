@@ -31,7 +31,7 @@ public class TeamResponseDto {
     private List<String> tech_stack;
     private Boolean status;
 
-    /**
+
     public static TeamResponseDto createEmpty(){return new TeamResponseDto();}
 
     //entity를 dto로
@@ -39,22 +39,9 @@ public class TeamResponseDto {
         TeamResponseDto teamResponseDto = createEmpty();
         BeanUtils.copyProperties(team, teamResponseDto);
 
-        List<UserTeam> userTeamList = team.getUserTeams().stream().collect(Collectors.toList());
-        if(userTeamList.size() != 0) {
-            UserTeam findUser = userTeamList.get(0);
-            teamResponseDto.user_id = findUser.getUser().getId();
-        }
-
-        Set<TeamTech> teamTechSet = team.getTeamTeches();
-        List<String> findTeamTech = new ArrayList<>();
-        for (TeamTech tech : teamTechSet){
-            TechStack t = tech.getTechStack();
-            if(t!=null) findTeamTech.add(t.getName());
-        }
-        teamResponseDto.tech_stack = findTeamTech;
 
         teamResponseDto.comment_cnt = team.getTeamComments().size();
-        //teamResponseDto.like_cnt = team.getUserLikings().size();
+        teamResponseDto.like_cnt = team.getTeamLikings().size();
 
         teamResponseDto.status = team.getStatus()=="NA" ? Boolean.FALSE : Boolean.TRUE;
 
@@ -66,6 +53,5 @@ public class TeamResponseDto {
         Team team = new Team();
         BeanUtils.copyProperties(this,team);
         return team;
-
-    }**/
+    }
 }
