@@ -10,4 +10,5 @@ public interface UserCommentRepository  extends JpaRepository< UserComment,Long>
 
     @Query("SELECT u from UserComment u where u.user.id = :postId")
     UserComment getUserCommentByPostId(Long postId);
+
 }

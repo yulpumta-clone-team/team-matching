@@ -2,6 +2,8 @@ package com.projectmatching.app.service.comment;
 
 
 import com.projectmatching.app.domain.comment.dto.UserCommentDto;
+import com.projectmatching.app.service.user.userdetail.UserDetailsImpl;
+import org.springframework.security.core.userdetails.UserDetails;
 
 public interface CommentService {
 //
@@ -16,7 +18,7 @@ public interface CommentService {
     UserCommentDto addUserComment(UserCommentDto userCommentDto);
     UserCommentDto updateUserComment(UserCommentDto userCommentDto);
 //
-//    void deleteUserComment(Long userPostId, Long commentId);
+    void deleteUserComment(UserDetailsImpl userDetails, Long commentId);
 //    void deleteTeamComment(Long teamPostId, Long commentId);
 //
 //
@@ -26,8 +28,8 @@ public interface CommentService {
 //
     UserCommentDto updateUserNestedComment(UserCommentDto userCommentDto);
     UserCommentDto addUserNestedComment(UserCommentDto userCommentDto);
-//
-//    void deleteUserNestedComment(Long userPostId, Long parentCommentId, Long childCommentId);
+////
+//    void deleteUserNestedComment(UserDetails userDetails, Long commentId);
 //    void deleteTeamNestedComment(Long userPostId, Long parentCommentId, Long childCommentId);
 
 

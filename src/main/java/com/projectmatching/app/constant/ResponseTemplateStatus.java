@@ -51,6 +51,7 @@ public enum ResponseTemplateStatus {
     ADD_COMMENT_FAILED(HttpStatus.BAD_REQUEST,"부모 댓글인 경우에만 대댓글을 달 수 있습니다.",4000),
     ADD_NESTED_FAILED(HttpStatus.BAD_REQUEST,"부모 댓글 ID가 NULL입니다.",4001),
     UPDATE_COMMENT_FAILED(HttpStatus.BAD_REQUEST,"댓글 수정 실패",4002),
+    DELETE_COMMENT_FAILED(HttpStatus.BAD_REQUEST,"본인 댓글만 삭제 가능합니다.",4003),
 
     /**
      *

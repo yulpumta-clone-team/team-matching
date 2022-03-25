@@ -8,8 +8,10 @@ import com.projectmatching.app.domain.comment.repository.QTeamCommentRepository;
 import com.projectmatching.app.domain.comment.repository.QUserCommentRepository;
 import com.projectmatching.app.domain.comment.repository.TeamCommentRepository;
 import com.projectmatching.app.domain.comment.repository.UserCommentRepository;
+import com.projectmatching.app.domain.user.Role;
 import com.projectmatching.app.domain.user.UserRepository;
 import com.projectmatching.app.domain.user.entity.User;
+import com.projectmatching.app.service.user.userdetail.UserDetailsImpl;
 import com.projectmatching.app.util.IdGenerator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -79,13 +81,26 @@ public class CommentServiceImpl implements CommentService {
     @Override
     @Transactional(rollbackFor = ResponeException.class)
     public UserCommentDto updateUserNestedComment(UserCommentDto userCommentDto) {
-
-          return userCommentDto.of(updateCommentToUser(userCommentDto));
+        return userCommentDto.of(updateCommentToUser(userCommentDto));
     }
 
 
+    /**
+     *  (대)댓글 삭제
+     */
 
+    @Transactional(rollbackFor = ResponeException.class)
+    @Override
+    public void deleteUserComment(UserDetailsImpl userDetails, Long commentId) {
 
+        UserComment userComment = Optional.of(userCommentRepository.getById(commentId)).orElseThrow(NullPointerException::new);
+        //작성자와 삭제자 일치하거나 관리자 일경우에만 삭제
+        if(userComment.getUser().getName().equals(userDetails.getUserRealName()) || userDetails.getRole().equals(Role.ADMIN))
+            userCommentRepository.delete(userComment);
+
+        else throw new ResponeException(ResponseTemplateStatus.DELETE_COMMENT_FAILED);
+
+    }
 
 
     private UserComment updateCommentToUser(UserCommentDto userCommentDto){
@@ -119,8 +134,6 @@ public class CommentServiceImpl implements CommentService {
             throw new ResponeException(ResponseTemplateStatus.ADD_COMMENT_FAILED);
         }
     }
-
-g
 
 
 }

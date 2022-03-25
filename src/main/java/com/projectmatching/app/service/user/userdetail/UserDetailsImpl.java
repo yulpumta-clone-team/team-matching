@@ -48,16 +48,16 @@ public class UserDetailsImpl implements UserDetails {
     }
 
     @Override
-    public String getUsername() {
+    public String getUsername() { //유저 이메일
         return this.email;
     }
 
     public String getUserEmail(){
         return this.email;
-    }
+    } //유저 이메일
     public String getUserRealName(){
         return this.name;
-    }
+    } //유저 닉네임
 
     public Long getUserId(){return this.id;}
 
