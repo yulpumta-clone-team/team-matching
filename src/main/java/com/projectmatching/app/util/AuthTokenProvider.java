@@ -127,14 +127,21 @@ public class AuthTokenProvider {
      *
      */
     public void createCookie(HttpServletResponse response,String token){
-        ResponseCookie cookie = ResponseCookie.from("Authorization",token)
-                .httpOnly(true)
-                .sameSite("lax")
-                .maxAge(60*60)
-                .path("/")
-                .build();
 
-        response.addHeader("Set-Cookie",cookie.toString());
+        Cookie cookie = new Cookie("Authorization", token);
+        cookie.setMaxAge(60*60); //60분
+        cookie.setPath("/");
+        response.addCookie(cookie);
+
+        ResponseCookie Rcookie = ResponseCookie.from("Authorization",token)
+            .httpOnly(true)
+            .sameSite("lax")
+            .maxAge(60*60)
+            .path("/")
+            .build();
+
+
+        response.addHeader("Set-Cookie",Rcookie.toString());
 
     }
 
