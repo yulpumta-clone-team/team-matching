@@ -1,5 +1,6 @@
 package com.projectmatching.app.domain.comment.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.projectmatching.app.domain.comment.entity.TeamComment;
 import com.projectmatching.app.domain.liking.dto.TeamCommentLikingDto;
 import com.projectmatching.app.domain.team.entity.Team;
@@ -13,14 +14,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Getter
-@Setter
+@Getter @Setter
+@ToString
 @NoArgsConstructor
-@RequiredArgsConstructor
-@AllArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
+@Builder
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class TeamCommentDto {
     private Long id;
     private Long parent_id;
+    private Long team_id;
     private Long user_id;
     private Boolean secret;
     private String content;
@@ -39,6 +42,7 @@ public class TeamCommentDto {
     public static TeamCommentDto of(TeamComment teamComment){
         TeamCommentDto teamCommentDto = createEmpty();
         BeanUtils.copyProperties(teamComment, teamCommentDto);
+        teamCommentDto.team_id = teamComment.getTeam().getId();
         teamCommentDto.user_id = teamComment.getUser().getId();
 
         if(teamComment.hasParent()){
@@ -56,12 +60,12 @@ public class TeamCommentDto {
         return teamCommentDto;
     }
 
-    public TeamComment asEntity(Team team, User user){
+    public TeamComment asEntity(){
         TeamComment teamComment = new TeamComment();
         BeanUtils.copyProperties(this, teamComment);
 
         teamComment.setComments(comments.stream()
-                .map(teamCommentDto -> teamCommentDto.asEntity(team, user)).collect(Collectors.toSet()));
+                .map(teamCommentDto -> teamCommentDto.asEntity()).collect(Collectors.toSet()));
 
         //teamComment.setTeamCommentLikings(mapToSet(this.feelings,TeamCommentLikingDto::asEntity));
 
