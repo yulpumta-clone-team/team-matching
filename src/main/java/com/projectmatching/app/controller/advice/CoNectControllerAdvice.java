@@ -23,4 +23,6 @@ public class CoNectControllerAdvice {
         return ResponseEntity.status(status.getHttpStatus()) //http code
                 .body(ResponseTemplate.of(status));
     }
+
+
 }

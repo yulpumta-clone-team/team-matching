@@ -55,6 +55,9 @@ public class UserDetailsImpl implements UserDetails {
     public String getUserEmail(){
         return this.email;
     }
+    public String getUserRealName(){
+        return this.name;
+    }
 
     public Long getUserId(){return this.id;}
 

@@ -3,14 +3,17 @@ package com.projectmatching.app.service.comment;
 import com.projectmatching.app.config.resTemplate.ResponeException;
 import com.projectmatching.app.constant.ResponseTemplateStatus;
 import com.projectmatching.app.domain.comment.dto.UserCommentDto;
+import com.projectmatching.app.domain.comment.entity.UserComment;
 import com.projectmatching.app.domain.comment.repository.QTeamCommentRepository;
 import com.projectmatching.app.domain.comment.repository.QUserCommentRepository;
 import com.projectmatching.app.domain.comment.repository.TeamCommentRepository;
 import com.projectmatching.app.domain.comment.repository.UserCommentRepository;
 import com.projectmatching.app.domain.user.UserRepository;
 import com.projectmatching.app.domain.user.entity.User;
+import com.projectmatching.app.util.IdGenerator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -31,44 +34,53 @@ public class CommentServiceImpl implements CommentService {
     //유저 프로필에 댓글달기
 
     @Override
+    @Transactional(rollbackFor = ResponeException.class)
     public UserCommentDto addUserComment(UserCommentDto userCommentDto) {
-        try{
-            User user = Optional.ofNullable(userRepository.getById(userCommentDto.getUserId())).orElseThrow(NullPointerException::new);
-            return UserCommentDto.of(userCommentRepository.save(userCommentDto.asEntity(user)));
-        }
-        catch (NullPointerException e){
+
+        return UserCommentDto.of(addCommentToUser(userCommentDto));
+
+    }
+
+    //유저 프로필에 대댓글 달기
+    @Override
+    @Transactional(rollbackFor = ResponeException.class)
+    public UserCommentDto addUserNestedComment( UserCommentDto userCommentDto) {
+        //부모 댓글 설정 안되어있으면 에러
+        try {
+            if (userCommentDto.getParentId() == null) throw new ResponeException(ResponseTemplateStatus.ADD_NESTED_FAILED);
+            UserComment userComment = addCommentToUser(userCommentDto);
+            userComment.setParent(userCommentRepository.findById(userCommentDto.getParentId()).orElseThrow(NullPointerException::new)); //부모 댓글 설정
+            return userCommentDto.of(userCommentRepository.save(userComment));
+
+        }catch (RuntimeException e){
             e.printStackTrace();
-            throw new ResponeException(ResponseTemplateStatus.ADD_COMMENT_FAILED);
+            throw new ResponeException(ResponseTemplateStatus.ADD_NESTED_FAILED);
         }
+
 
     }
 
 
-    //유저 프로필에 대댓글 달기
+    /**
+     * 댓글 수정 서비스
+     */
     @Override
-    public UserCommentDto addUserNestedComment(UserCommentDto userCommentDto) {
-        //부모 댓글 설정 안되어있으면 에러
-        if(userCommentDto.getParentId() == null)throw new ResponeException(ResponseTemplateStatus.ADD_NESTED_FAILED);
+    @Transactional(rollbackFor = ResponeException.class)
+    public UserCommentDto updateUserComment(UserCommentDto userCommentDto) {
 
-
+        return userCommentDto.of(updateCommentToUser(userCommentDto));
 
 
     }
 
     /**
-     * 댓글 수정 서비스
+     * 대댓글 수정
      */
-
     @Override
-    public UserCommentDto updateUserComment(UserCommentDto userCommentDto) {
-
-        userCommentRepository.findById(use)
-
-    }
-
-    @Override
+    @Transactional(rollbackFor = ResponeException.class)
     public UserCommentDto updateUserNestedComment(UserCommentDto userCommentDto) {
-        return null;
+
+          return userCommentDto.of(updateCommentToUser(userCommentDto));
     }
 
 
@@ -76,12 +88,39 @@ public class CommentServiceImpl implements CommentService {
 
 
 
+    private UserComment updateCommentToUser(UserCommentDto userCommentDto){
+        try {
+            UserComment userComment = userCommentRepository.findById(userCommentDto.getUserId()).orElseThrow(NullPointerException::new);
+            //부모 댓글이 바뀌면 안됨
+            if(userCommentDto.getParentId() != userComment.getParent().getId()) throw new RuntimeException();
+
+            userComment.setContent(userComment.getContent()); //댓글 수정
+            if(userCommentDto.getSecret() != userComment.getSecret()) userComment.setSecret(userCommentDto.getSecret()); //비밀댓글 여부 바뀌었다면
+            return userComment;
+
+        }catch (RuntimeException e){
+            e.printStackTrace();
+            throw new ResponeException(ResponseTemplateStatus.UPDATE_COMMENT_FAILED);
+        }
+
+    }
 
 
+    private UserComment addCommentToUser(UserCommentDto userCommentDto) {
+        try{
+            User user = Optional.ofNullable(userRepository.getById(userCommentDto.getUserId())).orElseThrow(NullPointerException::new);
+            userCommentDto.setId(IdGenerator.number()); //새로운 댓글 id 생성
+            UserComment userComment = userCommentDto.asEntity();
+            userComment.setUser(user);
+            return userComment;
+        }
+        catch (NullPointerException e){
+            e.printStackTrace();
+            throw new ResponeException(ResponseTemplateStatus.ADD_COMMENT_FAILED);
+        }
+    }
 
-
-
-
+g
 
 
 }

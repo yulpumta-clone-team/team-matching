@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.projectmatching.app.domain.comment.entity.UserComment;
 import com.projectmatching.app.domain.liking.dto.UserCommentLikingDto;
-import com.projectmatching.app.domain.user.entity.User;
 import com.projectmatching.app.util.IdGenerator;
 import lombok.*;
 import org.springframework.beans.BeanUtils;
@@ -23,9 +22,12 @@ import static com.projectmatching.app.util.StreamUtil.mapToSet;
 @JsonInclude(JsonInclude.Include.NON_NULL) //null 이면 생성되지 않음
 public class UserCommentDto {
 
+
+    @JsonIgnore
     private Long id = IdGenerator.number();
-    private String userName;
-    private Long userId;
+
+    private String writer;
+    private Long userId; //댓글이 속한 글의 id(유저)
     private Long parentId;
     private Boolean secret;
     private String content;
@@ -46,7 +48,7 @@ public class UserCommentDto {
         UserCommentDto userCommentDto = createEmpty();
         BeanUtils.copyProperties(userComment,userCommentDto);
         userCommentDto.userId = userComment.getUser().getId();
-        userCommentDto.userName = userComment.getUser().getName();
+        userCommentDto.writer = userComment.getUser().getName();
         //부모가 있다면, 즉 대댓글이라면
         if(userComment.hasParent()){
             userCommentDto.parentId = userComment.getParent().getId();
@@ -63,13 +65,9 @@ public class UserCommentDto {
     }
 
     //dto를 entity로
-    public UserComment asEntity(User user){
+    public UserComment asEntity(){
         UserComment userComment = new UserComment();
         BeanUtils.copyProperties(this, userComment);
-
-        userComment.setComments(comments.stream()
-                .map(userCommentDto ->  userCommentDto.asEntity(user)
-                ).collect(Collectors.toSet()));
         userComment.setUserCommentLikings(mapToSet(this.feelings,UserCommentLikingDto::asEntity));
 
         return userComment;
