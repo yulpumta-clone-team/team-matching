@@ -128,13 +128,13 @@ public class AuthTokenProvider {
      */
     public void createCookie(HttpServletResponse response,String token){
 
-        Cookie cookie = new Cookie("Authorization", token);
-        cookie.setMaxAge(60*60); //60분
-        cookie.setPath("/");
-        response.addCookie(cookie);
+//        Cookie cookie = new Cookie("Authorization", token);
+//        cookie.setMaxAge(60*60); //60분
+//        cookie.setPath("/");
+//        response.addCookie(cookie);
 
         ResponseCookie Rcookie = ResponseCookie.from("Authorization",token)
-            .httpOnly(true)
+            .httpOnly(false)
             .sameSite("lax")
             .maxAge(60*60)
             .path("/")
