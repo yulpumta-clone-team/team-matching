@@ -12,17 +12,17 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TeamRequestDto {
     @ApiModelProperty(example = "팀 이름")
-    private String t_name;
+    private String name;
 
     @ApiModelProperty(example = "프로젝트 기간")
-    private String t_session;
+    private String session;
 
     @ApiModelProperty(example = "이미지")
-    private String t_img;
+    private String img;
 
     @ApiModelProperty(example = "팀 소개글")
-    private String t_content;
+    private String content;
 
     @ApiModelProperty(example = "기술 스택")
-    private List<String> t_techs;
+    private List<String> techs;
 }
