@@ -27,9 +27,9 @@ import static com.projectmatching.app.util.StreamUtil.mapToSet;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class TeamCommentDto {
     private Long id = IdGenerator.number();
-    private Long parentId;
     private Long teamId;
     private String writer;
+    private Long parentId;
     private Boolean secret;
     private String content;
 
