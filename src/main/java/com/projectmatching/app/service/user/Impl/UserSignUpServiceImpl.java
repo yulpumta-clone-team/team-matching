@@ -1,4 +1,4 @@
-package com.projectmatching.app.service.user;
+package com.projectmatching.app.service.user.Impl;
 
 import com.projectmatching.app.annotation.Validation;
 import com.projectmatching.app.config.resTemplate.ResponeException;
@@ -7,6 +7,7 @@ import com.projectmatching.app.domain.user.Role;
 import com.projectmatching.app.domain.user.UserRepository;
 import com.projectmatching.app.domain.user.dto.UserJoinDto;
 import com.projectmatching.app.domain.user.entity.User;
+import com.projectmatching.app.service.user.UserSignUpService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -21,7 +22,7 @@ import static com.projectmatching.app.constant.ServiceConstant.REGEX_EMAIL;
 @Repository
 @Service
 @Slf4j
-public class UserSignUpServiceImpl implements UserSignUpService{
+public class UserSignUpServiceImpl implements UserSignUpService {
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
 

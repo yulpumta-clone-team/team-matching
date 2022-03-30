@@ -18,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
@@ -64,8 +65,8 @@ public class UserController {
      */
     @ApiOperation(value = "회원 탈퇴, 해당 유저의 Status 칼럼을 NA(Not Avaliable)로 바꿈")
     @DeleteMapping("/withdrawal")
-    public ResponseTemplate<String> withDrawal(){
-        userSignInService.userDelete(userService.getAuthUserEmail());
+    public ResponseTemplate<String> withDrawal(@AuthenticationPrincipal UserDetails userDetails){
+        userSignInService.userDelete(userDetails.getUsername());
         return ResponseTemplate.of(SUCCESS);
 
     }
@@ -113,12 +114,21 @@ public class UserController {
      * 유저 좋아요 누르기
      */
     @ApiOperation(value = "특정 유저프로필 좋아요 누르기")
-    @GetMapping("/liking/{user_id}")
+    @PatchMapping("/liking/{user_id}")
     public ResponseTemplate<Void> addUserLiking(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable(name="user_id") long userId){
         userService.addLiking(userDetails,userId);
         return ResponseTemplate.of(SUCCESS);
     }
 
 
+    /**
+     * 좋아요한 유저 리스트
+     */
+    @ApiOperation(value = "좋아요 한 유저 리스트")
+    @GetMapping("/liking")
+    public ResponseTemplate<List<UserProfileDto>> getLikedUser(@AuthenticationPrincipal UserDetailsImpl userDetails){
+        return ResponseTemplate.valueOf(userService.getLikedUserList(userDetails));
+
+    }
 
 }

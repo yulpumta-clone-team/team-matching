@@ -1,37 +1,36 @@
 package com.projectmatching.app.service.comment;
 
 
-import com.projectmatching.app.domain.comment.entity.TeamComment;
-import com.projectmatching.app.domain.comment.entity.UserComment;
-
-import java.util.List;
+import com.projectmatching.app.domain.comment.dto.UserCommentDto;
+import com.projectmatching.app.service.user.userdetail.UserDetailsImpl;
+import org.springframework.security.core.userdetails.UserDetails;
 
 public interface CommentService {
-
-    //조회
-    List<TeamComment> getTeamComment(Long teamPostId);
-    List<UserComment> getUserComment(Long userPostId);
-
-    //댓글 생성 및 수정 삭제
-    Long addTeamComment(Long teamPostId);
-    Long updateTeamComment(Long teamPostId, Long commentId);
-
-    Long addUserCommnet(Long userPostId);
-    Long updateUserComment(Long userPostId, Long comentId);
-
-    void deleteUserComment(Long userPostId, Long commentId);
-    void deleteTeamComment(Long teamPostId, Long commentId);
-
-
-    //대댓글 생성 및 수정 삭제
-    Long updateTeamNestedComment(Long teamPostId,Long commentId, Long childCommentId);
-    Long addTeamNestedComment(Long teamPostId,Long commentId);
-
-    Long updateUserNestedComment(Long userPostId,Long parentCommentId, Long childCommentId);
-    Long addUserNestedComment(Long userPostId,Long parentCommentId);
-
-    void deleteUserNestedComment(Long userPostId, Long parentCommentId, Long childCommentId);
-    void deleteTeamNestedComment(Long userPostId, Long parentCommentId, Long childCommentId);
+//
+//    //조회
+//    List<TeamComment> getTeamComment(Long teamPostId);
+//    List<UserComment> getUserComment(Long userPostId);
+//
+//    //댓글 생성 및 수정 삭제
+//    Long addTeamComment(Long teamPostId);
+//    Long updateTeamComment(Long teamPostId, Long commentId);
+//
+    UserCommentDto addUserComment(UserCommentDto userCommentDto);
+    UserCommentDto updateUserComment(UserCommentDto userCommentDto);
+//
+    void deleteUserComment(UserDetailsImpl userDetails, Long commentId);
+//    void deleteTeamComment(Long teamPostId, Long commentId);
+//
+//
+//    //대댓글 생성 및 수정 삭제
+//    UserCommentDto updateTeamNestedComment(Long teamPostId,Long commentId, Long childCommentId);
+//    UserCommentDto addTeamNestedComment(Long teamPostId,Long commentId);
+//
+    UserCommentDto updateUserNestedComment(UserCommentDto userCommentDto);
+    UserCommentDto addUserNestedComment(UserCommentDto userCommentDto);
+////
+//    void deleteUserNestedComment(UserDetails userDetails, Long commentId);
+//    void deleteTeamNestedComment(Long userPostId, Long parentCommentId, Long childCommentId);
 
 
 

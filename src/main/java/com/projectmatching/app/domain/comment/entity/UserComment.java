@@ -32,6 +32,8 @@ public class UserComment extends BaseTimeEntity {
     @JoinColumn(name="parent_id")
     private UserComment parent;
 
+    private String writer;
+
     //비밀글 여부
     private Boolean secret;
 

@@ -47,6 +47,8 @@ public class QUserComment extends EntityPathBase<UserComment> {
 
     public final SetPath<com.projectmatching.app.domain.liking.entity.UserCommentLiking, com.projectmatching.app.domain.liking.entity.QUserCommentLiking> userCommentLikings = this.<com.projectmatching.app.domain.liking.entity.UserCommentLiking, com.projectmatching.app.domain.liking.entity.QUserCommentLiking>createSet("userCommentLikings", com.projectmatching.app.domain.liking.entity.UserCommentLiking.class, com.projectmatching.app.domain.liking.entity.QUserCommentLiking.class, PathInits.DIRECT2);
 
+    public final StringPath writer = createString("writer");
+
     public QUserComment(String variable) {
         this(UserComment.class, forVariable(variable), INITS);
     }

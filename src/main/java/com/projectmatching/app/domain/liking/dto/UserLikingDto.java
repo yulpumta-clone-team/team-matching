@@ -24,22 +24,33 @@ public class UserLikingDto {
 
 
 
-    public static UserLikingDto of(User from, User to){
+    //새로 추가하기 위해
+    public UserLiking asEntity(User from , User to){
+        UserLiking userLiking = new UserLiking();
+        userLiking.setId(IdGenerator.number());
+        to.setRespected(to.getRespected()+1);
+        userLiking.setFromUser(from);
+        userLiking.setToUser(to);
 
-        UserLikingDto userLikingDto = new UserLikingDto();
-        userLikingDto.fromUser = UserDto.of(from);
-        userLikingDto.toUser = UserDto.of(to);
-        return userLikingDto;
-
+        return userLiking;
     }
 
 
     public UserLiking asEntity(){
         UserLiking userLiking = new UserLiking();
-        BeanUtils.copyProperties(this,userLiking);
+        userLiking.setFromUser(fromUser.asEntity());
+        userLiking.setToUser(toUser.asEntity());
         return userLiking;
     }
 
 
+    public static UserLikingDto of(UserLiking userLiking){
+        UserLikingDto userLikingDto = new UserLikingDto();
+        BeanUtils.copyProperties(userLiking,userLikingDto);
+        userLikingDto.fromUser = UserDto.of(userLiking.getFromUser());
+        userLikingDto.toUser = UserDto.of(userLiking.getToUser());
+        return userLikingDto;
+
+    }
 
 }
