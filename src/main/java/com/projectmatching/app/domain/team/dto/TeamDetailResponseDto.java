@@ -23,21 +23,21 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class TeamDetailResponseDto {
 
-    private Long user_id;
-    private Long team_id;
+    private Long userId;
+    private Long teamId;
     private String name;
     private String content;
     private String session;
-    private List<String> tech_stack;
+    private List<String> skills;
     private String img;
     private Long read;
     private Boolean status;
-    private int comment_cnt;
-    private int like_cnt;
-    private LocalDateTime create_at;
-    private LocalDateTime update_at;
+    private int commentCnt;
+    private int likeCnt;
+    private LocalDateTime createAt;
+    private LocalDateTime updateAt;
 
-    private List<TeamCommentDto> comment;
+    private List<TeamCommentDto> teamComments;
 
     public static TeamDetailResponseDto createEmpty(){return new TeamDetailResponseDto();}
 
@@ -47,12 +47,10 @@ public class TeamDetailResponseDto {
         TeamDetailResponseDto teamResponseDto = createEmpty();
         BeanUtils.copyProperties(team, teamResponseDto);
 
-        teamResponseDto.comment_cnt = team.getTeamComments().size();
-        teamResponseDto.like_cnt = team.getTeamLikings().size();
+        teamResponseDto.commentCnt = team.getTeamComments().size();
+        teamResponseDto.likeCnt = team.getTeamLikings().size();
 
         teamResponseDto.status = team.getStatus()=="NA" ? Boolean.FALSE : Boolean.TRUE;
-        teamResponseDto.create_at = team.getCreatedAt();
-        teamResponseDto.update_at = team.getUpdatedAt();
 
         return teamResponseDto;
     }

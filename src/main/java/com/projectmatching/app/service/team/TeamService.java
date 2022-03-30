@@ -89,10 +89,10 @@ public class TeamService {
             for(Team team : teams){
                 TeamResponseDto teamResponseDto = new TeamResponseDto();
                 BeanUtils.copyProperties(team, teamResponseDto);
-                teamResponseDto.setUser_id(findTeamUser(team));
-                teamResponseDto.setTech_stack(findTeamTech(team));
-                teamResponseDto.setComment_cnt(team.getTeamComments().size());
-                teamResponseDto.setLike_cnt(team.getTeamLikings().size());
+                teamResponseDto.setUserId(findTeamUser(team));
+                teamResponseDto.setSkills(findTeamTech(team));
+                teamResponseDto.setCommentCnt(team.getTeamComments().size());
+                teamResponseDto.setLikeCnt(team.getTeamLikings().size());
 
                 if(team.getStatus()=="NA") {
                     teamResponseDto.setStatus(Boolean.FALSE);
@@ -114,19 +114,17 @@ public class TeamService {
         try{
             TeamDetailResponseDto teamResponseDto = new TeamDetailResponseDto();
             BeanUtils.copyProperties(team, teamResponseDto);
-            teamResponseDto.setUser_id(findTeamUser(team));
-            teamResponseDto.setTech_stack(findTeamTech(team));
-            teamResponseDto.setComment(findTeamComment(team));
-            teamResponseDto.setComment_cnt(team.getTeamComments().size());
-            teamResponseDto.setLike_cnt(team.getTeamLikings().size());
+            teamResponseDto.setUserId(findTeamUser(team));
+            teamResponseDto.setSkills(findTeamTech(team));
+            teamResponseDto.setTeamComments(findTeamComment(team));
+            teamResponseDto.setCommentCnt(team.getTeamComments().size());
+            teamResponseDto.setLikeCnt(team.getTeamLikings().size());
 
             if(team.getStatus()=="NA") {
                 teamResponseDto.setStatus(Boolean.FALSE);
             } else{
                 teamResponseDto.setStatus(Boolean.TRUE);
             }
-            teamResponseDto.setCreate_at(team.getCreatedAt());
-            teamResponseDto.setUpdate_at(team.getUpdatedAt());
 
             return teamResponseDto;
         }catch (Exception e){

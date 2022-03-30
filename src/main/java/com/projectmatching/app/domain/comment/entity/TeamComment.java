@@ -34,6 +34,8 @@ public class TeamComment extends BaseTimeEntity {
     @JoinColumn(name="parent_id")
     private TeamComment parent;
 
+    private String writer;
+
     private Boolean secret;
 
     private String content;
@@ -43,10 +45,6 @@ public class TeamComment extends BaseTimeEntity {
     @JoinColumn(name="team_id")
     private Team team;
 
-    @ToString.Exclude
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="user_id")
-    private User user;
 
     @ToString.Exclude
     @OneToMany(mappedBy = "parent")

@@ -20,15 +20,15 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @AllArgsConstructor
 public class TeamResponseDto {
-    private Long user_id;
-    private Long team_id;
+    private Long userId;
+    private Long teamId;
     private String name;
     private String session;
     private String img;
     private Long read;
-    private int comment_cnt;
-    private int like_cnt;
-    private List<String> tech_stack;
+    private int commentCnt;
+    private int likeCnt;
+    private List<String> skills;
     private Boolean status;
 
 
@@ -40,8 +40,8 @@ public class TeamResponseDto {
         BeanUtils.copyProperties(team, teamResponseDto);
 
 
-        teamResponseDto.comment_cnt = team.getTeamComments().size();
-        teamResponseDto.like_cnt = team.getTeamLikings().size();
+        teamResponseDto.commentCnt = team.getTeamComments().size();
+        teamResponseDto.likeCnt = team.getTeamLikings().size();
 
         teamResponseDto.status = team.getStatus()=="NA" ? Boolean.FALSE : Boolean.TRUE;
 

@@ -3,8 +3,10 @@ package com.projectmatching.app.domain.comment.dto;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.projectmatching.app.domain.comment.entity.TeamComment;
 import com.projectmatching.app.domain.liking.dto.TeamCommentLikingDto;
+import com.projectmatching.app.domain.liking.entity.TeamCommentLiking;
 import com.projectmatching.app.domain.team.entity.Team;
 import com.projectmatching.app.domain.user.entity.User;
+import com.projectmatching.app.util.IdGenerator;
 import lombok.*;
 import org.springframework.beans.BeanUtils;
 
@@ -12,7 +14,10 @@ import javax.persistence.Column;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
+
+import static com.projectmatching.app.util.StreamUtil.mapToSet;
 
 @Getter @Setter
 @ToString
@@ -21,14 +26,12 @@ import java.util.stream.Collectors;
 @Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class TeamCommentDto {
-    private Long id;
-    private Long parent_id;
-    private Long team_id;
-    private Long user_id;
+    private Long id = IdGenerator.number();
+    private Long parentId;
+    private Long teamId;
+    private String writer;
     private Boolean secret;
     private String content;
-    private String status;
-    private LocalDateTime create_at;
 
     @Builder.Default
     private List<TeamCommentDto> comments = new ArrayList<>();
@@ -42,11 +45,10 @@ public class TeamCommentDto {
     public static TeamCommentDto of(TeamComment teamComment){
         TeamCommentDto teamCommentDto = createEmpty();
         BeanUtils.copyProperties(teamComment, teamCommentDto);
-        teamCommentDto.team_id = teamComment.getTeam().getId();
-        teamCommentDto.user_id = teamComment.getUser().getId();
+        teamCommentDto.teamId = teamComment.getTeam().getId();
 
         if(teamComment.hasParent()){
-            teamCommentDto.parent_id = teamComment.getParent().getId();
+            teamCommentDto.parentId = teamComment.getParent().getId();
         }
 
         if(teamComment.hasChildren()){
@@ -67,8 +69,9 @@ public class TeamCommentDto {
         teamComment.setComments(comments.stream()
                 .map(teamCommentDto -> teamCommentDto.asEntity()).collect(Collectors.toSet()));
 
-        //teamComment.setTeamCommentLikings(mapToSet(this.feelings,TeamCommentLikingDto::asEntity));
+        teamComment.setTeamCommentLikings(mapToSet(this.feelings,TeamCommentLikingDto::asEntity));
 
         return teamComment;
     }
+
 }
