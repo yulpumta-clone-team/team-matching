@@ -4,6 +4,7 @@ import com.projectmatching.app.domain.liking.dto.UserLikingDto;
 import com.projectmatching.app.domain.liking.repository.UserLikingRepository;
 import com.projectmatching.app.domain.user.QUserRepository;
 import com.projectmatching.app.domain.user.UserRepository;
+import com.projectmatching.app.domain.user.dto.PostUserProfileDto;
 import com.projectmatching.app.domain.user.dto.UserDto;
 import com.projectmatching.app.domain.user.dto.UserProfileDto;
 import com.projectmatching.app.domain.user.entity.User;
@@ -87,4 +88,11 @@ public class UserServiceImpl implements UserService {
     }
 
 
+    @Override
+    public void postingUserProfile(PostUserProfileDto postUserProfileDto) {
+//        UserProfileDto userProfileDto = UserProfileDto.builder()
+//
+//                .build()
+
+    }
 }

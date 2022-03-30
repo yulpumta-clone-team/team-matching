@@ -3,10 +3,7 @@ package com.projectmatching.app.controller.user;
 import com.projectmatching.app.config.resTemplate.ResponeException;
 import com.projectmatching.app.config.resTemplate.ResponseTemplate;
 import com.projectmatching.app.domain.common.Paging;
-import com.projectmatching.app.domain.user.dto.UserDto;
-import com.projectmatching.app.domain.user.dto.UserJoinDto;
-import com.projectmatching.app.domain.user.dto.UserLoginDto;
-import com.projectmatching.app.domain.user.dto.UserProfileDto;
+import com.projectmatching.app.domain.user.dto.*;
 import com.projectmatching.app.service.user.UserService;
 import com.projectmatching.app.service.user.UserSignInService;
 import com.projectmatching.app.service.user.UserSignUpService;
@@ -135,12 +132,12 @@ public class UserController {
     /**
      * 유저 프로필 생성(유저 게시물 등록)
      */
-//     @ApiOperation(value = "유저 게시물 등록")
-//     @PostMapping("/myprofile")
-//     public ResponseTemplate<Void> addUserProfilePosting(){
-//
-//
-//     }
+     @ApiOperation(value = "유저 게시물 등록")
+     @PostMapping("/myprofile")
+     public ResponseTemplate<Void> addUserProfilePosting(@RequestBody PostUserProfileDto postUserProfileDto){
+         userService.postingUserProfile(postUserProfileDto);
+         return ResponseTemplate.of(SUCCESS);
+     }
 
 
 

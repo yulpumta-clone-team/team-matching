@@ -1,5 +1,6 @@
 package com.projectmatching.app.service.user;
 
+import com.projectmatching.app.domain.user.dto.PostUserProfileDto;
 import com.projectmatching.app.domain.user.dto.UserDto;
 import com.projectmatching.app.domain.user.dto.UserProfileDto;
 import com.projectmatching.app.service.user.userdetail.UserDetailsImpl;
@@ -28,6 +29,5 @@ public interface UserService {
     List<UserProfileDto> getLikedUserList(UserDetails userDetails);
 
 
-
-
+    void postingUserProfile(PostUserProfileDto postUserProfileDto);
 }
