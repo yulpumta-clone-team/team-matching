@@ -2,12 +2,16 @@ package com.projectmatching.app.service.comment;
 
 import com.projectmatching.app.config.resTemplate.ResponeException;
 import com.projectmatching.app.constant.ResponseTemplateStatus;
+import com.projectmatching.app.domain.comment.dto.TeamCommentDto;
 import com.projectmatching.app.domain.comment.dto.UserCommentDto;
+import com.projectmatching.app.domain.comment.entity.TeamComment;
 import com.projectmatching.app.domain.comment.entity.UserComment;
 import com.projectmatching.app.domain.comment.repository.QTeamCommentRepository;
 import com.projectmatching.app.domain.comment.repository.QUserCommentRepository;
 import com.projectmatching.app.domain.comment.repository.TeamCommentRepository;
 import com.projectmatching.app.domain.comment.repository.UserCommentRepository;
+import com.projectmatching.app.domain.team.entity.Team;
+import com.projectmatching.app.domain.team.repository.TeamRepository;
 import com.projectmatching.app.domain.user.Role;
 import com.projectmatching.app.domain.user.UserRepository;
 import com.projectmatching.app.domain.user.entity.User;
@@ -27,6 +31,7 @@ public class CommentServiceImpl implements CommentService {
     private final TeamCommentRepository teamCommentRepository;
     private final UserCommentRepository userCommentRepository;
     private final UserRepository userRepository;
+    private final TeamRepository teamRepository;
     private final QTeamCommentRepository qTeamCommentRepository;
     private final QUserCommentRepository qUserCommentRepository;
 
@@ -130,6 +135,91 @@ public class CommentServiceImpl implements CommentService {
             return userComment;
         }
         catch (NullPointerException e){
+            e.printStackTrace();
+            throw new ResponeException(ResponseTemplateStatus.ADD_COMMENT_FAILED);
+        }
+    }
+
+
+    /**
+     * team 댓글 추가
+     */
+    @Override
+    @Transactional(rollbackFor = ResponeException.class)
+    public TeamCommentDto addTeamComment(TeamCommentDto teamCommentDto) {
+        TeamComment teamComment = addCommentToTeam(teamCommentDto);
+        return teamCommentDto.of(teamCommentRepository.save(teamComment));
+
+    }
+
+    @Override
+    @Transactional(rollbackFor = ResponeException.class)
+    public TeamCommentDto addTeamNestedComment(TeamCommentDto teamCommentDto) {
+        try{
+            if(teamCommentDto.getParentId()==null) throw new ResponeException(ResponseTemplateStatus.ADD_NESTED_FAILED);
+            TeamComment teamComment = addCommentToTeam(teamCommentDto);
+            teamComment.setParent(teamCommentRepository.findById(teamCommentDto.getParentId()).orElseThrow(NullPointerException::new));
+            return teamCommentDto.of(teamCommentRepository.save(teamComment));
+        }catch (RuntimeException e){
+            e.printStackTrace();
+            throw new ResponeException(ResponseTemplateStatus.ADD_NESTED_FAILED);
+        }
+    }
+
+    /**
+     * team 댓글 수정
+     */
+    @Override
+    @Transactional(rollbackFor = ResponeException.class)
+    public TeamCommentDto updateTeamComment(TeamCommentDto teamCommentDto) {
+        TeamComment teamComment = updateCommentToTeam(teamCommentDto);
+        return teamCommentDto.of(teamCommentRepository.save(teamComment));
+    }
+
+    @Override
+    @Transactional(rollbackFor = ResponeException.class)
+    public TeamCommentDto updateTeamNestedComment(TeamCommentDto teamCommentDto) {
+        TeamComment teamComment = updateCommentToTeam(teamCommentDto);
+        return teamCommentDto.of(teamCommentRepository.save(teamComment));
+    }
+
+
+    /**
+     * team (대)댓글 삭제
+     */
+    @Override
+    @Transactional(rollbackFor = ResponeException.class)
+    public void deleteTeamComment(UserDetailsImpl userDetails, Long commentId) {
+        TeamComment teamComment = Optional.of(teamCommentRepository.getById(commentId)).orElseThrow(NullPointerException::new);
+        if(teamComment.getWriter().equals(userDetails.getUserRealName()) || userDetails.getRole().equals(Role.ADMIN))
+            teamCommentRepository.delete(teamComment);
+        else throw new ResponeException(ResponseTemplateStatus.DELETE_COMMENT_FAILED);
+    }
+
+
+    private TeamComment updateCommentToTeam(TeamCommentDto teamCommentDto){
+        try{
+            TeamComment teamComment = teamCommentRepository.findById(teamCommentDto.getId()).orElseThrow(NullPointerException::new);
+            if(teamCommentDto.getParentId() != teamComment.getParent().getId()) throw new RuntimeException();
+
+            teamComment.setContent(teamCommentDto.getContent());
+            if(teamCommentDto.getSecret() != teamComment.getSecret()) teamComment.setSecret(teamCommentDto.getSecret());
+            return teamComment;
+        }catch (RuntimeException e){
+            e.printStackTrace();
+            throw new ResponeException(ResponseTemplateStatus.UPDATE_COMMENT_FAILED);
+        }
+    }
+
+
+    private TeamComment addCommentToTeam(TeamCommentDto teamCommentDto){
+        try{
+            Team team = Optional.ofNullable(teamRepository.getById(teamCommentDto.getTeamId())).orElseThrow(NullPointerException::new);
+            teamCommentDto.setId(IdGenerator.number());
+            TeamComment teamComment = teamCommentDto.asEntity();
+            teamComment.setTeam(team);
+            return teamComment;
+        }catch(NullPointerException e){
             e.printStackTrace();
             throw new ResponeException(ResponseTemplateStatus.ADD_COMMENT_FAILED);
         }

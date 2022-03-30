@@ -1,6 +1,7 @@
 package com.projectmatching.app.service.comment;
 
 
+import com.projectmatching.app.domain.comment.dto.TeamCommentDto;
 import com.projectmatching.app.domain.comment.dto.UserCommentDto;
 import com.projectmatching.app.service.user.userdetail.UserDetailsImpl;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -12,19 +13,19 @@ public interface CommentService {
 //    List<UserComment> getUserComment(Long userPostId);
 //
 //    //댓글 생성 및 수정 삭제
-//    Long addTeamComment(Long teamPostId);
-//    Long updateTeamComment(Long teamPostId, Long commentId);
+    TeamCommentDto addTeamComment(TeamCommentDto teamCommentDto);
+    TeamCommentDto updateTeamComment(TeamCommentDto teamCommentDto);
 //
     UserCommentDto addUserComment(UserCommentDto userCommentDto);
     UserCommentDto updateUserComment(UserCommentDto userCommentDto);
 //
     void deleteUserComment(UserDetailsImpl userDetails, Long commentId);
-//    void deleteTeamComment(Long teamPostId, Long commentId);
+    void deleteTeamComment(UserDetailsImpl userDetails, Long commentId);
 //
 //
 //    //대댓글 생성 및 수정 삭제
-//    UserCommentDto updateTeamNestedComment(Long teamPostId,Long commentId, Long childCommentId);
-//    UserCommentDto addTeamNestedComment(Long teamPostId,Long commentId);
+    TeamCommentDto updateTeamNestedComment(TeamCommentDto teamCommentDto);
+    TeamCommentDto addTeamNestedComment(TeamCommentDto teamCommentDto);
 //
     UserCommentDto updateUserNestedComment(UserCommentDto userCommentDto);
     UserCommentDto addUserNestedComment(UserCommentDto userCommentDto);
