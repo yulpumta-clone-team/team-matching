@@ -46,16 +46,16 @@ public class TeamService {
         User user = userRepository.findByEmail(email).orElseThrow(() -> new ResponeException(NOT_EXIST_USER));
         try {
             Team team = Team.builder()
-                    .name(requestDto.getT_name())
-                    .session(requestDto.getT_session())
-                    .img(requestDto.getT_img())
-                    .content(requestDto.getT_content())
+                    .name(requestDto.getName())
+                    .session(requestDto.getSession())
+                    .img(requestDto.getImg())
+                    .content(requestDto.getContent())
                     .read(0L)
                     .build();
 
             Long teamId = teamRepository.save(team).getId();
 
-            List<String> techs = requestDto.getT_techs();
+            List<String> techs = requestDto.getTechs();
             for (String t : techs){
                 TechStack techStack = techStackRepository.findByName(t).orElseThrow(() -> new ResponeException(SAVE_TEAM_ERROR));
                 TeamTech teamTech = TeamTech.builder()
@@ -182,7 +182,7 @@ public class TeamService {
             team.update(teamRequestDto);
             teamTechRepository.deleteAllByTeam_Id(team.getId());
 
-            List<String> techs = teamRequestDto.getT_techs();
+            List<String> techs = teamRequestDto.getTechs();
             for (String t : techs) {
                 TechStack techStack = techStackRepository.findByName(t).orElseThrow(() -> new ResponeException(SAVE_TEAM_ERROR));
                 TeamTech teamTech = TeamTech.builder()

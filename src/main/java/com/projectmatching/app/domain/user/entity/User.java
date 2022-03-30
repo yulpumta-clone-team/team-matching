@@ -97,8 +97,6 @@ public class User extends BaseTimeEntity  {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private Set<UserTeam> userTeams = new HashSet<>();
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private Set<TeamComment> teamComments = new HashSet<>();
 
     public User(String oauthId,String name, String email, Role role ){
         this.id = null;

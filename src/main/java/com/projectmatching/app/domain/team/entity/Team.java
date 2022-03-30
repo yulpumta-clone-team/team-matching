@@ -62,9 +62,9 @@ public class Team extends BaseTimeEntity {
     private Set<TeamLiking> teamLikings = new HashSet<>();
 
     public void update(TeamRequestDto teamRequestDto){
-        this.name = teamRequestDto.getT_name();
-        this.session = teamRequestDto.getT_session();
-        this.img = teamRequestDto.getT_img();
-        this.content = teamRequestDto.getT_content();
+        this.name = teamRequestDto.getName();
+        this.session = teamRequestDto.getSession();
+        this.img = teamRequestDto.getImg();
+        this.content = teamRequestDto.getContent();
     }
 }

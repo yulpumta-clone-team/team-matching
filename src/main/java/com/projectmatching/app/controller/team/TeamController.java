@@ -40,7 +40,7 @@ public class TeamController {
     @ApiOperation(value = "team 생성 API", notes = "team을 생성합니다.")
     @PostMapping("/team")
     public ResponseTemplate<Long> saveTeam(@AuthenticationPrincipal UserDetailsImpl userDetails, @RequestBody TeamRequestDto requestDto){
-        if(requestDto.getT_name()==null) return ResponseTemplate.of(EMPTY_TEAM_NAME);
+        if(requestDto.getName()==null) return ResponseTemplate.of(EMPTY_TEAM_NAME);
 
         Long result = teamService.save(requestDto, userDetails.getName());
         return ResponseTemplate.valueOf(result);
