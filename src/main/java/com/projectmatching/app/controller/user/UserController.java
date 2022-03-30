@@ -131,4 +131,17 @@ public class UserController {
 
     }
 
+
+    /**
+     * 유저 프로필 생성(유저 게시물 등록)
+     */
+//     @ApiOperation(value = "유저 게시물 등록")
+//     @PostMapping("/myprofile")
+//     public ResponseTemplate<Void> addUserProfilePosting(){
+//
+//
+//     }
+
+
+
 }

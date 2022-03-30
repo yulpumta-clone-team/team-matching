@@ -134,7 +134,7 @@ public class AuthTokenProvider {
         response.addCookie(cookie);
 
         ResponseCookie Rcookie = ResponseCookie.from("Authorization",token)
-            .httpOnly(true)
+            .httpOnly(false)
             .sameSite("lax")
             .maxAge(60*60)
             .path("/")
