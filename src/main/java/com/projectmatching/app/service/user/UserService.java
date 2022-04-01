@@ -28,6 +28,10 @@ public interface UserService {
     //좋아요한 유저 목록 불러오기
     List<UserProfileDto> getLikedUserList(UserDetails userDetails);
 
-
+    //유저 게시물 등록
     void postingUserProfile(PostUserProfileDto postUserProfileDto, UserDetailsImpl userDetails);
+    //유저 게시물 수정
+    UserDto updateUserPosting(PostUserProfileDto postUserProfileDto, UserDetailsImpl userDetails);
+
+
 }
