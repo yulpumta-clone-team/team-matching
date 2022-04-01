@@ -120,7 +120,8 @@ public class UserServiceImpl implements UserService {
         if(!userRepository.existsByName(userDetails.getUserRealName()))throw new ResponeException(LOGICAL_ERROR); //등록하지 않은것을 수정 불가
         else{
             User user = userRepository.findByName(userDetails.getUserRealName()).orElseThrow(RuntimeException::new);
-            BeanUtils.copyProperties(postUserProfileDto,user);\
+            BeanUtils.copyProperties(postUserProfileDto,user);
+            return UserDto.of(user);
         }
 
     }
