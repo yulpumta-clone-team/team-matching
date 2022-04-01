@@ -10,6 +10,9 @@ import com.projectmatching.app.domain.comment.repository.QTeamCommentRepository;
 import com.projectmatching.app.domain.comment.repository.QUserCommentRepository;
 import com.projectmatching.app.domain.comment.repository.TeamCommentRepository;
 import com.projectmatching.app.domain.comment.repository.UserCommentRepository;
+import com.projectmatching.app.domain.liking.entity.TeamCommentLiking;
+import com.projectmatching.app.domain.liking.entity.TeamLiking;
+import com.projectmatching.app.domain.liking.repository.TeamCommentLikingRepository;
 import com.projectmatching.app.domain.team.entity.Team;
 import com.projectmatching.app.domain.team.repository.TeamRepository;
 import com.projectmatching.app.domain.user.Role;
@@ -23,6 +26,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
+import static com.projectmatching.app.constant.ResponseTemplateStatus.NOT_EXIST_USER;
+
 @Service
 @RequiredArgsConstructor
 public class CommentServiceImpl implements CommentService {
@@ -34,6 +39,7 @@ public class CommentServiceImpl implements CommentService {
     private final TeamRepository teamRepository;
     private final QTeamCommentRepository qTeamCommentRepository;
     private final QUserCommentRepository qUserCommentRepository;
+    private final TeamCommentLikingRepository teamCommentLikingRepository;
 
     /**
      * 댓글 추가 서비스
@@ -195,6 +201,35 @@ public class CommentServiceImpl implements CommentService {
             teamCommentRepository.delete(teamComment);
         else throw new ResponeException(ResponseTemplateStatus.DELETE_COMMENT_FAILED);
     }
+
+
+    /**
+     * team 댓글 좋아요
+     */
+    @Override
+    public Boolean likingTeamComment(UserDetailsImpl userDetails, Long commentId) {
+
+        try{
+            User user = userRepository.findByEmail(userDetails.getEmail()).orElseThrow(NullPointerException::new);
+            TeamComment teamComment = teamCommentRepository.findById(commentId).orElseThrow(NullPointerException::new);
+
+            Boolean check = teamCommentLikingRepository.existsByUser_IdAndTeamComment_Id(user.getId(), teamComment.getId());
+            if (!check) {
+                TeamCommentLiking teamCommentLiking = TeamCommentLiking.builder()
+                                .user(user).teamComment(teamComment).build();
+                teamCommentLikingRepository.save(teamCommentLiking);
+                return true;
+            } else {
+                teamCommentLikingRepository.deleteByUser_IdAndTeamComment_Id(user.getId(), teamComment.getId());
+                return false;
+            }
+
+        }catch (RuntimeException e){
+            e.printStackTrace();
+            throw new ResponeException(ResponseTemplateStatus.LIKE_COMMENT_FAILED);
+        }
+    }
+
 
 
     private TeamComment updateCommentToTeam(TeamCommentDto teamCommentDto){

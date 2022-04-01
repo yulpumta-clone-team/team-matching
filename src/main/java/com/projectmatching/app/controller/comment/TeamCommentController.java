@@ -55,4 +55,11 @@ public class TeamCommentController {
         commentService.deleteTeamComment(userDetails,commentId);
         return ResponseTemplate.of(ResponseTemplateStatus.SUCCESS);
     }
+
+    @ApiOperation(value = "팀 게시물 댓글에 좋아요 누르기")
+    @PostMapping("/comment/liking/{comment_id}")
+    public ResponseTemplate<Boolean> likingTeamComment(@PathVariable(name = "comment_id") Long commentId, @AuthenticationPrincipal UserDetailsImpl userDetails){
+        Boolean result = commentService.likingTeamComment(userDetails, commentId);
+        return ResponseTemplate.valueOf(result);
+    }
 }

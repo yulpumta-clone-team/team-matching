@@ -91,7 +91,7 @@ public class TeamController {
      * team 좋아요 등록 및 삭제
      */
     @ApiOperation(value = "team 게시글 좋아요 등록 및 취소 API", notes = "팀 게시글을 수정합니다.")
-    @PostMapping("/team/liking/{team_id}/{user_id}")
+    @PostMapping("/team/liking/{team_id}")
     public ResponseTemplate<Boolean> teamLike(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long team_id){  //user_id 부분 수정필요
         Boolean result = teamService.teamLike(team_id, userDetails.getName());
         return ResponseTemplate.valueOf(result);

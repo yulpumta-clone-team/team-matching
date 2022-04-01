@@ -35,7 +35,7 @@ public interface CommentService {
 
 
 
-    
+    Boolean likingTeamComment(UserDetailsImpl userDetails, Long commentId);
 
 
 
