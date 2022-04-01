@@ -76,7 +76,7 @@ public class UserController {
     @ApiImplicitParam(name="lastPage", example = "1",required = true, value = "마지막 페이지 기준으로 10개씩 유저 리스트를 보내줌")
     @GetMapping
     public ResponseTemplate<List<UserProfileDto>> getUserList(@RequestParam(name="lastPage") int lastPage){
-        Paging paging = new Paging(lastPage,PAGING_SIZE, Sort.by("created_at").descending());
+        Paging paging = new Paging(lastPage,PAGING_SIZE, Sort.by("updated_at").descending());
         return ResponseTemplate.valueOf(userService.getUserList(paging));
     }
 
@@ -139,6 +139,18 @@ public class UserController {
          return ResponseTemplate.of(SUCCESS);
      }
 
+
+    /**
+     * 유저 프로필 수정(등록된 게시물 수정)
+     */
+
+    @ApiOperation(value = "유저 게시물 수정")
+    @PatchMapping("/myprofile")
+    public ResponseTemplate<UserDto> updateUserPosting(@RequestBody PostUserProfileDto postUserProfileDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
+        return ResponseTemplate.valueOf(userService.updateUserPosting(postUserProfileDto,userDetails));
+
+
+    }
 
 
 }

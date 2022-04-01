@@ -12,6 +12,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/user")
 @Slf4j
@@ -61,8 +63,12 @@ public class CommentController {
     }
 
 
-//    @ApiOperation(value = "댓글 리스트 조회")
-//    @GetMapping("/")
+    @ApiOperation(value = "댓글 리스트 조회")
+    @GetMapping("/comment/{user_id}")
+    public ResponseTemplate<List<UserCommentDto>> getUserCommentList(@PathVariable(name="user_id") Long postId){
+        return ResponseTemplate.valueOf(commentService.getUserComment(postId));
+
+    }
 
 
 }

@@ -2,16 +2,14 @@ package com.projectmatching.app.domain.user.dto;
 
 import com.projectmatching.app.domain.user.entity.User;
 import com.projectmatching.app.util.IdGenerator;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.beans.BeanUtils;
 
 import java.util.List;
 
 @Getter @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 @Builder
 public class UserProfileDto {
 

@@ -17,7 +17,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -103,6 +105,21 @@ public class CommentServiceImpl implements CommentService {
     }
 
 
+    /**
+     * 유저게시물에서 댓글 리스트 조회
+     */
+    @Override
+    @Transactional(readOnly = true)
+    public List<UserCommentDto> getUserComment(Long userPostId) {
+
+        List<UserCommentDto> userComments = userCommentRepository.getUserCommentByPostId(userPostId).stream()
+                .map(UserCommentDto::of)
+                .collect(Collectors.toList());
+
+        return userComments;
+
+    }
+
     private UserComment updateCommentToUser(UserCommentDto userCommentDto){
         try {
             UserComment userComment = userCommentRepository.findById(userCommentDto.getUserId()).orElseThrow(NullPointerException::new);
@@ -127,6 +144,7 @@ public class CommentServiceImpl implements CommentService {
             userCommentDto.setId(IdGenerator.number()); //새로운 댓글 id 생성
             UserComment userComment = userCommentDto.asEntity();
             userComment.setUser(user);
+            userCommentRepository.save(userComment);
             return userComment;
         }
         catch (NullPointerException e){

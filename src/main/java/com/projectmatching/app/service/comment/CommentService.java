@@ -4,11 +4,13 @@ package com.projectmatching.app.service.comment;
 import com.projectmatching.app.domain.comment.dto.UserCommentDto;
 import com.projectmatching.app.service.user.userdetail.UserDetailsImpl;
 
+import java.util.List;
+
 public interface CommentService {
 //
 //    //조회
 //    List<TeamComment> getTeamComment(Long teamPostId);
-//    List<UserComment> getUserComment(Long userPostId);
+    List<UserCommentDto> getUserComment(Long userPostId);
 //
 //    //댓글 생성 및 수정 삭제
 //    Long addTeamComment(Long teamPostId);
