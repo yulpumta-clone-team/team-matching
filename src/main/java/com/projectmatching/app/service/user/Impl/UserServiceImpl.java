@@ -1,9 +1,11 @@
 package com.projectmatching.app.service.user.Impl;
 
+import com.projectmatching.app.config.resTemplate.ResponeException;
 import com.projectmatching.app.domain.liking.dto.UserLikingDto;
 import com.projectmatching.app.domain.liking.repository.UserLikingRepository;
 import com.projectmatching.app.domain.user.QUserRepository;
 import com.projectmatching.app.domain.user.UserRepository;
+import com.projectmatching.app.domain.user.dto.PostUserProfileDto;
 import com.projectmatching.app.domain.user.dto.UserDto;
 import com.projectmatching.app.domain.user.dto.UserProfileDto;
 import com.projectmatching.app.domain.user.entity.User;
@@ -22,6 +24,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static com.projectmatching.app.constant.ResponseTemplateStatus.DUPLICATED_USER_POSTING;
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -34,6 +38,7 @@ public class UserServiceImpl implements UserService {
     private final UserDetails userDetails;
 
 
+    //유저 상세 조회
     @Transactional(readOnly = true)
     @Override
     public UserDto getUserDetail(Long id){
@@ -55,6 +60,7 @@ public class UserServiceImpl implements UserService {
        return UserDto.of(userRepository.save(DBUser.asEntity()));
     }
 
+    //유저 게시물 조회
     @Transactional(readOnly = true)
     @Override
     public List<UserProfileDto> getUserList(PageRequest pageRequest){
@@ -85,6 +91,29 @@ public class UserServiceImpl implements UserService {
         return userLikingRepository.getLikedUserByUserEmail(userDetails.getUsername()).stream()
                 .map(userLiking -> userLiking.getToUser()).map(user -> UserProfileDto.of(user)).collect(Collectors.toList());
     }
+
+
+    //게시물 등록
+    @Override
+    @Transactional
+    public void postingUserProfile(PostUserProfileDto postUserProfileDto, UserDetailsImpl userDetails) {
+        UserProfileDto userProfileDto = UserProfileDto.builder()
+                .name(userDetails.getUserRealName())
+                .slogan(postUserProfileDto.getSlogan())
+                .description(postUserProfileDto.getDescription())
+                .img(postUserProfileDto.getImg())
+                .hopeSession(postUserProfileDto.getHope_session())
+                .skills(postUserProfileDto.getSkills())
+                .job(postUserProfileDto.getJob())
+                .build();
+
+        if(userRepository.existsByEmail(userProfileDto.getName())) throw new ResponeException(DUPLICATED_USER_POSTING); //유저 게시물 2개이상 등록 불가
+        else userRepository.save(userProfileDto.asEntity());
+
+    }
+
+
+    //게시물 수정
 
 
 }

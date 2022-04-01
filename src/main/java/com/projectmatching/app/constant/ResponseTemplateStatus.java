@@ -74,6 +74,16 @@ public enum ResponseTemplateStatus {
     UPDATE_COMMENT_FAILED(HttpStatus.BAD_REQUEST,"댓글 수정 실패",4002),
     DELETE_COMMENT_FAILED(HttpStatus.BAD_REQUEST,"본인 댓글만 삭제 가능합니다.",4003),
 
+
+    /**
+     * 5000 : 유저 게시물 작성 관련 오류
+     */
+    DUPLICATED_USER_POSTING(HttpStatus.BAD_REQUEST,"유저 게시물은 두개 이상 올릴 수 없습니다.",5000)
+    ,
+
+
+
+
     /**
      *
      * 9000: 논리적 에러
