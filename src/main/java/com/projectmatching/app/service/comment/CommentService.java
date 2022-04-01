@@ -3,7 +3,6 @@ package com.projectmatching.app.service.comment;
 
 import com.projectmatching.app.domain.comment.dto.UserCommentDto;
 import com.projectmatching.app.service.user.userdetail.UserDetailsImpl;
-import org.springframework.security.core.userdetails.UserDetails;
 
 public interface CommentService {
 //
@@ -18,6 +17,7 @@ public interface CommentService {
     UserCommentDto addUserComment(UserCommentDto userCommentDto);
     UserCommentDto updateUserComment(UserCommentDto userCommentDto);
 //
+    //대댓글 및 댓글 삭제
     void deleteUserComment(UserDetailsImpl userDetails, Long commentId);
 //    void deleteTeamComment(Long teamPostId, Long commentId);
 //
