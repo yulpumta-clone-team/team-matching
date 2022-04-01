@@ -134,8 +134,8 @@ public class UserController {
      */
      @ApiOperation(value = "유저 게시물 등록")
      @PostMapping("/myprofile")
-     public ResponseTemplate<Void> addUserProfilePosting(@RequestBody PostUserProfileDto postUserProfileDto){
-         userService.postingUserProfile(postUserProfileDto);
+     public ResponseTemplate<Void> addUserProfilePosting(@RequestBody PostUserProfileDto postUserProfileDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
+         userService.postingUserProfile(postUserProfileDto,userDetails);
          return ResponseTemplate.of(SUCCESS);
      }
 

@@ -29,5 +29,5 @@ public interface UserService {
     List<UserProfileDto> getLikedUserList(UserDetails userDetails);
 
 
-    void postingUserProfile(PostUserProfileDto postUserProfileDto);
+    void postingUserProfile(PostUserProfileDto postUserProfileDto, UserDetailsImpl userDetails);
 }
