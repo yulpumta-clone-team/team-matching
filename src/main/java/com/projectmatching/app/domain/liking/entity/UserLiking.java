@@ -7,20 +7,27 @@ import lombok.*;
 
 import javax.persistence.*;
 
-@Getter @Setter
+@Getter
+@Setter
 @ToString
-@Entity
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Builder
+@Entity
 @Table(name="user_liking")
 public class UserLiking extends BaseTimeEntity {
     @Id
-    @GeneratedValue
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="user_id")
-    private User user;
+    @JoinColumn(name="from_id")
+    @ToString.Exclude
+    private User fromUser;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "to_id")
+    @ToString.Exclude
+    private User toUser;
+
 
 }

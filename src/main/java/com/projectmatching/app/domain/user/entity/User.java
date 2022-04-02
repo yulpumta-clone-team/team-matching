@@ -21,58 +21,74 @@ import java.util.Set;
 public class User extends BaseTimeEntity  {
 
     @Id
-    @GeneratedValue
     private Long id;
 
-    @Column
+
     private String oauthId;
 
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    @Column
+
     private String email;
-    @Column
+
     private String name;
-    @Column
+
     private String pwd;
-    @Column
+
     private String img;
-    @Column
+
     private String portfolio;
-    @Column
+
     private String slogan;
 
     @Column(columnDefinition = "TEXT")
     private String content;
 
-    @Column
+
     private String hope_session;
 
-    @Column
+
     private String job;
 
+    @Column(columnDefinition = "INT")
+    private int respected;
 
-    @OneToMany
-    @JoinColumn(name="user_liking")
+
+    /**
+     * 내가 좋아요한 유저 목록
+     */
+    @OneToMany(mappedBy = "fromUser")
     @ToString.Exclude
+    @Builder.Default
     private Set<UserLiking> userLikings = new HashSet<>();
 
-    @OneToMany
-    @JoinColumn(name="user_comment_liking")
+
+    /**
+     * 나를 좋아요한 유저 목록
+     *
+     */
+    @OneToMany(mappedBy = "toUser")
     @ToString.Exclude
+    @Builder.Default
+    private Set<UserLiking> whoLikedMe = new HashSet<>();
+
+
+    @OneToMany(mappedBy = "user")
+    @ToString.Exclude
+    @Builder.Default
     private Set<UserCommentLiking> userCommentLikings = new HashSet<>();
 
 
-    @OneToMany
-    @JoinColumn(name="user_comment")
+    @OneToMany(mappedBy = "user")
     @ToString.Exclude
+    @Builder.Default
     private Set<UserComment> userComments = new HashSet<>();
 
 
-    @OneToMany
-    @JoinColumn(name="user_tech")
+    @OneToMany(mappedBy = "user")
     @ToString.Exclude
+    @Builder.Default
     private Set<UserTech> skills = new HashSet<>();
 
 

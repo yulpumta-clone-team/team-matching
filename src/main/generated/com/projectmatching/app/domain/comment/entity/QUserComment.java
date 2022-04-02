@@ -24,6 +24,8 @@ public class QUserComment extends EntityPathBase<UserComment> {
 
     public final com.projectmatching.app.domain.QBaseTimeEntity _super = new com.projectmatching.app.domain.QBaseTimeEntity(this);
 
+    public final SetPath<UserComment, QUserComment> comments = this.<UserComment, QUserComment>createSet("comments", UserComment.class, QUserComment.class, PathInits.DIRECT2);
+
     public final StringPath content = createString("content");
 
     //inherited
@@ -31,7 +33,7 @@ public class QUserComment extends EntityPathBase<UserComment> {
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
-    public final NumberPath<Long> parentId = createNumber("parentId", Long.class);
+    public final QUserComment parent;
 
     public final BooleanPath secret = createBoolean("secret");
 
@@ -44,6 +46,8 @@ public class QUserComment extends EntityPathBase<UserComment> {
     public final com.projectmatching.app.domain.user.entity.QUser user;
 
     public final SetPath<com.projectmatching.app.domain.liking.entity.UserCommentLiking, com.projectmatching.app.domain.liking.entity.QUserCommentLiking> userCommentLikings = this.<com.projectmatching.app.domain.liking.entity.UserCommentLiking, com.projectmatching.app.domain.liking.entity.QUserCommentLiking>createSet("userCommentLikings", com.projectmatching.app.domain.liking.entity.UserCommentLiking.class, com.projectmatching.app.domain.liking.entity.QUserCommentLiking.class, PathInits.DIRECT2);
+
+    public final StringPath writer = createString("writer");
 
     public QUserComment(String variable) {
         this(UserComment.class, forVariable(variable), INITS);
@@ -63,6 +67,7 @@ public class QUserComment extends EntityPathBase<UserComment> {
 
     public QUserComment(Class<? extends UserComment> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
+        this.parent = inits.isInitialized("parent") ? new QUserComment(forProperty("parent"), inits.get("parent")) : null;
         this.user = inits.isInitialized("user") ? new com.projectmatching.app.domain.user.entity.QUser(forProperty("user")) : null;
     }
 

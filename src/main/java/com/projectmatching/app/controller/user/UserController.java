@@ -3,19 +3,19 @@ package com.projectmatching.app.controller.user;
 import com.projectmatching.app.config.resTemplate.ResponeException;
 import com.projectmatching.app.config.resTemplate.ResponseTemplate;
 import com.projectmatching.app.domain.common.Paging;
-import com.projectmatching.app.domain.user.dto.UserDto;
-import com.projectmatching.app.domain.user.dto.UserJoinDto;
-import com.projectmatching.app.domain.user.dto.UserLoginDto;
-import com.projectmatching.app.domain.user.dto.UserProfileDto;
+import com.projectmatching.app.domain.user.dto.*;
 import com.projectmatching.app.service.user.UserService;
 import com.projectmatching.app.service.user.UserSignInService;
 import com.projectmatching.app.service.user.UserSignUpService;
+import com.projectmatching.app.service.user.userdetail.UserDetailsImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
@@ -42,12 +42,8 @@ public class UserController {
     @ApiOperation(value = "일반 회원가입, 성공시 유저 id 반환됨 ")
     @PostMapping("/join")
     public ResponseTemplate<Long> join(@RequestBody UserJoinDto userJoinDto) throws ResponeException {
+        return ResponseTemplate.valueOf(userSignUpService.join(userJoinDto));
 
-        try {
-            return ResponseTemplate.valueOf(userSignUpService.join(userJoinDto));
-        }catch (ResponeException e){
-            return ResponseTemplate.of(e.getStatus());
-        }
     }
 
     /**
@@ -66,8 +62,8 @@ public class UserController {
      */
     @ApiOperation(value = "회원 탈퇴, 해당 유저의 Status 칼럼을 NA(Not Avaliable)로 바꿈")
     @DeleteMapping("/withdrawal")
-    public ResponseTemplate<String> withDrawal(){
-        userSignInService.userDelete(userService.getAuthUserEmail());
+    public ResponseTemplate<String> withDrawal(@AuthenticationPrincipal UserDetails userDetails){
+        userSignInService.userDelete(userDetails.getUsername());
         return ResponseTemplate.of(SUCCESS);
 
     }
@@ -77,10 +73,10 @@ public class UserController {
      * 유저 카드(리스트) 조회
      */
     @ApiOperation(value = "유저 리스트(카드) 조회")
-    @ApiImplicitParam(name="lastPage", required = true, value = "마지막 페이지 기준으로 10개씩 유저 리스트를 보내줌")
+    @ApiImplicitParam(name="lastPage", example = "1",required = true, value = "마지막 페이지 기준으로 10개씩 유저 리스트를 보내줌")
     @GetMapping
     public ResponseTemplate<List<UserProfileDto>> getUserList(@RequestParam(name="lastPage") int lastPage){
-        Paging paging = new Paging(lastPage,PAGING_SIZE, Sort.by("created_at").descending());
+        Paging paging = new Paging(lastPage,PAGING_SIZE, Sort.by("updated_at").descending());
         return ResponseTemplate.valueOf(userService.getUserList(paging));
     }
 
@@ -89,7 +85,7 @@ public class UserController {
      * 특정 유저 카드 조회
      */
     @ApiOperation(value = "특정 유저 상세 조회")
-    @ApiImplicitParam(name = "id",required = true,value = "유저 id")
+    @ApiImplicitParam(name = "id",example = "1",required = true,value = "유저 id")
     @GetMapping("/{id}")
     public ResponseTemplate<UserDto> getUserDetail(@PathVariable(name="id") Long id){
 
@@ -102,6 +98,7 @@ public class UserController {
     /**
      * 유저 프로필 수정
      */
+    @ApiOperation(value ="유저 프로필 수정 요청")
     @PatchMapping("/profile")
     public ResponseTemplate<Void> createUserProfile(@RequestBody UserDto userDto){
         userService.updateUser(userDto);
@@ -109,6 +106,51 @@ public class UserController {
 
     }
 
+
+    /**
+     * 유저 좋아요 누르기
+     */
+    @ApiOperation(value = "특정 유저프로필 좋아요 누르기")
+    @PatchMapping("/liking/{user_id}")
+    public ResponseTemplate<Void> addUserLiking(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable(name="user_id") long userId){
+        userService.addLiking(userDetails,userId);
+        return ResponseTemplate.of(SUCCESS);
+    }
+
+
+    /**
+     * 좋아요한 유저 리스트
+     */
+    @ApiOperation(value = "좋아요 한 유저 리스트")
+    @GetMapping("/liking")
+    public ResponseTemplate<List<UserProfileDto>> getLikedUser(@AuthenticationPrincipal UserDetailsImpl userDetails){
+        return ResponseTemplate.valueOf(userService.getLikedUserList(userDetails));
+
+    }
+
+
+    /**
+     * 유저 프로필 생성(유저 게시물 등록)
+     */
+     @ApiOperation(value = "유저 게시물 등록")
+     @PostMapping("/myprofile")
+     public ResponseTemplate<Void> addUserProfilePosting(@RequestBody PostUserProfileDto postUserProfileDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
+         userService.postingUserProfile(postUserProfileDto,userDetails);
+         return ResponseTemplate.of(SUCCESS);
+     }
+
+
+    /**
+     * 유저 프로필 수정(등록된 게시물 수정)
+     */
+
+    @ApiOperation(value = "유저 게시물 수정")
+    @PatchMapping("/myprofile")
+    public ResponseTemplate<UserDto> updateUserPosting(@RequestBody PostUserProfileDto postUserProfileDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
+        return ResponseTemplate.valueOf(userService.updateUserPosting(postUserProfileDto,userDetails));
+
+
+    }
 
 
 }

@@ -2,21 +2,18 @@ package com.projectmatching.app.domain.techStack.entity;
 
 import com.projectmatching.app.domain.team.entity.TeamTech;
 import com.projectmatching.app.domain.user.entity.UserTech;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
 @Getter @Setter
-@NoArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Entity
+@Table(name = "tech_stack")
 public class TechStack {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long techStackId;
 
     @Column
@@ -29,11 +26,13 @@ public class TechStack {
     @OneToMany
     @JoinColumn(name = "team_tech")
     @ToString.Exclude
+    @Builder.Default
     private Set<TeamTech> teamTechs = new HashSet<>();
 
     @OneToMany
     @JoinColumn(name = "user_tech")
     @ToString.Exclude
+    @Builder.Default
     private Set<UserTech> userTeches = new HashSet<>();
 
 

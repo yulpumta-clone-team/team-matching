@@ -1,26 +1,30 @@
 package com.projectmatching.app.domain.user.dto;
 
 import com.projectmatching.app.domain.user.entity.User;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.projectmatching.app.util.IdGenerator;
+import lombok.*;
 import org.springframework.beans.BeanUtils;
 
 import java.util.List;
 
 @Getter @Setter
-
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class UserProfileDto {
 
+    @Builder.Default
+    private Long id = IdGenerator.number();
     private String name;
     private String slogan;
     private String description;
     private String img;
-    private String hope_session;
+    private String hopeSession;
     private List<String> skills;
     private String job;
     private String status; //현재 상태 (유저가 수동으로 변경, 상태가 Closed 일 경우 인력시장에서 사라짐)
+    private String portfolio;
+
 
     private int commentCnt;
     private int likeCnt;
