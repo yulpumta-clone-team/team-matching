@@ -52,6 +52,7 @@ public enum ResponseTemplateStatus {
     ADD_NESTED_FAILED(HttpStatus.BAD_REQUEST,"부모 댓글 ID가 NULL입니다.",4001),
     UPDATE_COMMENT_FAILED(HttpStatus.BAD_REQUEST,"댓글 수정 실패",4002),
     DELETE_COMMENT_FAILED(HttpStatus.BAD_REQUEST,"본인 댓글만 삭제 가능합니다.",4003),
+    LIKING_COMMENT_FAILED(HttpStatus.BAD_REQUEST,"그러한 댓글 존재하지 않음",4004),
 
 
     /**

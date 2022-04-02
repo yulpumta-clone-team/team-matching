@@ -34,9 +34,10 @@ public interface CommentService {
 //    void deleteUserNestedComment(UserDetails userDetails, Long commentId);
 //    void deleteTeamNestedComment(Long userPostId, Long parentCommentId, Long childCommentId);
 
+    //댓글 좋아요 누르기
+    void doUserCommentLiking(UserDetailsImpl userDetails,Long commentId);
+    void cancelUserCommentLiking(UserDetailsImpl userDetails,Long commentId);
 
-
-    
 
 
 

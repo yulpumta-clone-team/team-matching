@@ -34,10 +34,8 @@ public class UserCommentDto {
 
 
     @Builder.Default
-    @JsonIgnore
     private List<UserCommentDto> comments = new ArrayList<>();
     @Builder.Default
-    @JsonIgnore
     private List<UserCommentLikingDto> feelings = new ArrayList<>();
 
 
