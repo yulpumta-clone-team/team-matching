@@ -5,11 +5,13 @@ import com.projectmatching.app.domain.comment.dto.TeamCommentDto;
 import com.projectmatching.app.domain.comment.dto.UserCommentDto;
 import com.projectmatching.app.service.user.userdetail.UserDetailsImpl;
 
+import java.util.List;
+
 public interface CommentService {
 //
 //    //조회
 //    List<TeamComment> getTeamComment(Long teamPostId);
-//    List<UserComment> getUserComment(Long userPostId);
+    List<UserCommentDto> getUserComment(Long userPostId);
 //
 //    //댓글 생성 및 수정 삭제
     TeamCommentDto addTeamComment(TeamCommentDto teamCommentDto);
@@ -33,9 +35,13 @@ public interface CommentService {
 //    void deleteUserNestedComment(UserDetails userDetails, Long commentId);
 //    void deleteTeamNestedComment(Long userPostId, Long parentCommentId, Long childCommentId);
 
+    //댓글 좋아요 누르기
+    void doUserCommentLiking(UserDetailsImpl userDetails,Long commentId);
+    void cancelUserCommentLiking(UserDetailsImpl userDetails,Long commentId);
 
 
     Boolean likingTeamComment(UserDetailsImpl userDetails, Long commentId);
+
 
 
 

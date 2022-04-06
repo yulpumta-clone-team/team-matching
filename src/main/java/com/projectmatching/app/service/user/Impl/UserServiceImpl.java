@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static com.projectmatching.app.constant.ResponseTemplateStatus.DUPLICATED_USER_POSTING;
+import static com.projectmatching.app.constant.ResponseTemplateStatus.LOGICAL_ERROR;
 
 @Service
 @RequiredArgsConstructor
@@ -93,10 +93,11 @@ public class UserServiceImpl implements UserService {
     }
 
 
-    //게시물 등록
+    //게시물 등록, 프로필 생성하기
     @Override
     @Transactional
     public void postingUserProfile(PostUserProfileDto postUserProfileDto, UserDetailsImpl userDetails) {
+        //TODO 이부분 수정 필요, 현재 안쓰임
         UserProfileDto userProfileDto = UserProfileDto.builder()
                 .name(userDetails.getUserRealName())
                 .slogan(postUserProfileDto.getSlogan())
@@ -107,13 +108,26 @@ public class UserServiceImpl implements UserService {
                 .job(postUserProfileDto.getJob())
                 .build();
 
-        if(userRepository.existsByEmail(userProfileDto.getName())) throw new ResponeException(DUPLICATED_USER_POSTING); //유저 게시물 2개이상 등록 불가
+        if(userRepository.existsByName(userProfileDto.getName())) updateUserPosting(postUserProfileDto,userDetails);
         else userRepository.save(userProfileDto.asEntity());
 
     }
 
-
     //게시물 수정
+    @Override
+    @Transactional
+    public UserDto updateUserPosting(PostUserProfileDto postUserProfileDto, UserDetailsImpl userDetails) {
+        if(!userRepository.existsByName(userDetails.getUserRealName()))throw new ResponeException(LOGICAL_ERROR); //등록하지 않은것을 수정 불가
+        else{
+            User user = userRepository.findByName(userDetails.getUserRealName()).orElseThrow(RuntimeException::new);
+            BeanUtils.copyProperties(postUserProfileDto,user);
+            return UserDto.of(user);
+        }
+
+    }
+
+
+
 
 
 }

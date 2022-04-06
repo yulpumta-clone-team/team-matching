@@ -9,6 +9,8 @@ import org.springframework.beans.BeanUtils;
 
 import java.util.List;
 
+import static com.projectmatching.app.util.StreamUtil.map;
+
 
 @Getter
 @Setter
@@ -46,6 +48,9 @@ public class UserDto {
         BeanUtils.copyProperties(user, userDto);
         userDto.commentCnt = user.getUserComments().size();
         userDto.likeCnt = user.getRespected();
+        userDto.userComments = map(user.getUserComments(),UserCommentDto::of);
+//        userDto.skills =  map(user.getSkills(),)
+
         return userDto;
     }
 

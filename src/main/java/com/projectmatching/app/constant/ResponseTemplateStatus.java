@@ -74,6 +74,9 @@ public enum ResponseTemplateStatus {
     UPDATE_COMMENT_FAILED(HttpStatus.BAD_REQUEST,"댓글 수정 실패",4002),
     DELETE_COMMENT_FAILED(HttpStatus.BAD_REQUEST,"본인 댓글만 삭제 가능합니다.",4003),
     LIKE_COMMENT_FAILED(HttpStatus.BAD_REQUEST,"댓글 좋아요 실패",4003),
+    LIKING_COMMENT_FAILED(HttpStatus.BAD_REQUEST,"그러한 댓글 존재하지 않음",4004),
+
+
 
     /**
      * 5000 : 유저 게시물 작성 관련 오류

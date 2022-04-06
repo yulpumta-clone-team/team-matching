@@ -12,6 +12,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/user")
 @Slf4j
@@ -61,8 +63,26 @@ public class CommentController {
     }
 
 
-//    @ApiOperation(value = "댓글 리스트 조회")
-//    @GetMapping("/")
+    @ApiOperation(value = "댓글 리스트 조회")
+    @GetMapping("/comment/{user_id}")
+    public ResponseTemplate<List<UserCommentDto>> getUserCommentList(@PathVariable(name="user_id") Long postId){
+        return ResponseTemplate.valueOf(commentService.getUserComment(postId));
 
+    }
+
+
+    @ApiOperation(value = "유저 댓글 좋아요하기")
+    @GetMapping("/comment/liking/{comment_id}")
+    public ResponseTemplate<Void> doUserCommentLiking(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable(name = "comment_id") Long commentId){
+        commentService.doUserCommentLiking(userDetails,commentId);
+        return ResponseTemplate.of(ResponseTemplateStatus.SUCCESS);
+    }
+
+    @ApiOperation(value ="유저 댓글 좋아요 취소")
+    @GetMapping("/comment/unliking/{comment_id}")
+    public ResponseTemplate<Void> cancelUserCommentLiking(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable(name = "comment_id")Long commentId){
+        commentService.cancelUserCommentLiking(userDetails,commentId);
+        return ResponseTemplate.of(ResponseTemplateStatus.SUCCESS);
+    }
 
 }

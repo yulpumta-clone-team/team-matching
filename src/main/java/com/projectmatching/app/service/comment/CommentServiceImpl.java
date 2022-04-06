@@ -10,11 +10,15 @@ import com.projectmatching.app.domain.comment.repository.QTeamCommentRepository;
 import com.projectmatching.app.domain.comment.repository.QUserCommentRepository;
 import com.projectmatching.app.domain.comment.repository.TeamCommentRepository;
 import com.projectmatching.app.domain.comment.repository.UserCommentRepository;
+
 import com.projectmatching.app.domain.liking.entity.TeamCommentLiking;
-import com.projectmatching.app.domain.liking.entity.TeamLiking;
+
 import com.projectmatching.app.domain.liking.repository.TeamCommentLikingRepository;
 import com.projectmatching.app.domain.team.entity.Team;
 import com.projectmatching.app.domain.team.repository.TeamRepository;
+
+import com.projectmatching.app.domain.liking.entity.UserCommentLiking;
+import com.projectmatching.app.domain.liking.repository.UserCommentLikingRepository;
 import com.projectmatching.app.domain.user.Role;
 import com.projectmatching.app.domain.user.UserRepository;
 import com.projectmatching.app.domain.user.entity.User;
@@ -24,7 +28,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+
+import static com.projectmatching.app.constant.ResponseTemplateStatus.*;
 
 import static com.projectmatching.app.constant.ResponseTemplateStatus.NOT_EXIST_USER;
 
@@ -35,12 +43,14 @@ public class CommentServiceImpl implements CommentService {
 
     private final TeamCommentRepository teamCommentRepository;
     private final UserCommentRepository userCommentRepository;
-    private final UserRepository userRepository;
+
     private final TeamRepository teamRepository;
+
+    private final UserCommentLikingRepository userCommentLikingRepository;
     private final QTeamCommentRepository qTeamCommentRepository;
     private final QUserCommentRepository qUserCommentRepository;
     private final TeamCommentLikingRepository teamCommentLikingRepository;
-
+    private final UserRepository userRepository;
     /**
      * 댓글 추가 서비스
      */
@@ -60,14 +70,14 @@ public class CommentServiceImpl implements CommentService {
     public UserCommentDto addUserNestedComment( UserCommentDto userCommentDto) {
         //부모 댓글 설정 안되어있으면 에러
         try {
-            if (userCommentDto.getParentId() == null) throw new ResponeException(ResponseTemplateStatus.ADD_NESTED_FAILED);
+            if (userCommentDto.getParentId() == null) throw new ResponeException(ADD_NESTED_FAILED);
             UserComment userComment = addCommentToUser(userCommentDto);
             userComment.setParent(userCommentRepository.findById(userCommentDto.getParentId()).orElseThrow(NullPointerException::new)); //부모 댓글 설정
             return userCommentDto.of(userCommentRepository.save(userComment));
 
         }catch (RuntimeException e){
             e.printStackTrace();
-            throw new ResponeException(ResponseTemplateStatus.ADD_NESTED_FAILED);
+            throw new ResponeException(ADD_NESTED_FAILED);
         }
 
 
@@ -109,10 +119,60 @@ public class CommentServiceImpl implements CommentService {
         if(userComment.getUser().getName().equals(userDetails.getUserRealName()) || userComment.getWriter().equals(userDetails.getUserRealName()) || userDetails.getRole().equals(Role.ADMIN))
             userCommentRepository.delete(userComment);
 
-        else throw new ResponeException(ResponseTemplateStatus.DELETE_COMMENT_FAILED);
+        else throw new ResponeException(DELETE_COMMENT_FAILED);
 
     }
 
+
+    /**
+     * 유저게시물에서 댓글 리스트 조회
+     */
+    @Override
+    @Transactional(readOnly = true)
+    public List<UserCommentDto> getUserComment(Long userPostId) {
+        List<UserCommentDto> userComments = userCommentRepository.getUserCommentByPostId(userPostId).stream()
+                .map(UserCommentDto::of)
+                .collect(Collectors.toList());
+
+        return userComments;
+
+    }
+
+    /**
+     * 댓글 좋아요 하기
+     */
+    @Override
+    @Transactional
+    public void doUserCommentLiking(UserDetailsImpl userDetails, Long commentId) {
+
+        UserComment userComment = userCommentRepository.findById(commentId).orElseThrow(RuntimeException::new);
+        User user = userRepository.findByName(userDetails.getUserRealName()).orElseThrow(RuntimeException::new);
+
+        UserCommentLiking userCommentLiking = UserCommentLiking.builder()
+                .id(IdGenerator.number())
+                .userComment(userComment)
+                .user(user)
+                .build();
+        userCommentLikingRepository.save(userCommentLiking);
+
+    }
+
+    @Override
+    @Transactional
+    public void cancelUserCommentLiking(UserDetailsImpl userDetails, Long commentId) {
+        try {
+            UserCommentLiking userCommentLiking = userCommentLikingRepository
+                    .findUserCommentLikingByUserNameAndUserCommentId(userDetails.getUserRealName(), commentId)
+                    .orElseThrow(NullPointerException::new);
+
+            userCommentLikingRepository.delete(userCommentLiking);
+        }catch (NullPointerException e){
+
+            throw new ResponeException(LIKING_COMMENT_FAILED);
+        }
+
+
+    }
 
     private UserComment updateCommentToUser(UserCommentDto userCommentDto){
         try {
@@ -126,7 +186,7 @@ public class CommentServiceImpl implements CommentService {
 
         }catch (RuntimeException e){
             e.printStackTrace();
-            throw new ResponeException(ResponseTemplateStatus.UPDATE_COMMENT_FAILED);
+            throw new ResponeException(UPDATE_COMMENT_FAILED);
         }
 
     }
@@ -138,11 +198,12 @@ public class CommentServiceImpl implements CommentService {
             userCommentDto.setId(IdGenerator.number()); //새로운 댓글 id 생성
             UserComment userComment = userCommentDto.asEntity();
             userComment.setUser(user);
+            userCommentRepository.save(userComment);
             return userComment;
         }
         catch (NullPointerException e){
             e.printStackTrace();
-            throw new ResponeException(ResponseTemplateStatus.ADD_COMMENT_FAILED);
+            throw new ResponeException(ADD_COMMENT_FAILED);
         }
     }
 

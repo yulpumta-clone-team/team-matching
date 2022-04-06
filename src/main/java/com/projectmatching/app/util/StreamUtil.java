@@ -29,7 +29,7 @@ public final class StreamUtil {
     }
 
     /**
-     * dto 에서 jpo로 바꾸기 위해
+     * dto 에서 entity로 바꾸기 위해
      */
     public static <R,T> Set<R> mapToSet(List<T> list,Function<T,R> function){
         return list.stream()
