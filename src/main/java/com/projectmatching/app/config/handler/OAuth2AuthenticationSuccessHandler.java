@@ -50,14 +50,11 @@ public class OAuth2AuthenticationSuccessHandler implements AuthenticationSuccess
 
     protected void resultRedirectStrategy(HttpServletRequest request, HttpServletResponse response,
                                           Authentication authentication) throws IOException, ServletException {
-
         SavedRequest savedRequest = requestCache.getRequest(request, response);
-
         if(savedRequest!=null) {
             String targetUrl = savedRequest.getRedirectUrl();
             redirectStratgy.sendRedirect(request, response, targetUrl);
         } else {
-
             String redirectUrl = request.getScheme() + "://" + request.getServerName() + ":"+yamlConfig.getPORT()+ "/callback";
             redirectStratgy.sendRedirect(request, response, redirectUrl);
         }
