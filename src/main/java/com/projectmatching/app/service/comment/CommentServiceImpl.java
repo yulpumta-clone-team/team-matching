@@ -10,15 +10,12 @@ import com.projectmatching.app.domain.comment.repository.QTeamCommentRepository;
 import com.projectmatching.app.domain.comment.repository.QUserCommentRepository;
 import com.projectmatching.app.domain.comment.repository.TeamCommentRepository;
 import com.projectmatching.app.domain.comment.repository.UserCommentRepository;
-
 import com.projectmatching.app.domain.liking.entity.TeamCommentLiking;
-
+import com.projectmatching.app.domain.liking.entity.UserCommentLiking;
 import com.projectmatching.app.domain.liking.repository.TeamCommentLikingRepository;
+import com.projectmatching.app.domain.liking.repository.UserCommentLikingRepository;
 import com.projectmatching.app.domain.team.entity.Team;
 import com.projectmatching.app.domain.team.repository.TeamRepository;
-
-import com.projectmatching.app.domain.liking.entity.UserCommentLiking;
-import com.projectmatching.app.domain.liking.repository.UserCommentLikingRepository;
 import com.projectmatching.app.domain.user.Role;
 import com.projectmatching.app.domain.user.UserRepository;
 import com.projectmatching.app.domain.user.entity.User;
@@ -33,8 +30,6 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static com.projectmatching.app.constant.ResponseTemplateStatus.*;
-
-import static com.projectmatching.app.constant.ResponseTemplateStatus.NOT_EXIST_USER;
 
 @Service
 @RequiredArgsConstructor
